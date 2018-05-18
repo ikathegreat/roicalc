@@ -1,0 +1,83 @@
+﻿<dxr:DXRibbonWindow xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:viewModels="clr-namespace:SNROI.ViewModels" 
+    xmlns:local="clr-namespace:SNROI" xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" x:Class="SNROI.EditROIDocumentWindow" mc:Ignorable="d" Title="Edit ROI Document" Height="500" Width="800" WindowStartupLocation="CenterScreen" 
+    >
+    <dxr:DXRibbonWindow.Resources>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </dxr:DXRibbonWindow.Resources>
+    <dxr:DXRibbonWindow.DataContext>
+        <viewModels:ROIDocumentViewModel />
+    </dxr:DXRibbonWindow.DataContext>
+    <Grid>
+        <Label Content="Currency Symbol" HorizontalAlignment="Left" Margin="213,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.488,1.455"/>
+        <Label Content="Images" HorizontalAlignment="Left" Margin="486,147,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.488,1.455"/>
+        <Label Content="{Binding ROIDocument.ImageNameList.Count}" HorizontalAlignment="Left" Margin="548,147,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.488,1.455"/>
+
+        <Button Content="..." HorizontalAlignment="Left" Margin="683,147,0,0" VerticalAlignment="Top" Width="40" Command="{Binding OpenImagesWindowCommand}"/>
+        <Label Content="{Binding ROIDocument.CurrencySymbol}" HorizontalAlignment="Left" Margin="318,94,0,0" VerticalAlignment="Top"/>
+        <Label Content="Currency Country" HorizontalAlignment="Left" Margin="210,59,0,0" VerticalAlignment="Top"/>
+       
+        <dxe:ComboBoxEdit HorizontalAlignment="Left" Margin="318,59,0,0" VerticalAlignment="Top" Width="146" ItemsSource="{Binding CultureCurrencyPairs}" SelectedItem="{Binding ROIDocument.CultureCurrencyPair}" ApplyItemTemplateToSelectedItem="True" IsTextEditable="False">
+            <dxe:ComboBoxEdit.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Country}" />
+                        <TextBlock Text=" [" />
+                        <TextBlock Text="{Binding CultureCode}" />
+                        <TextBlock Text=" ]" />
+                    </StackPanel>
+                </DataTemplate>
+            </dxe:ComboBoxEdit.ItemTemplate>
+        </dxe:ComboBoxEdit>
+        <TextBlock HorizontalAlignment="Left" Margin="515,56,0,0" TextWrapping="Wrap" Text="Company Name" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="603,56,0,0" TextWrapping="Wrap" Text="{Binding ROIDocument.CompanyName}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="603,99,0,0" TextWrapping="Wrap" Text="{Binding ROIDocument.ReportName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Report Name" HorizontalAlignment="Left" Margin="509,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.488,1.455"/>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="479,387,0,0" VerticalAlignment="Top" Width="75" Command="{Binding SaveROIDocumentCommand}"/>
+        <Button Content="Report" HorizontalAlignment="Left" Margin="585,387,0,0" VerticalAlignment="Top" Width="75" Command="{Binding EditReportCommand}"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="692,387,0,0" VerticalAlignment="Top" Width="75" Command="{Binding CancelCommand}"/>
+        <GroupBox Header="Units" HorizontalAlignment="Left" Height="100" Margin="20,34,0,0" VerticalAlignment="Top" Width="144">
+            <StackPanel Orientation="Vertical">
+                <RadioButton Content="Inches" GroupName="Units" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="{Binding ROIDocument.IsMetric, Converter={StaticResource InverseBooleanConverter}}"/>
+                <RadioButton Content="Metric" GroupName="Units" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="{Binding ROIDocument.IsMetric}"/>
+            </StackPanel>
+        </GroupBox>
+
+        <TabControl HorizontalAlignment="Left" Height="209" Margin="31,236,0,0" VerticalAlignment="Top" Width="433">
+            <TabItem Header="Material">
+                <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MaterialsListCollection, Mode=TwoWay}">
+                    <dxg:GridControl.View>
+                        <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" Height="157" NewItemRowPosition="Bottom"/>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </TabItem>
+            <TabItem Header="Machines">
+                <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MachinesListCollection, Mode=TwoWay}">
+                    <dxg:GridControl.View>
+                        <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" Height="157" NewItemRowPosition="Bottom"/>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </TabItem>
+            <TabItem Header="People">
+                <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.PeopleListCollection, Mode=TwoWay}">
+                    <dxg:GridControl.View>
+                        <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" Height="157" NewItemRowPosition="Bottom"/>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </TabItem>
+        </TabControl>
+        <ListView HorizontalAlignment="Left" Height="160" Margin="479,174,0,0" VerticalAlignment="Top" Width="244" ItemsSource="{Binding ROIDocument.ImageNameList, Mode=TwoWay}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Image Files"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</dxr:DXRibbonWindow>

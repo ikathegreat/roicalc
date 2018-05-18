@@ -1,0 +1,30 @@
+﻿<UserControl
+    x:Class="SNROI.SplashWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:gif="http://wpfanimatedgif.codeplex.com"
+    mc:Ignorable="d"
+    d:DataContext="{x:Static dx:SplashScreenViewModel.DesignTimeData}"
+    >
+    <Grid x:Name="LayoutRoot">
+        <Grid x:Name="Splash" Width="60" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0">
+            <Grid x:Name="Back">
+                <Border Background="Black" CornerRadius="3" Opacity="0.15"/>
+                <Border CornerRadius="2" Margin="1" Background="White"/>
+            </Grid>
+            <Image gif:ImageBehavior.AnimatedSource="Resources/loading.gif" Margin="5" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform Y="-3"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Grid>
+    </Grid>
+</UserControl>

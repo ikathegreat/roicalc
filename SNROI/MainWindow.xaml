@@ -1,0 +1,66 @@
+﻿<dxr:DXRibbonWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:local="clr-namespace:SNROI"
+        xmlns:viewModels="clr-namespace:SNROI.ViewModels"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" x:Name="RibbonWindow"
+        x:Class="SNROI.MainWindow"
+        Title="SigmaTEK ROI Calculator" Height="450" Width="725" WindowStartupLocation="CenterScreen">
+    <dxr:DXRibbonWindow.DataContext>
+        <viewModels:MainWindowViewModel/>
+    </dxr:DXRibbonWindow.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <dxr:RibbonControl Grid.Row="0" RibbonStyle="Office2010" MinimizationButtonVisibility="Collapsed" ToolbarShowMode="Hide">
+            <dxr:RibbonControl.ApplicationMenu>
+                <dxr:BackstageViewControl/>
+            </dxr:RibbonControl.ApplicationMenu>
+            <dxr:RibbonDefaultPageCategory>
+                <dxr:RibbonPage Caption="Home">
+                    <dxr:RibbonPageGroup Caption="File" ShowCaptionButton="True" CaptionButtonCommand="{Binding OpenReportsDirectoryCommand}">
+                        <dxb:BarButtonItem x:Name="bbiNew" Content="New" Glyph="Resources/document_text-new16.png" Command="{Binding NewROIDocumentCommand, Mode=OneWay}" GlyphSize="Large" LargeGlyph="Resources/document_text-new32.png"/>
+                        <dxb:BarButtonItem x:Name="bbiOpen" Content="Open" Glyph="Resources/document_text-import16.png" LargeGlyph="Resources/document_text-import32.png" Command="{Binding OpenROIDocumentCommand, Mode=OneWay}"/>
+                        <dxb:BarButtonItem x:Name="bbiDelete" Content="Delete" Glyph="Resources/document_text-delete216.png" LargeGlyph="Resources/document_text-delete232.png" Command="{Binding DeleteROIDocumentsCommand, Mode=OneWay}"/>
+                        <dxb:BarButtonItem x:Name="bbiClone" Content="Clone" Glyph="Resources/clipboard_copy16.png" LargeGlyph="Resources/clipboard_copy32.png" Command="{Binding CloneROIDocumentCommand, Mode=OneWay}"/>
+                        <!--<dxb:BarButtonItem x:Name="bbiSave" Content="Save" Glyph="{dx:DXImage Image=New_16x16.png}" LargeGlyph="{dx:DXImage Image=New_32x32.png}"/>
+                        <dxb:BarButtonItem x:Name="bbiSaveAs" Content="Save As" Glyph="{dx:DXImage Image=New_16x16.png}" LargeGlyph="{dx:DXImage Image=New_32x32.png}"/>
+                        <dxb:BarItemSeparator/>
+                        <dxb:BarButtonItem x:Name="saveAsItem" Content="Save As" LargeGlyph="{dx:DXImage Image=SaveAs_32x32.png}"/>-->
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Reporting">
+                        <dxb:BarButtonItem x:Name="bbiReports" Content="Reports" Glyph="Resources/report_open-print16.png" LargeGlyph="Resources/report_open-print32.png" Command="{Binding OpenReportsDialogCommand, Mode=OneWay}"/>
+                        <dxb:BarButtonItem x:Name="bbiReportEditor" Content="Report Editor" Glyph="Resources/report_open-edit16.png" LargeGlyph="Resources/report_open-edit32.png" Command="{Binding OpenReportEdtiorCommandDialogCommand, Mode=OneWay}"/>
+                    </dxr:RibbonPageGroup>
+
+                    <dxr:RibbonPageGroup Caption="Help">
+                        <dxb:BarButtonItem x:Name="bbiAbout" Content="About" Glyph="Resources/info16.png" LargeGlyph="Resources/info32.png" Command="{Binding OpenAboutDialogCommand, Mode=OneWay}"/>
+                    </dxr:RibbonPageGroup>
+                </dxr:RibbonPage>
+            </dxr:RibbonDefaultPageCategory>
+        </dxr:RibbonControl>
+        <dxr:RibbonStatusBarControl Grid.Row="2">
+            <dxr:RibbonStatusBarControl.LeftItems>
+                <dxb:BarEditItem Content="{Binding TotalReportsMessage}"/>
+                <dxb:BarItemSeparator />
+                <dxb:BarEditItem Content="{Binding SelectedReportsMessage}"/>
+            </dxr:RibbonStatusBarControl.LeftItems>
+            <dxr:RibbonStatusBarControl.RightItems>
+                <dxb:BarButtonItem x:Name="printItem" Content="Print" Glyph="{dx:DXImage Image=Print_16x16.png}"/>
+            </dxr:RibbonStatusBarControl.RightItems>
+        </dxr:RibbonStatusBarControl>
+        <dxg:GridControl x:Name="GridControlROIDocuments" Grid.Row="1" ItemsSource="{Binding FSROIDocList, Mode=OneWay}" AutoGenerateColumns="AddNew" SelectionMode="Row" SelectedItems="{Binding GridSelectedFSROIDocList}">
+            <dxg:GridControl.View>
+                <dxg:TableView x:Name="TableViewROIDocuments" AllowEditing="False" ShowAutoFilterRow="True"/>
+            </dxg:GridControl.View>
+
+        </dxg:GridControl>
+    </Grid>
+</dxr:DXRibbonWindow>
