@@ -19,7 +19,31 @@ namespace SNROI.ViewModels
                 new CultureCurrencyPair {Country = "Germany", CultureCode = "en-GB"},
                 new CultureCurrencyPair {Country = "Japan", CultureCode = "ja-JP"}
             };
+        }
 
+        public void LoadExisingImages()
+        {
+            var imageDirectory = Path.Combine(DataDirectory, "Images");
+            if (string.IsNullOrEmpty(imageDirectory))
+                return;
+            if (!Directory.Exists(imageDirectory))
+                return;
+
+            var existingFiles = Directory.GetFiles(imageDirectory);
+            foreach (var existingFile in existingFiles)
+            {
+                var fileNameNoExt = Path.GetFileName(existingFile);
+                if (!ImageList.Contains(fileNameNoExt))
+                    ImageList.Add(fileNameNoExt);
+            }
+            //Todo: Bug with removing an image and not removing it from the list
+        }
+
+        private ObservableCollection<string> imageList;
+        public ObservableCollection<string> ImageList
+        {
+            get => imageList ?? (imageList = new ObservableCollection<string>());
+            set => imageList = value;
         }
 
 
@@ -35,6 +59,7 @@ namespace SNROI.ViewModels
 
         public string DocumentPath { get; set; }
         public string DataDirectory { get; set; }
+        public bool IsNewReport { get; set; }
 
         private ROIDocument roiDocument;
         private ObservableCollection<CultureCurrencyPair> cultureCurrencyPairs;
@@ -56,17 +81,25 @@ namespace SNROI.ViewModels
 
         private bool CanSaveROIDocument()
         {
-            var result = !string.IsNullOrEmpty(ROIDocument.ReportName)
-                         && !(ROIDocument.ReportName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0);
+            var result = !string.IsNullOrEmpty(ROIDocument.DocumentName)
+                         && !(ROIDocument.DocumentName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0);
             return result;
 
         }
         private void SaveROIDocument()
         {
-            //Todo: Check if file already exists
+            //New report
             if (string.IsNullOrEmpty(DocumentPath))
                 if (!string.IsNullOrEmpty(DataDirectory))
-                    DocumentPath = Path.Combine(DataDirectory, ROIDocument.ReportName + ".xml");
+                    DocumentPath = Path.Combine(DataDirectory, ROIDocument.DocumentName + ".xml");
+
+            if (File.Exists(DocumentPath) && IsNewReport)
+            {
+                if (!DialogService.Instance.ShowMessageQuestion($"{ROIDocument.DocumentName} already exists. Overwrite?", "File Exists"))
+                {
+                    return;
+                }
+            }
 
             var directoryName = Path.GetDirectoryName(DocumentPath);
             if (!Directory.Exists(directoryName))
@@ -89,6 +122,7 @@ namespace SNROI.ViewModels
             }
 
             //Write Extra file property
+            //Todo: fix this , it doesn't work for XML files.
             try
             {
                 var file = ShellFile.FromFilePath(DocumentPath);
@@ -108,10 +142,9 @@ namespace SNROI.ViewModels
 
         private void EditReport()
         {
-            var reportrepx = @"C:\Users\paul.ikeda.SIGMATEK\Desktop\Report1.repx";
-
-            DialogService.Instance.ShowReportPreviewDialog(reportrepx);
-   
+            var tempFSROIDoc = new FileSystemROIDocument(DocumentPath);
+            var tempFSROIDocList = new ObservableCollection<FileSystemROIDocument> { tempFSROIDoc };
+            DialogService.Instance.ShowReportsDialog(DataDirectory, tempFSROIDocList);
         }
 
         public ICommand CancelCommand => new RelayCommand(CancelDocumentEdit);
@@ -122,7 +155,7 @@ namespace SNROI.ViewModels
         }
 
 
-        private static ROIDocument LoadROIDocumentFile(string documentPath)
+        public static ROIDocument LoadROIDocumentFile(string documentPath)
         {
             var roiDocument = new ROIDocument();
             if (File.Exists(documentPath))
@@ -145,7 +178,7 @@ namespace SNROI.ViewModels
             }
             else
             {
-                DialogService.Instance.ShowMessageError("Can't file this file: " + documentPath);
+                DialogService.Instance.ShowMessageError("Can't find this file: " + documentPath);
             }
 
             return roiDocument;
@@ -156,8 +189,9 @@ namespace SNROI.ViewModels
 
         private void OpenImagesWindow()
         {
-            DialogService.Instance.ShowImageBrowserWindow(ROIDocument.ImageNameList, Path.Combine(DataDirectory, "Images"));
-            FirePropertyChanged(nameof(ROIDocument.ImageNameList));
+            DialogService.Instance.ShowImageBrowserWindow(Path.Combine(DataDirectory, "Images"));
+            LoadExisingImages();
+            FirePropertyChanged(nameof(ImageList));
         }
 
     }

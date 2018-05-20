@@ -8,6 +8,8 @@
         mc:Ignorable="d"
         Title="Report Editor" Height="650" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <dxrud:ReportDesigner x:Name="reportDesigner" />
+        <dxrud:ReportDesigner x:Name="reportDesigner" >
+            <dxrud:ReportDesignerBrowserView/>
+        </dxrud:ReportDesigner>
     </Grid>
 </Window>

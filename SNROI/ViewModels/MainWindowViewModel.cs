@@ -141,11 +141,10 @@ namespace SNROI.ViewModels
             DialogService.Instance.ShowAboutDialog();
         }
 
-        public ICommand OpenReportsDialogCommand => new RelayCommand(OpenReportsDialog, CanOpenReportsDialog);
-        private bool CanOpenReportsDialog() { return GridSelectedFSROIDocList.Count > 0; }
+        public ICommand OpenReportsDialogCommand => new RelayCommand(OpenReportsDialog);
         private void OpenReportsDialog()
         {
-            DialogService.Instance.ShowReportsDialog(DataDirectory);
+            DialogService.Instance.ShowReportsDialog(DataDirectory, gridSelectedFSROIDocList);
         }
         public ICommand OpenReportEdtiorCommandDialogCommand => new RelayCommand(OpenReportEditorDialog);
         private static void OpenReportEditorDialog()

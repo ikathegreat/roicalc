@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using DevExpress.Xpf.Printing;
@@ -293,10 +294,10 @@ namespace SNROI
             aboutViewModel.ClosingRequest += (sender, e) => aboutWindow.Close();
             OpenCustomDialog(aboutWindow);
         }
-        public void ShowReportsDialog(string defaultDataDirectory)
+        public void ShowReportsDialog(string defaultDataDirectory, ObservableCollection<FileSystemROIDocument> selectedFSRoiDocumentsList)
         {
             var printReportWindow = new PrintReportWindow();
-            var printReportsViewModel = new PrintReportsViewModel {DataDirectory = defaultDataDirectory};
+            var printReportsViewModel = new PrintReportsViewModel { DataDirectory = defaultDataDirectory, SelectedFSROIDocumentsList = selectedFSRoiDocumentsList };
             printReportWindow.DataContext = printReportsViewModel;
             printReportsViewModel.ClosingRequest += (sender, e) => printReportWindow.Close();
             OpenCustomDialog(printReportWindow);
@@ -311,6 +312,18 @@ namespace SNROI
                 DocumentPath = documentPath,
                 DataDirectory = defaultDataDirectory
             };
+
+            //Pre-populate new report's default name
+            if (string.IsNullOrEmpty(documentPath))
+            {
+                roiDocumentViewModel.IsNewReport = true;
+                roiDocumentViewModel.ROIDocument.DocumentName = Path.GetFileNameWithoutExtension(
+                    FileSystemTools.GetNextAvailableFilename(Path.Combine(defaultDataDirectory, "ROIDocument.xml")));
+
+                //Todo: Recall modal last new report defaults (culture, etc.)
+            }
+
+            roiDocumentViewModel.LoadExisingImages();
             editROIDocWindow.DataContext = roiDocumentViewModel;
 
             roiDocumentViewModel.ClosingRequest += (sender, e) => editROIDocWindow.Close();
@@ -320,10 +333,10 @@ namespace SNROI
         }
 
 
-        public void ShowImageBrowserWindow(ObservableCollection<string> docImageNameList, string imageDirectory)
+        public void ShowImageBrowserWindow(string imageDirectory)
         {
             var imageBrowserWindow = new ImageBrowserWindow();
-            var imageBrowserViewModel = new ImageBrowserViewModel { DocumentImageList = docImageNameList, ImageDirectory = imageDirectory };
+            var imageBrowserViewModel = new ImageBrowserViewModel { ImageDirectory = imageDirectory };
             imageBrowserViewModel.LoadExisingImages();
             imageBrowserWindow.DataContext = imageBrowserViewModel;
             imageBrowserViewModel.ClosingRequest += (sender, e) => imageBrowserWindow.Close();
@@ -341,18 +354,33 @@ namespace SNROI
             if (reportEditorWindow != null)
                 OpenCustomDialog(reportEditorWindow);
         }
-        public void ShowReportPreviewDialog(string reportRepxFilePath = "")
+
+        public void ShowReportPreviewDialog(string reportRepxFilePath = "", object dataSource = null)
         {
-            var report = XtraReport.FromFile(reportRepxFilePath, true);
+            // var report = XtraReport.FromFile(reportRepxFilePath, true);
             //ReportPrintTool tool = new ReportPrintTool(report);
             //PrintHelper.ShowPrintPreviewDialog(this, new XtraReport1());
             // tool.ShowRibbonPreviewDialog();
 
 
+            //   PrintHelper.ShowPrintPreview(Application.Current.MainWindow, report);
+
+            //https://documentation.devexpress.com/XtraReports/1179/Detailed-Guide-to-DevExpress-Reporting/Providing-Data-to-Reports/Data-Binding-Overview/Quick-Guide-to-Report-Data-Binding
+            //https://documentation.devexpress.com/XtraReports/17784/Detailed-Guide-to-DevExpress-Reporting/Providing-Data-to-Reports/Tutorials-and-Code-Examples/Bind-a-Report-to-an-Object-Data-Source
+
+            //var report = XtraReport.FromFile(reportRepxFilePath, true);
+            var report = new XtraReport2();
             var window = new DocumentPreviewWindow();
             window.PreviewControl.DocumentSource = report;
+            report.DataSource = dataSource;
             report.CreateDocument();
-            window.Show();
+            window.ShowDialog();
+
+            //doesn't work 
+            //https://documentation.devexpress.com/XtraReports/DevExpress.XtraReports.UI.XtraReportBase.DataSource.property
+            //report.DataSource = dataSource;
+            //var printTool = new ReportPrintTool(report);
+            //printTool.ShowPreview();
         }
     }
 

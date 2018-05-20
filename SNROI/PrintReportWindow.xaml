@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SNROI"
-        xmlns:ViewModels="clr-namespace:SNROI.ViewModels" x:Class="SNROI.PrintReportWindow"
+        xmlns:ViewModels="clr-namespace:SNROI.ViewModels"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        x:Class="SNROI.PrintReportWindow"
         mc:Ignorable="d"
-        Title="Print ROI Report" Height="450" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Print ROI Report" Height="500" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
-            <Setter Property="Margin" Value="5" />
+            <Setter Property="Margin" Value="0,5,5,5" />
             <Setter Property="MinWidth" Value="75" />
         </Style>
     </Window.Resources>
@@ -19,16 +21,59 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="35"/>
+            <RowDefinition/>
+            <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
-        <ListBox ItemsSource="{Binding ReportList}">
-            
-
-        </ListBox>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" >
-            <Button Content="Edit" Command="{Binding OpenReportEditorCommand}"/>
-            <Button Content="Print" Command="{Binding PrintReportsCommand}"/>
-            <Button Content="Export" Command="{Binding ExportReportsCommand}"/>
+        <GroupBox Grid.Row="0" Header="Report Templates" Margin="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="New" Command="{Binding OpenNewReportEditorCommand}"/>
+                    <Button Content="Edit" Command="{Binding OpenReportEditorCommand}"/>
+                </StackPanel>
+                <!--<dxe:ListBoxEdit Grid.Row="1" ItemsSource="{Binding ReportTemplateList}" EditValue="{Binding CheckedReportTemplateList}" SelectionMode="Multiple" SelectedItem="{Binding SelectedReportForEdit}">
+                    <dxe:ListBoxEdit.StyleSettings>
+                        <dxe:CheckedListBoxEditStyleSettings/>
+                    </dxe:ListBoxEdit.StyleSettings>
+                </dxe:ListBoxEdit>-->
+                <ListBox Grid.Row="1" ItemsSource="{Binding ReportTemplateList}" SelectedItem="{Binding SelectedReportForEdit}" SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <!--<ListBoxItem IsSelected="{Binding IsChecked}">
+                                <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Path=Item}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            </ListBoxItem>-->
+                                <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="Selected ROI Documents" Margin="5" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Preview" Command="{Binding PreviewReportsCommand}"/>
+                    <Button Content="Print" Command="{Binding PrintReportsCommand}"/>
+                    <Button Content="Export" Command="{Binding ExportReportsCommand}"/>
+                </StackPanel>
+                <ListBox Grid.Row="1" ItemsSource="{Binding SelectedFSROIDocumentsList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding ROIDocumentName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </GroupBox>
+        <StackPanel Grid.Row="2" Margin="5" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Content="Close" Command="{Binding CloseWindowCommand}"/>
         </StackPanel>
     </Grid>

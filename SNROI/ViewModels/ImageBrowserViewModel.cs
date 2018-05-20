@@ -18,13 +18,6 @@ namespace SNROI.ViewModels
         private readonly ObservableCollection<string> imageFilesToCopy = new ObservableCollection<string>();
         private readonly ObservableCollection<string> imageFilesToDelete = new ObservableCollection<string>();
 
-        private ObservableCollection<string> documentImageList;
-        public ObservableCollection<string> DocumentImageList
-        {
-            get => documentImageList ?? (documentImageList = new ObservableCollection<string>());
-            set => documentImageList = value;
-        }
-
         private ObservableCollection<string> displayImageList;
         public ObservableCollection<string> DisplayImageList
         {
@@ -55,9 +48,6 @@ namespace SNROI.ViewModels
             {
                 DisplayImageList.Add(Path.GetFileName(existingFile));
             }
-            DocumentImageList.ForEach(x => DisplayImageList.Remove(x));
-
-
         }
 
         private void ImportImage()
@@ -79,10 +69,11 @@ namespace SNROI.ViewModels
         {
             if (SelectedImageNamesList.Count == 0)
                 return;
+            var effectOnExistingReportsMessage = "ROI documents using deleted images must be updated to preview, export, or print." + Environment.NewLine + Environment.NewLine;
             var messageText = SelectedImageNamesList.Count == 1
-                ? "Delete "
-                  + SelectedImageNamesList[0]
-                : "Delete" + SelectedImageNamesList.Count + " images?";
+                ? effectOnExistingReportsMessage + "Delete "
+                  + SelectedImageNamesList[0] + "?"
+                : effectOnExistingReportsMessage + "Delete" + SelectedImageNamesList.Count + " images?";
 
             if (!DialogService.Instance.ShowMessageQuestion(messageText, "Delete Images"))
                 return;
@@ -132,11 +123,6 @@ namespace SNROI.ViewModels
                     {
                         DialogService.Instance.ShowMessageError(ex);
                     }
-                }
-                DocumentImageList.Clear();
-                foreach (var selectedFile in SelectedImageNamesList)
-                {
-                    DocumentImageList.Add(selectedFile);
                 }
             }
             FireCloseRequest();

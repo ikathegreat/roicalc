@@ -16,8 +16,10 @@ namespace SNROI.Models
         {
         }
 
-        public string ReportName { get; set; }
+        public string DocumentName { get; set; }
         public string CompanyName { get; set; }
+        public string ContactName { get; set; }
+        public string CompanyLogoImage { get; set; }
 
         private CultureCurrencyPair cultureCurrencyPair = new CultureCurrencyPair()
             { CultureCode = "yourface", Country = "no"};
@@ -53,13 +55,6 @@ namespace SNROI.Models
         }
         public DateTime ReportDate { get; set; }
         public bool IsMetric { get; set; }
-
-        private ObservableCollection<string> imageNameList;
-        public ObservableCollection<string> ImageNameList
-        {
-            get => imageNameList ?? (imageNameList = new ObservableCollection<string>());
-            set => imageNameList = value;
-        }
 
         private ObservableCollection<Material> materialsListCollection = new ObservableCollection<Material>();
 

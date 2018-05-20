@@ -37,7 +37,7 @@
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Reporting">
                         <dxb:BarButtonItem x:Name="bbiReports" Content="Reports" Glyph="Resources/report_open-print16.png" LargeGlyph="Resources/report_open-print32.png" Command="{Binding OpenReportsDialogCommand, Mode=OneWay}"/>
-                        <dxb:BarButtonItem x:Name="bbiReportEditor" Content="Report Editor" Glyph="Resources/report_open-edit16.png" LargeGlyph="Resources/report_open-edit32.png" Command="{Binding OpenReportEdtiorCommandDialogCommand, Mode=OneWay}"/>
+                        <!--<dxb:BarButtonItem x:Name="bbiReportEditor" Content="Report Editor" Glyph="Resources/report_open-edit16.png" LargeGlyph="Resources/report_open-edit32.png" Command="{Binding OpenReportEdtiorCommandDialogCommand, Mode=OneWay}"/>-->
                     </dxr:RibbonPageGroup>
 
                     <dxr:RibbonPageGroup Caption="Help">
