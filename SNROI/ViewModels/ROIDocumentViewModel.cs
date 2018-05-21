@@ -7,9 +7,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Input;
 using System.Xml.Serialization;
+using DevExpress.DataAccess.ObjectBinding;
+using DevExpress.XtraReports.Wizards;
 
 namespace SNROI.ViewModels
 {
+    [HighlightedClass]
     public class ROIDocumentViewModel : BaseViewModel
     {
         public ROIDocumentViewModel()
@@ -196,5 +199,6 @@ namespace SNROI.ViewModels
             FirePropertyChanged(nameof(ImageList));
         }
 
+        public ReportType ReportType => ReportType.Standard;
     }
 }

@@ -7,9 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using DevExpress.DataAccess.ObjectBinding;
+using DevExpress.XtraReports.Wizards;
 
 namespace SNROI.Models
-{ 
+{
+    [HighlightedClass]
     public class ROIDocument : BaseModel
     {
         public ROIDocument()
@@ -78,5 +81,10 @@ namespace SNROI.Models
             get { return peopleListCollection; }
             set { peopleListCollection = value; }
         }
+
+        public ReportType ReportType => ReportType.Standard;
+
+        public string ReportName => DocumentName;
+
     }
 }

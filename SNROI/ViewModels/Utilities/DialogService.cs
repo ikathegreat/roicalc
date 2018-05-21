@@ -9,6 +9,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using DevExpress.DataAccess.ObjectBinding;
+using DevExpress.XtraReports.UI;
 
 namespace SNROI.ViewModels.Utilities
 {
@@ -355,30 +357,22 @@ namespace SNROI.ViewModels.Utilities
 
         public void ShowReportPreviewDialog(string reportRepxFilePath = "", object dataSource = null)
         {
-            // var report = XtraReport.FromFile(reportRepxFilePath, true);
-            //ReportPrintTool tool = new ReportPrintTool(report);
-            //PrintHelper.ShowPrintPreviewDialog(this, new XtraReport1());
-            // tool.ShowRibbonPreviewDialog();
-
-
-            //   PrintHelper.ShowPrintPreview(Application.Current.MainWindow, report);
-
-            //https://documentation.devexpress.com/XtraReports/1179/Detailed-Guide-to-DevExpress-Reporting/Providing-Data-to-Reports/Data-Binding-Overview/Quick-Guide-to-Report-Data-Binding
-            //https://documentation.devexpress.com/XtraReports/17784/Detailed-Guide-to-DevExpress-Reporting/Providing-Data-to-Reports/Tutorials-and-Code-Examples/Bind-a-Report-to-an-Object-Data-Source
-
-            //var report = XtraReport.FromFile(reportRepxFilePath, true);
-            var report = new XtraReport2();
+            var report = XtraReport.FromFile(reportRepxFilePath, true);
             var window = new DocumentPreviewWindow();
             window.PreviewControl.DocumentSource = report;
-            report.DataSource = dataSource;
+
+            if (dataSource != null)
+            {
+                var objectDataSource = new ObjectDataSource
+                {
+                    Constructor = new ObjectConstructorInfo(),
+                    DataSource = (dataSource)
+                };
+                report.DataSource = objectDataSource;
+            }
+
             report.CreateDocument();
             window.ShowDialog();
-
-            //doesn't work 
-            //https://documentation.devexpress.com/XtraReports/DevExpress.XtraReports.UI.XtraReportBase.DataSource.property
-            //report.DataSource = dataSource;
-            //var printTool = new ReportPrintTool(report);
-            //printTool.ShowPreview();
         }
     }
 

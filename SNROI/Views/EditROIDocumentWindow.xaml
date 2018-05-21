@@ -8,6 +8,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:viewModels="clr-namespace:SNROI.ViewModels"
                     xmlns:vu="clr-namespace:SNROI.Views.Utilities"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     mc:Ignorable="d"
                     Title="Edit ROI Document"
                     Height="500"
@@ -66,7 +67,7 @@
                         <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" Height="157" NewItemRowPosition="Bottom">
                             <dxg:TableView.EditFormTemplate>
                                 <DataTemplate>
-                                    <GroupBox Header="Edit Material" Margin="10" Padding="10">
+                                    <GroupBox Header="Edit Material" Margin="10" Padding="10" Width="Auto">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition />
@@ -88,6 +89,30 @@
                                     </GroupBox>
                                 </DataTemplate>
                             </dxg:TableView.EditFormTemplate>
+                            <!--Todo: Fix the height of this
+                            https://www.devexpress.com/Support/Center/Question/Details/T515800/how-to-specify-the-edit-form-dialog-width
+                            <dxg:TableView.EditFormDialogServiceTemplate>
+                                <DataTemplate>
+                                    <ContentControl>
+                                        <dx:DialogService DialogWindowStartupLocation="CenterOwner">
+                                            <dx:DialogService.ViewTemplate>
+                                                <DataTemplate>
+                                                    <dxg:PopupEditFormContainer 
+                                                        Content="{Binding}"
+                                                        ContentTemplate="{Binding Path=Source.View.EditFormTemplate}"
+                                                        KeyboardNavigation.IsTabStop="False" />
+                                                </DataTemplate>
+                                            </dx:DialogService.ViewTemplate>
+                                            <dx:DialogService.DialogStyle>
+                                                <Style TargetType="{x:Type dx:DXWindow}">
+                                                    <Setter Property="Width" Value="400" />
+                                                    <Setter Property="Height" Value="300" />
+                                                </Style>
+                                            </dx:DialogService.DialogStyle>
+                                        </dx:DialogService>
+                                    </ContentControl>
+                                </DataTemplate>
+                            </dxg:TableView.EditFormDialogServiceTemplate>-->
                         </dxg:TableView>
                     </dxg:GridControl.View>
                 </dxg:GridControl>
