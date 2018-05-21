@@ -137,6 +137,8 @@ namespace SNROI.ViewModels
         private void CloneROIDocument()
         {
             var reportName = DialogService.Instance.InputDialog("Clone Report", "Enter new report name:");
+            if (string.IsNullOrEmpty(reportName))
+                return;
             var newReportFilePath = Path.Combine(Path.GetDirectoryName(GridSelectedFSROIDocList[0].FilePath), reportName + ".xml");
             if (File.Exists(newReportFilePath))
             {
