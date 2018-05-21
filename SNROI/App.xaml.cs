@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Xml.Serialization;
-using DevExpress.Xpf.Core;
+﻿using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using SNROI.Models;
 using SNROI.ViewModels;
+using SNROI.Views;
+using System;
+using System.IO;
+using System.Windows;
+using System.Xml.Serialization;
 
 namespace SNROI
 {
@@ -35,6 +32,11 @@ namespace SNROI
             mainWindow.ShowDialog();
         }
 
+        private void ApplicationExit(object sender, ExitEventArgs e)
+        {
+            ApplicationThemeHelper.SaveApplicationThemeName();
+        }
+
         private static void LoadWindowSettings(MainWindow mainWindow)
         {
             if (!(mainWindow.DataContext is MainWindowViewModel mainWindowViewModel))
@@ -58,7 +60,6 @@ namespace SNROI
                     mainWindow.Height = windowSettings.Height;
                     mainWindow.Width = windowSettings.Width;
                 }
-
             }
             catch
             {
@@ -69,6 +70,7 @@ namespace SNROI
                 reader.Close();
             }
         }
+
         private void MainWindow_Closed(object sender, EventArgs e)
         {
             if (!(sender is MainWindow mainWindow))
@@ -125,7 +127,6 @@ namespace SNROI
             var mainWindow = sender as MainWindow;
             mainWindow.TableViewROIDocuments.RowDoubleClick += TableViewROIDocuments_RowDoubleClick;
 
-
             if (!(mainWindow.DataContext is MainWindowViewModel mainWindowViewModel))
                 return;
 
@@ -142,7 +143,6 @@ namespace SNROI
             if (mainWindowViewModel.FSROIDocList.Count > 0)
                 mainWindow.GridControlROIDocuments.SelectItem(0);
 
-
             DXSplashScreen.Close();
         }
 
@@ -153,6 +153,5 @@ namespace SNROI
             var mainWWindViewModel = tableView.DataContext as MainWindowViewModel;
             mainWWindViewModel?.OpenROIDocument();
         }
-
     }
 }

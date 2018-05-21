@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using SNROI.Models;
+using SNROI.ViewModels.Utilities;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using SNROI.Models;
 
 namespace SNROI.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-
         public MainWindowViewModel()
         {
             FSROIDocList = new ObservableCollection<FileSystemROIDocument>();
@@ -22,7 +20,6 @@ namespace SNROI.ViewModels
 
         public MainWindowViewModel(string aDataDirectory) : this()
         {
-
             DataDirectory = aDataDirectory;
             ScanFileSystemForROIDocuments();
         }
@@ -49,7 +46,6 @@ namespace SNROI.ViewModels
             {
                 //DialogService.Instance.CloseProgressDialog();
             }
-
         }
 
         public ObservableCollection<FileSystemROIDocument> FSROIDocList { get; set; }
@@ -65,6 +61,7 @@ namespace SNROI.ViewModels
             }
             set => gridSelectedFSROIDocList = value;
         }
+
         private string totalReportsMessage;
 
         public string TotalReportsMessage
@@ -89,8 +86,8 @@ namespace SNROI.ViewModels
             }
         }
 
-
         public ICommand NewROIDocumentCommand => new RelayCommand(NewROIDocument);
+
         private void NewROIDocument()
         {
             DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory);
@@ -98,13 +95,24 @@ namespace SNROI.ViewModels
         }
 
         public ICommand OpenROIDocumentCommand => new RelayCommand(OpenROIDocument, CanOpenROIDocument);
-        private bool CanOpenROIDocument() { return GridSelectedFSROIDocList.Count == 1; }
+
+        private bool CanOpenROIDocument()
+        {
+            return GridSelectedFSROIDocList.Count == 1;
+        }
+
         public void OpenROIDocument()
         {
             DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, GridSelectedFSROIDocList[0].FilePath);
         }
+
         public ICommand DeleteROIDocumentsCommand => new RelayCommand(DeleteROIDocuments, CanDeleteROIDocuments);
-        private bool CanDeleteROIDocuments() { return GridSelectedFSROIDocList.Count > 0; }
+
+        private bool CanDeleteROIDocuments()
+        {
+            return GridSelectedFSROIDocList.Count > 0;
+        }
+
         private void DeleteROIDocuments()
         {
             var messagePrompt = GridSelectedFSROIDocList.Count == 1
@@ -118,8 +126,14 @@ namespace SNROI.ViewModels
             }
             ScanFileSystemForROIDocuments();
         }
+
         public ICommand CloneROIDocumentCommand => new RelayCommand(CloneROIDocument, CanCloneROIDocument);
-        private bool CanCloneROIDocument() { return GridSelectedFSROIDocList.Count == 1; }
+
+        private bool CanCloneROIDocument()
+        {
+            return GridSelectedFSROIDocList.Count == 1;
+        }
+
         private void CloneROIDocument()
         {
             var reportName = DialogService.Instance.InputDialog("Clone Report", "Enter new report name:");
@@ -136,27 +150,31 @@ namespace SNROI.ViewModels
         }
 
         public ICommand OpenAboutDialogCommand => new RelayCommand(OpenAboutDialog);
+
         private static void OpenAboutDialog()
         {
             DialogService.Instance.ShowAboutDialog();
         }
 
         public ICommand OpenReportsDialogCommand => new RelayCommand(OpenReportsDialog);
+
         private void OpenReportsDialog()
         {
             DialogService.Instance.ShowReportsDialog(DataDirectory, gridSelectedFSROIDocList);
         }
+
         public ICommand OpenReportEdtiorCommandDialogCommand => new RelayCommand(OpenReportEditorDialog);
+
         private static void OpenReportEditorDialog()
         {
             DialogService.Instance.ShowReportEditorDialog();
         }
+
         public ICommand OpenReportsDirectoryCommand => new RelayCommand(OpenReportsDirectory);
+
         private void OpenReportsDirectory()
         {
             Process.Start(DataDirectory);
-
         }
-
     }
 }

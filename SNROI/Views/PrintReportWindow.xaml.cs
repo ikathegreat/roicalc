@@ -12,16 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SNROI
+namespace SNROI.Views
 {
     /// <summary>
-    /// Interaction logic for ImageBrowserWindow.xaml
+    /// Interaction logic for PrintReportWindow.xaml
     /// </summary>
-    public partial class ImageBrowserWindow : Window
+    public partial class PrintReportWindow : Window
     {
-        public ImageBrowserWindow()
+        public PrintReportWindow()
         {
             InitializeComponent();
         }
+        
     }
 }

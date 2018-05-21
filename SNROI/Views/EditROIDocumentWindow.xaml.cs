@@ -13,25 +13,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SNROI
+namespace SNROI.Views
 {
     /// <summary>
-    /// Interaction logic for ReportDesignerWindow.xaml
+    /// Interaction logic for EditROIDocumentWindow.xaml
     /// </summary>
-    public partial class ReportDesignerWindow : Window
+    public partial class EditROIDocumentWindow
     {
-        public ReportDesignerWindow()
+        public EditROIDocumentWindow()
         {
             InitializeComponent();
-        }
-
-        public string ReportFilePath { get; set; }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(ReportFilePath)) return;
-            if(File.Exists(ReportFilePath))
-                reportDesigner.OpenDocument(ReportFilePath);
         }
     }
 }

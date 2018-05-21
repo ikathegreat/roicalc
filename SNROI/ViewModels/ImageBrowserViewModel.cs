@@ -1,15 +1,11 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using SNROI.ViewModels.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.DataProcessing;
-using DevExpress.DataProcessing.InMemoryDataProcessor;
-using SNROI.Models;
 
 namespace SNROI.ViewModels
 {
@@ -19,6 +15,7 @@ namespace SNROI.ViewModels
         private readonly ObservableCollection<string> imageFilesToDelete = new ObservableCollection<string>();
 
         private ObservableCollection<string> displayImageList;
+
         public ObservableCollection<string> DisplayImageList
         {
             get => displayImageList ?? (displayImageList = new ObservableCollection<string>());
@@ -26,6 +23,7 @@ namespace SNROI.ViewModels
         }
 
         private ObservableCollection<string> selectedImageNamesList;
+
         public ObservableCollection<string> SelectedImageNamesList
         {
             get => selectedImageNamesList ?? (selectedImageNamesList = new ObservableCollection<string>());
@@ -63,6 +61,7 @@ namespace SNROI.ViewModels
             }
             //FirePropertyChanged(nameof(DocumentImageList));
         }
+
         public ICommand RemoveImageCommand => new RelayCommand(DeleteImages);
 
         private void DeleteImages()
@@ -116,7 +115,6 @@ namespace SNROI.ViewModels
                     var fileName = Path.GetFileName(file);
                     try
                     {
-
                         File.Delete(Path.Combine(ImageDirectory, fileName));
                     }
                     catch (Exception ex)

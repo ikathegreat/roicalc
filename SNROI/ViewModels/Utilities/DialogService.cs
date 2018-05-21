@@ -1,24 +1,22 @@
-﻿using SigmaTEK.Dialogs.Model;
+﻿using DevExpress.Xpf.Printing;
+using SigmaTEK.Dialogs.Model;
+using SNROI.Models;
+using SNROI.Reports;
+using SNROI.Tools;
+using SNROI.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using DevExpress.Xpf.Printing;
-using DevExpress.XtraReports.UI;
-using SNROI.Models;
-using SNROI.Reports;
-using SNROI.ViewModels;
-using IDialogService = SigmaTEK.Dialogs.IDialogService;
 
-namespace SNROI
+namespace SNROI.ViewModels.Utilities
 {
     public sealed class DialogService
     {
         private static volatile DialogService instance;
         private static readonly object syncRoot = new Object();
-        private readonly IDialogService dialogService;
+        private readonly SigmaTEK.Dialogs.IDialogService dialogService;
 
         public static DialogService Instance
         {

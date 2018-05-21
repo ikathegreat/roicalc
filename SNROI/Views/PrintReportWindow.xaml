@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SNROI"
         xmlns:ViewModels="clr-namespace:SNROI.ViewModels"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-        x:Class="SNROI.PrintReportWindow"
+        x:Class="SNROI.Views.PrintReportWindow"
         mc:Ignorable="d"
         Title="Print ROI Report" Height="500" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Window.Resources>

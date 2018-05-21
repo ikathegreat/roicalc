@@ -1,19 +1,17 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using SNROI.Models;
+using SNROI.ViewModels.Utilities;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using SNROI.Models;
 
 namespace SNROI.ViewModels
 {
-
     public class PrintReportsViewModel : BaseViewModel
     {
-        enum ReportAction
+        private enum ReportAction
         {
             Preview,
             Print,
@@ -22,10 +20,10 @@ namespace SNROI.ViewModels
 
         public PrintReportsViewModel()
         {
-
         }
 
         private string dataDirectory;
+
         public string DataDirectory
         {
             get => dataDirectory;
@@ -86,8 +84,6 @@ namespace SNROI.ViewModels
             set { reportTemplateList = value; }
         }
 
-
-
         private ObservableCollection<string> selectedReportsList;
 
         /// <summary>
@@ -123,7 +119,6 @@ namespace SNROI.ViewModels
             DialogService.Instance.ShowReportEditorDialog();
             PopulateReportTemplatesList();
             FirePropertyChanged(nameof(ReportTemplateList));
-
         }
 
         public ICommand OpenReportEditorCommand => new RelayCommand(OpenReportEditor);
@@ -141,13 +136,18 @@ namespace SNROI.ViewModels
             DialogService.Instance.ShowReportEditorDialog(selectedReportRepxFilePath);
         }
 
+        private bool CanPerformReportActions()
+        {
+            return SelectedFSROIDocumentsList.Count > 0;
+        }
 
-        private bool CanPerformReportActions() { return SelectedFSROIDocumentsList.Count > 0; }
         public ICommand PreviewReportsCommand => new RelayCommand(PreviewReports, CanPerformReportActions);
+
         private void PreviewReports()
         {
             ExecuteReportActionsOnSelectedReports(ReportAction.Preview);
         }
+
         public ICommand PrintReportsCommand => new RelayCommand(PrintReports, CanPerformReportActions);
 
         private void PrintReports()
@@ -156,12 +156,14 @@ namespace SNROI.ViewModels
         }
 
         public ICommand ExportReportsCommand => new RelayCommand(ExportReports, CanPerformReportActions);
+
         private void ExportReports()
         {
             ExecuteReportActionsOnSelectedReports(ReportAction.Export);
         }
 
         public ICommand CloseWindowCommand => new RelayCommand(CloseWindow);
+
         private void CloseWindow()
         {
             SaveSelectedReportTemplates();
@@ -212,15 +214,13 @@ namespace SNROI.ViewModels
                     if (!File.Exists(repxFilePath))
                         continue;
 
-                DialogService.Instance.ShowMessage(action + " "+ reportTemplate.Item + " for " + roiDocument.DocumentName);
+                    DialogService.Instance.ShowMessage(action + " " + reportTemplate.Item + " for " + roiDocument.DocumentName);
 
                     if (action == ReportAction.Preview)
                     {
                         DialogService.Instance.ShowReportPreviewDialog(repxFilePath, roiDocument);
                     }
-
                 }
-
             }
 
             CloseWindow();

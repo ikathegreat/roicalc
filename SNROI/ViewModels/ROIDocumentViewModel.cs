@@ -1,5 +1,7 @@
-﻿using Microsoft.WindowsAPICodePack.Shell;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.WindowsAPICodePack.Shell;
 using SNROI.Models;
+using SNROI.ViewModels.Utilities;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;

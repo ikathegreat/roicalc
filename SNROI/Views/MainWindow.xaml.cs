@@ -9,17 +9,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Ribbon;
 
-namespace SNROI
+namespace SNROI.Views
 {
     /// <summary>
-    /// Interaction logic for SplashWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class SplashWindow : UserControl
+    public partial class MainWindow : DXRibbonWindow
     {
-        public SplashWindow()
+        public MainWindow()
         {
             InitializeComponent();
         }
