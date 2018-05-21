@@ -17,16 +17,9 @@ namespace SNROI.ViewModels
     {
         public ROIDocumentViewModel()
         {
-            CultureCurrencyPairs = new ObservableCollection<CultureCurrencyPair>
-            {
-                new CultureCurrencyPair {Country = "United States", CultureCode = "en-US"},
-                new CultureCurrencyPair {Country = "Korea", CultureCode = "kr-KO"},
-                new CultureCurrencyPair {Country = "Germany", CultureCode = "en-GB"},
-                new CultureCurrencyPair {Country = "Japan", CultureCode = "ja-JP"}
-            };
         }
 
-        public void LoadExisingImages()
+        public void LoadExistingImages()
         {
             var imageDirectory = Path.Combine(DataDirectory, "Images");
             if (string.IsNullOrEmpty(imageDirectory))
@@ -50,24 +43,16 @@ namespace SNROI.ViewModels
             get => imageList ?? (imageList = new ObservableCollection<string>());
             set => imageList = value;
         }
+        private ObservableCollection<string> languagesList;
+        public ObservableCollection<string> LanguagesList => 
+            languagesList ?? (languagesList = new ObservableCollection<string> {"United States", "Korea", "Japan", "Germany"});
 
-
-        public ObservableCollection<CultureCurrencyPair> CultureCurrencyPairs
-        {
-            get => cultureCurrencyPairs;
-            set
-            {
-                cultureCurrencyPairs = value;
-                //FirePropertyChanged(nameof(ROIDocument.CultureCurrencyPair));
-            }
-        }
 
         public string DocumentPath { get; set; }
         public string DataDirectory { get; set; }
         public bool IsNewReport { get; set; }
 
         private ROIDocument roiDocument;
-        private ObservableCollection<CultureCurrencyPair> cultureCurrencyPairs;
 
         public ROIDocument ROIDocument
         {
@@ -195,7 +180,7 @@ namespace SNROI.ViewModels
         private void OpenImagesWindow()
         {
             DialogService.Instance.ShowImageBrowserWindow(Path.Combine(DataDirectory, "Images"));
-            LoadExisingImages();
+            LoadExistingImages();
             FirePropertyChanged(nameof(ImageList));
         }
 

@@ -12,11 +12,17 @@ using DevExpress.XtraReports.Wizards;
 
 namespace SNROI.Models
 {
+    public enum Units
+    {
+        Inches,
+        Metric
+    }
     [HighlightedClass]
     public class ROIDocument : BaseModel
     {
         public ROIDocument()
         {
+            Units = Units.Inches;
         }
 
         public string DocumentName { get; set; }
@@ -24,18 +30,75 @@ namespace SNROI.Models
         public string ContactName { get; set; }
         public string CompanyLogoImage { get; set; }
 
-        private CultureCurrencyPair cultureCurrencyPair = new CultureCurrencyPair()
-            { CultureCode = "yourface", Country = "no"};
+        public Units Units { get; set; }
 
-        public CultureCurrencyPair CultureCurrencyPair
+        /// <summary>
+        /// plain english language name (e.g. United Kingdom)
+        /// </summary>
+        public string Language{ get;
+            set; }
+
+        public string CultureCodeString
         {
-            get => cultureCurrencyPair;
-            set
+            get
             {
-                cultureCurrencyPair = value;
-                FirePropertyChanged(nameof(CurrencySymbol));
+                if (string.IsNullOrEmpty(Language))
+                {
+                    return "en-US";
+                }
+                else
+                {
+                    try
+                    {
+                        //Todo: improve displayed language to culture convert
+                        var cultureCode = "en-US";
+                        switch (Language)
+                        {
+                            case "United States":
+                                cultureCode = "en-US";
+                                break;
+                            case "Korea":
+                                cultureCode = "en-US";
+                                break;
+                            case "Germany":
+                                cultureCode = "en-GB";
+                                break;
+                            case "Japan":
+                                cultureCode = "ja-JP";
+                                break;
+                        }
+                        return cultureCode;
+                    }
+                    catch
+                    {
+                        return "en-US";
+                    }
+                }
             }
         }
+
+        public CultureInfo Culture
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(CultureCodeString))
+                {
+                    return new CultureInfo("en-US");
+                }
+                else
+                {
+                    try
+                    {
+                        return new CultureInfo(CultureCodeString);
+                    }
+                    catch 
+                    {
+                        return new CultureInfo("en-US");
+                    }
+                }
+            }
+        }
+
 
 
         [XmlIgnore]
@@ -46,7 +109,7 @@ namespace SNROI.Models
                 var result = "$";
                 try
                 {
-                    var cultureInfo = new CultureInfo(CultureCurrencyPair.CultureCode);
+                    var cultureInfo = new CultureInfo(CultureCodeString);
                     result = cultureInfo.NumberFormat.CurrencySymbol;
                 }
                 catch

@@ -323,12 +323,10 @@ namespace SNROI.ViewModels.Utilities
                 //Todo: Recall modal last new report defaults (culture, etc.)
             }
 
-            roiDocumentViewModel.LoadExisingImages();
+            roiDocumentViewModel.LoadExistingImages();
             editROIDocWindow.DataContext = roiDocumentViewModel;
 
             roiDocumentViewModel.ClosingRequest += (sender, e) => editROIDocWindow.Close();
-            roiDocumentViewModel.ROIDocument.FirePropertyChanged(nameof(roiDocumentViewModel.ROIDocument
-                .CultureCurrencyPair));
             OpenCustomDialog(editROIDocWindow);
         }
 
