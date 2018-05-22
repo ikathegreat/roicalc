@@ -4,6 +4,7 @@ using SNROI.Models;
 using SNROI.ViewModels.Utilities;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
 using System.Xml.Serialization;
@@ -44,8 +45,8 @@ namespace SNROI.ViewModels
             set => imageList = value;
         }
         private ObservableCollection<string> languagesList;
-        public ObservableCollection<string> LanguagesList => 
-            languagesList ?? (languagesList = new ObservableCollection<string> {"United States", "Korea", "Japan", "Germany"});
+        public ObservableCollection<string> LanguagesList =>
+            languagesList ?? (languagesList = new ObservableCollection<string> { "United States", "Korea", "Japan", "Germany" });
 
 
         public string DocumentPath { get; set; }
@@ -67,7 +68,7 @@ namespace SNROI.ViewModels
             }
         }
 
-        public ICommand SaveROIDocumentCommand => new RelayCommand(SaveROIDocument, CanSaveROIDocument);
+        public ICommand SaveROIDocumentCommand => new RelayCommand(SaveROIDocumentAndClose, CanSaveROIDocument);
 
         private bool CanSaveROIDocument()
         {
@@ -76,7 +77,13 @@ namespace SNROI.ViewModels
             return result;
 
         }
-        private void SaveROIDocument()
+        private void SaveROIDocumentAndClose()
+        {
+            SaveROIDocument();
+            FireCloseRequest();
+        }
+
+        private bool SaveROIDocument()
         {
             //New report
             if (string.IsNullOrEmpty(DocumentPath))
@@ -84,12 +91,9 @@ namespace SNROI.ViewModels
                     DocumentPath = Path.Combine(DataDirectory, ROIDocument.DocumentName + ".xml");
 
             if (File.Exists(DocumentPath) && IsNewReport)
-            {
-                if (!DialogService.Instance.ShowMessageQuestion($"{ROIDocument.DocumentName} already exists. Overwrite?", "File Exists"))
-                {
-                    return;
-                }
-            }
+                if (!DialogService.Instance.ShowMessageQuestion(
+                    $"{ROIDocument.DocumentName} already exists. Overwrite?", "File Exists"))
+                    return false;
 
             var directoryName = Path.GetDirectoryName(DocumentPath);
             if (!Directory.Exists(directoryName))
@@ -104,7 +108,8 @@ namespace SNROI.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception occurred while writing to XML: " + ex.Message);
+                Debug.WriteLine($"Exception occurred while writing to XML: {ex.Message}");
+                return false;
             }
             finally
             {
@@ -113,18 +118,19 @@ namespace SNROI.ViewModels
 
             //Write Extra file property
             //Todo: fix this , it doesn't work for XML files.
-            try
-            {
-                var file = ShellFile.FromFilePath(DocumentPath);
-                file.Properties.System.Company.Value = ROIDocument.CompanyName;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            //try
+            //{
+            //    var file = ShellFile.FromFilePath(DocumentPath);
+            //    file.Properties.System.Company.Value = ROIDocument.CompanyName;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.WriteLine(ex);
+            //}
 
-            FireCloseRequest();
+            return true;
         }
+
 
 
 
@@ -132,9 +138,16 @@ namespace SNROI.ViewModels
 
         private void EditReport()
         {
-            var tempFSROIDoc = new FileSystemROIDocument(DocumentPath);
-            var tempFSROIDocList = new ObservableCollection<FileSystemROIDocument> { tempFSROIDoc };
-            DialogService.Instance.ShowReportsDialog(DataDirectory, tempFSROIDocList);
+            if (SaveROIDocument())
+            {
+                var tempFSROIDoc = new FileSystemROIDocument(DocumentPath);
+                var tempFSROIDocList = new ObservableCollection<FileSystemROIDocument> { tempFSROIDoc };
+                DialogService.Instance.ShowReportsDialog(DataDirectory, tempFSROIDocList);
+            }
+            else
+            {
+                DialogService.Instance.ShowMessageError("Failed to save document for preview");
+            }
         }
 
         public ICommand CancelCommand => new RelayCommand(CancelDocumentEdit);

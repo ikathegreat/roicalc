@@ -17,26 +17,41 @@ namespace SNROI.Models
         Inches,
         Metric
     }
+
     [HighlightedClass]
     public class ROIDocument : BaseModel
     {
         public ROIDocument()
         {
             Units = Units.Inches;
+            Language = "en-US";
+            ReportDate = DateTime.Now;
         }
 
         public string DocumentName { get; set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }
         public string CompanyLogoImage { get; set; }
-
         public Units Units { get; set; }
+        public DateTime ReportDate { get; set; }
+
+        private ROIDocumentCalculations roiDocumentCalculations;
+        private ObservableCollection<Material> _materialsListCollection = new ObservableCollection<Material>();
+        private ObservableCollection<HourlyPerson> _peopleListCollection = new ObservableCollection<HourlyPerson>();
+        private ObservableCollection<Machine> _machinesListCollection = new ObservableCollection<Machine>();
+
+        [XmlIgnore]
+        public ROIDocumentCalculations ROIDocumentCalculations
+        {
+            get => roiDocumentCalculations ?? (roiDocumentCalculations = new ROIDocumentCalculations(this));
+            set => roiDocumentCalculations = value;
+        }
+
 
         /// <summary>
         /// plain english language name (e.g. United Kingdom)
         /// </summary>
-        public string Language{ get;
-            set; }
+        public string Language { get; set; }
 
         public string CultureCodeString
         {
@@ -46,33 +61,31 @@ namespace SNROI.Models
                 {
                     return "en-US";
                 }
-                else
+
+                try
                 {
-                    try
+                    //Todo: improve displayed language to culture convert
+                    var cultureCode = "en-US";
+                    switch (Language)
                     {
-                        //Todo: improve displayed language to culture convert
-                        var cultureCode = "en-US";
-                        switch (Language)
-                        {
-                            case "United States":
-                                cultureCode = "en-US";
-                                break;
-                            case "Korea":
-                                cultureCode = "en-US";
-                                break;
-                            case "Germany":
-                                cultureCode = "en-GB";
-                                break;
-                            case "Japan":
-                                cultureCode = "ja-JP";
-                                break;
-                        }
-                        return cultureCode;
+                        case "United States":
+                            cultureCode = "en-US";
+                            break;
+                        case "Korea":
+                            cultureCode = "en-US";
+                            break;
+                        case "Germany":
+                            cultureCode = "en-GB";
+                            break;
+                        case "Japan":
+                            cultureCode = "ja-JP";
+                            break;
                     }
-                    catch
-                    {
-                        return "en-US";
-                    }
+                    return cultureCode;
+                }
+                catch
+                {
+                    return "en-US";
                 }
             }
         }
@@ -91,15 +104,13 @@ namespace SNROI.Models
                     {
                         return new CultureInfo(CultureCodeString);
                     }
-                    catch 
+                    catch
                     {
                         return new CultureInfo("en-US");
                     }
                 }
             }
         }
-
-
 
         [XmlIgnore]
         public string CurrencySymbol
@@ -119,35 +130,35 @@ namespace SNROI.Models
                 return result;
             }
         }
-        public DateTime ReportDate { get; set; }
-        public bool IsMetric { get; set; }
-
-        private ObservableCollection<Material> materialsListCollection = new ObservableCollection<Material>();
 
         public ObservableCollection<Material> MaterialsListCollection
         {
-            get { return materialsListCollection; }
-            set { materialsListCollection = value; }
+            get => _materialsListCollection;
+            set
+            {
+                _materialsListCollection = value;
+                ROIDocumentCalculations.FirePropertyChanged();
+            }
         }
-
-        private ObservableCollection<Machine> machinesListCollection = new ObservableCollection<Machine>();
 
         public ObservableCollection<Machine> MachinesListCollection
         {
-            get { return machinesListCollection; }
-            set { machinesListCollection = value; }
+            get => _machinesListCollection;
+            set
+            {
+                _machinesListCollection = value;
+                ROIDocumentCalculations.FirePropertyChanged();
+                //Todo: Bug: these FirePropertyChanged's aren't working after EditDialog is accepted.
+            }
         }
-        private ObservableCollection<HourlyPerson> peopleListCollection = new ObservableCollection<HourlyPerson>();
-
         public ObservableCollection<HourlyPerson> PeopleListCollection
         {
-            get { return peopleListCollection; }
-            set { peopleListCollection = value; }
+            get => _peopleListCollection;
+            set
+            {
+                _peopleListCollection = value;
+                ROIDocumentCalculations.FirePropertyChanged();
+            }
         }
-
-        public ReportType ReportType => ReportType.Standard;
-
-        public string ReportName => DocumentName;
-
     }
 }

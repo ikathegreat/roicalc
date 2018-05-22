@@ -135,6 +135,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\ROIDocumentCalculations.cs" />
     <Compile Include="Reports\XtraReport3.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -1,4 +1,4 @@
-﻿<dxr:DXRibbonWindow x:Class="SNROI.Views.EditROIDocumentWindow"
+﻿<dxr:DXRibbonWindow
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
@@ -9,6 +9,9 @@
                     xmlns:viewModels="clr-namespace:SNROI.ViewModels"
                     xmlns:vu="clr-namespace:SNROI.Views.Utilities"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:models="clr-namespace:SNROI.Models"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib"
+                    xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid" x:Class="SNROI.Views.EditROIDocumentWindow"
                     mc:Ignorable="d"
                     Title="Edit ROI Document"
                     Height="500"
@@ -16,12 +19,19 @@
                     WindowStartupLocation="CenterScreen"
                     WindowStyle="ToolWindow"
                     DisplayShowModeSelector="False">
+    <!--xmlns:models: this is ok since there's no model interaction-->
     <dxr:DXRibbonWindow.Resources>
         <vu:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="0,5,5,5" />
             <Setter Property="MinWidth" Value="75" />
         </Style>
+        <ObjectDataProvider x:Key="unitsEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:Units"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </dxr:DXRibbonWindow.Resources>
     <dxr:DXRibbonWindow.DataContext>
         <viewModels:ROIDocumentViewModel />
@@ -33,11 +43,11 @@
         </Grid.RowDefinitions>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="1.5*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <GroupBox Header="General" Margin="5">
@@ -46,7 +56,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition />
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -66,13 +76,13 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <ComboBox Margin="5" ItemsSource="{Binding ImageList}" SelectedItem="{Binding ROIDocument.CompanyLogoImage}" />
-                        <Button Grid.Column="1" Margin="5" Content="..." Style="{x:Null}" Width="31" Command="{Binding OpenImagesWindowCommand}" />
+                        <Button Grid.Column="1" Margin="5" Content="..." Style="{x:Null}" Width="30" Command="{Binding OpenImagesWindowCommand}" />
 
                     </Grid>
                 </Grid>
 
             </GroupBox>
-            <GroupBox Header="System" Margin="5" Grid.Column="1">
+            <GroupBox Header="Language and Units" Margin="5" Grid.Row="0" Grid.Column="1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -85,50 +95,45 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Margin="5" Content="Currency Country" />
-                    <dxe:ComboBoxEdit Grid.Row="0" Grid.Column="1" Margin="5" ItemsSource="{Binding LanguagesList}" SelectedItem="{Binding ROIDocument.Language}" ApplyItemTemplateToSelectedItem="True" IsTextEditable="False">
-                        
-                    </dxe:ComboBoxEdit>
-
-                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" />
-
-                    <Label Content="Units"  Grid.Row="1" Grid.Column="0" Margin="5" />
-
-
+                    <Label Grid.Row="0" Grid.Column="0" Margin="5" Content="Country" />
+                    <dxe:ComboBoxEdit Grid.Row="0" Grid.Column="1" Margin="5" ItemsSource="{Binding LanguagesList}" SelectedItem="{Binding ROIDocument.Language}" IsTextEditable="False"/>
+                    <Label Content="Units" Grid.Row="1" Grid.Column="0" Margin="5" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding Source={StaticResource unitsEnum}}"  SelectedItem="{Binding ROIDocument.Units}"/>
                 </Grid>
-
             </GroupBox>
-
-            <TabControl Grid.Row="1" Grid.ColumnSpan="2" >
-            <TabItem Header="Material">
-                <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MaterialsListCollection, Mode=TwoWay}">
-                    <dxg:GridControl.View>
-                        <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" Height="157" NewItemRowPosition="Bottom">
-                            <dxg:TableView.EditFormTemplate>
-                                <DataTemplate>
-                                    <GroupBox Header="Edit Material" Margin="10" Padding="10" Width="Auto">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Cost per Weight Unit: " Grid.Row="0" Grid.Column="0" />
-                                            <dxg:EditFormEditor FieldName="CostPerWeightUnit" Grid.Row="0" Grid.Column="1" Margin="2" />
-                                            <TextBlock Text="Total Monthly Purchased Weight: " Grid.Row="1" Grid.Column="0" />
-                                            <dxg:EditFormEditor FieldName="TotalMonthlyPurchasedWeight" Grid.Row="1" Grid.Column="1" Margin="2" />
-                                            <TextBlock Text="Total Monthly Purchased Cost: " Grid.Row="2" Grid.Column="0" />
-                                            <dxg:EditFormEditor FieldName="TotalMonthlyPurchasedCost" Grid.Row="2" Grid.Column="1" Margin="2" />
-                                        </Grid>
-                                    </GroupBox>
-                                </DataTemplate>
-                            </dxg:TableView.EditFormTemplate>
-                            <!--Todo: Fix the height of this
+            <TabControl Grid.Row="1" Grid.Column="0"  >
+                <TabItem Header="Material">
+                    <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MaterialsListCollection, Mode=TwoWay}">
+                        <dxg:GridControl.View>
+                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom">
+                                <dxg:TableView.EditFormTemplate>
+                                    <DataTemplate>
+                                        <GroupBox Header="Edit Material" Margin="10" Padding="10" Width="Auto">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Material Grade: " Grid.Row="0" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
+                                                <TextBlock Text="Cost per Weight Unit " Grid.Row="1" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="CostPerWeightUnit" Grid.Row="1" Grid.Column="1" Margin="2" />
+                                                <TextBlock Text="Total Monthly Purchased Weight " Grid.Row="2" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="TotalMonthlyPurchasedWeight" Grid.Row="2" Grid.Column="1" Margin="2" />
+                                                <TextBlock Text="Total Monthly Purchased Cost " Grid.Row="3" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="TotalMonthlyPurchasedCost" Grid.Row="3" Grid.Column="1" Margin="2" />
+                                            </Grid>
+                                        </GroupBox>
+                                    </DataTemplate>
+                                </dxg:TableView.EditFormTemplate>
+                                <!--Todo: Fix the height of this
                             https://www.devexpress.com/Support/Center/Question/Details/T515800/how-to-specify-the-edit-form-dialog-width
                             <dxg:TableView.EditFormDialogServiceTemplate>
                                 <DataTemplate>
@@ -152,81 +157,87 @@
                                     </ContentControl>
                                 </DataTemplate>
                             </dxg:TableView.EditFormDialogServiceTemplate>-->
-                        </dxg:TableView>
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
-            </TabItem>
-            <TabItem Header="Machines">
-                <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MachinesListCollection, Mode=TwoWay}">
-                    <dxg:GridControl.View>
-                        <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" Height="157" NewItemRowPosition="Bottom">
-                            <dxg:TableView.EditFormTemplate>
-                                <DataTemplate>
-                                    <GroupBox Header="Edit Machine" Margin="10" Padding="10">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Machine Name: " Grid.Row="0" Grid.Column="0" />
-                                            <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
-                                            <TextBlock Text="Machine Type: " Grid.Row="1" Grid.Column="0" />
-                                            <dxg:EditFormEditor FieldName="MachineKind" Grid.Row="1" Grid.Column="1" Margin="2" />
-                                            <TextBlock Text="Cost Per Hour to Run: " Grid.Row="2" Grid.Column="0" />
-                                            <dxg:EditFormEditor FieldName="CostPerHourToRun" Grid.Row="2" Grid.Column="1" Margin="2" />
-                                        </Grid>
-                                    </GroupBox>
-                                </DataTemplate>
-                            </dxg:TableView.EditFormTemplate>
-                        </dxg:TableView>
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
-            </TabItem>
-            <TabItem Header="People">
-                <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.PeopleListCollection, Mode=TwoWay}">
-                    <dxg:GridControl.View>
-                        <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" Height="157" NewItemRowPosition="Bottom">
-                            <dxg:TableView.EditFormTemplate>
-                                <DataTemplate>
-                                    <GroupBox Header="Edit Person" Margin="10" Padding="10">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Person Name: " Grid.Row="0" Grid.Column="0" />
-                                            <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
-                                            <TextBlock Text="Role: " Grid.Row="1" Grid.Column="0" />
-                                            <dxg:EditFormEditor FieldName="EmployeeKind" Grid.Row="1" Grid.Column="1" Margin="2" />
-                                            <TextBlock Text="Hourly Wage: " Grid.Row="2" Grid.Column="0" />
-                                            <dxg:EditFormEditor FieldName="HourlyWage" Grid.Row="2" Grid.Column="1" Margin="2" />
-                                        </Grid>
-                                    </GroupBox>
-                                </DataTemplate>
-                            </dxg:TableView.EditFormTemplate>
-                        </dxg:TableView>
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
-            </TabItem>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </TabItem>
+                <TabItem Header="Machines">
+                    <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MachinesListCollection, Mode=TwoWay}">
+                        <dxg:GridControl.View>
+                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom">
+                                <dxg:TableView.EditFormTemplate>
+                                    <DataTemplate>
+                                        <GroupBox Header="Edit Machine" Margin="10" Padding="10">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Machine Name " Grid.Row="0" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
+                                                <TextBlock Text="Machine Type " Grid.Row="1" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="MachineKind" Grid.Row="1" Grid.Column="1" Margin="2" />
+                                                <TextBlock Text="Cost Per Hour to Run " Grid.Row="2" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="CostPerHourToRun" Grid.Row="2" Grid.Column="1" Margin="2" />
+                                            </Grid>
+                                        </GroupBox>
+                                    </DataTemplate>
+                                </dxg:TableView.EditFormTemplate>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </TabItem>
+                <TabItem Header="People">
+                    <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.PeopleListCollection, Mode=TwoWay}">
+                        <dxg:GridControl.View>
+                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom" EditFormPostMode="Immediate">
+                                <dxg:TableView.EditFormTemplate>
+                                    <DataTemplate>
+                                        <GroupBox Header="Edit Person" Margin="10" Padding="10">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Person Name " Grid.Row="0" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
+                                                <TextBlock Text="Role " Grid.Row="1" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="EmployeeKind" Grid.Row="1" Grid.Column="1" Margin="2" />
+                                                <TextBlock Text="Hourly Wage " Grid.Row="2" Grid.Column="0" />
+                                                <dxg:EditFormEditor FieldName="HourlyWage" Grid.Row="2" Grid.Column="1" Margin="2" />
+                                            </Grid>
+                                        </GroupBox>
+                                    </DataTemplate>
+                                </dxg:TableView.EditFormTemplate>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </TabItem>
             </TabControl>
+            <dxprg:PropertyGridControl Margin="5" Grid.Column="1" Grid.Row="1" ShowSearchBox="False" SortMode="Ascending" ReadOnly="True" UseCollectionEditor="False" AllowListItemInitializer="False" AllowInstanceInitializer="False" ShowToolPanel="False" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedObject="{Binding ROIDocument.ROIDocumentCalculations, Mode=TwoWay}" ShowMenuButtonInRows="False" ExpandButtonsVisibility="Hidden" ShowDescriptionIn="Panel" ExpandCategoriesWhenSelectedObjectChanged="True">
+
+                <dxprg:PropertyDefinition Path="{Binding ROIDocument.ROIDocumentCalculations.EmployeeCalculations.AnnualEmployeeCost}" Description="Annual Employee Cost" ApplyingMode="Always"/>
+</dxprg:PropertyGridControl>
         </Grid>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Content="Save" Width="75" Command="{Binding SaveROIDocumentCommand}" IsDefault="true" />
-            <Button Content="Report" Width="75" Command="{Binding EditReportCommand}" />
+            <Button Content="OK" Width="75" Command="{Binding SaveROIDocumentCommand}" IsDefault="true" />
             <Button Content="Cancel" Width="75" Command="{Binding CancelCommand}" IsCancel="True"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal" Margin="5,0,0,0">
+            <Button Content="Report" Width="75" Command="{Binding EditReportCommand}" />
         </StackPanel>
     </Grid>
 </dxr:DXRibbonWindow>

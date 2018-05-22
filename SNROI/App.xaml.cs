@@ -4,6 +4,7 @@ using SNROI.Models;
 using SNROI.ViewModels;
 using SNROI.Views;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
@@ -114,7 +115,7 @@ namespace SNROI
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception occured while writing to XML: " + ex.Message);
+                Debug.WriteLine("Exception occured while writing to XML: " + ex.Message);
             }
             finally
             {
