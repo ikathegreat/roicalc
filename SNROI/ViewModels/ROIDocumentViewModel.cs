@@ -85,6 +85,7 @@ namespace SNROI.ViewModels
 
         private bool SaveROIDocument()
         {
+            DialogService.Instance.ShowProgressDialog();
             //New report
             if (string.IsNullOrEmpty(DocumentPath))
                 if (!string.IsNullOrEmpty(DataDirectory))
@@ -98,6 +99,8 @@ namespace SNROI.ViewModels
             var directoryName = Path.GetDirectoryName(DocumentPath);
             if (!Directory.Exists(directoryName))
                 Directory.CreateDirectory(DocumentPath);
+
+            ROIDocument.DateModified = DateTime.Now;
 
             TextWriter writer = new StreamWriter(DocumentPath);
             var xmlSerializer = new XmlSerializer(typeof(ROIDocument));
@@ -116,18 +119,7 @@ namespace SNROI.ViewModels
                 writer.Close();
             }
 
-            //Write Extra file property
-            //Todo: fix this , it doesn't work for XML files.
-            //try
-            //{
-            //    var file = ShellFile.FromFilePath(DocumentPath);
-            //    file.Properties.System.Company.Value = ROIDocument.CompanyName;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine(ex);
-            //}
-
+            DialogService.Instance.CloseProgressDialog();
             return true;
         }
 

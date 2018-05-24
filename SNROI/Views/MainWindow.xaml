@@ -21,6 +21,13 @@
     <dxr:DXRibbonWindow.Resources>
         <vu:ObjectsEqualityConverter x:Key="ObjectsEqualityConverter"/>
     </dxr:DXRibbonWindow.Resources>
+    <dxr:DXRibbonWindow.InputBindings>
+        <KeyBinding Command="{Binding NewROIDocumentCommand, Mode=OneWay}" Gesture="CTRL+N" />
+        <KeyBinding Command="{Binding OpenROIDocumentCommand, Mode=OneWay}" Gesture="CTRL+O" />
+        <KeyBinding Command="{Binding DeleteROIDocumentsCommand, Mode=OneWay}" Gesture="Delete" />
+        <KeyBinding Command="{Binding CloneROIDocumentCommand, Mode=OneWay}" Gesture="CTRL+D" />
+        <KeyBinding Command="{Binding OpenReportsDialogCommand, Mode=OneWay}" Gesture="CTRL+R" />
+    </dxr:DXRibbonWindow.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -40,18 +47,57 @@
             <dxr:RibbonDefaultPageCategory>
                 <dxr:RibbonPage Caption="Home" MergeOrder="0">
                     <dxr:RibbonPageGroup Caption="File" ShowCaptionButton="True" CaptionButtonCommand="{Binding OpenReportsDirectoryCommand}">
-                        <dxb:BarButtonItem x:Name="bbiNew" Content="New" Glyph="/SNROI;component/Resources/document_text-new16.png" Command="{Binding NewROIDocumentCommand, Mode=OneWay}" GlyphSize="Large" LargeGlyph="/SNROI;component/Resources/document_text-new32.png"/>
-                        <dxb:BarButtonItem x:Name="bbiOpen" Content="Open" Glyph="/SNROI;component/Resources/document_text-import16.png" LargeGlyph="/SNROI;component/Resources/document_text-import32.png" Command="{Binding OpenROIDocumentCommand, Mode=OneWay}"/>
-                        <dxb:BarButtonItem x:Name="bbiDelete" Content="Delete" Glyph="/SNROI;component/Resources/document_text-delete216.png" LargeGlyph="/SNROI;component/Resources/document_text-delete232.png" Command="{Binding DeleteROIDocumentsCommand, Mode=OneWay}"/>
-                        <dxb:BarButtonItem x:Name="bbiClone" Content="Clone" Glyph="/SNROI;component/Resources/clipboard_copy16.png" LargeGlyph="/SNROI;component/Resources/clipboard_copy32.png" Command="{Binding CloneROIDocumentCommand, Mode=OneWay}"/>
+                        <dxb:BarButtonItem x:Name="bbiNew" Content="New" Glyph="/SNROI;component/Resources/document_text-new16.png" Command="{Binding NewROIDocumentCommand, Mode=OneWay}" GlyphSize="Large" LargeGlyph="/SNROI;component/Resources/document_text-new32.png">
+                            <dxb:BarButtonItem.SuperTip>
+                                <dx:SuperTip>
+                                    <dx:SuperTipHeaderItem Content="New"/>
+                                    <dx:SuperTipItem Content="Create a new ROI document"/>
+                                    <dx:SuperTipItem Content="Ctrl+N"/>
+                                </dx:SuperTip>
+                            </dxb:BarButtonItem.SuperTip>
+                        </dxb:BarButtonItem>
+                        <dxb:BarButtonItem x:Name="bbiOpen" Content="Open" Glyph="/SNROI;component/Resources/document_text-import16.png" LargeGlyph="/SNROI;component/Resources/document_text-import32.png" Command="{Binding OpenROIDocumentCommand, Mode=OneWay}">
+                            <dxb:BarButtonItem.SuperTip>
+                                <dx:SuperTip>
+                                    <dx:SuperTipHeaderItem Content="Open"/>
+                                    <dx:SuperTipItem Content="Open an existing ROI document"/>
+                                    <dx:SuperTipItem Content="Ctrl+O"/>
+                                </dx:SuperTip>
+                            </dxb:BarButtonItem.SuperTip>
+                        </dxb:BarButtonItem>
+                        <dxb:BarButtonItem x:Name="bbiDelete" Content="Delete" Glyph="/SNROI;component/Resources/document_text-delete216.png" LargeGlyph="/SNROI;component/Resources/document_text-delete232.png" Command="{Binding DeleteROIDocumentsCommand, Mode=OneWay}">
+                            <dxb:BarButtonItem.SuperTip>
+                                <dx:SuperTip>
+                                    <dx:SuperTipHeaderItem Content="Delete"/>
+                                    <dx:SuperTipItem Content="Delete one or more ROI documents"/>
+                                    <dx:SuperTipItem Content="Delete"/>
+                                </dx:SuperTip>
+                            </dxb:BarButtonItem.SuperTip>
+                        </dxb:BarButtonItem>
+                        <dxb:BarButtonItem x:Name="bbiClone" Content="Clone" Glyph="/SNROI;component/Resources/clipboard_copy16.png" LargeGlyph="/SNROI;component/Resources/clipboard_copy32.png" Command="{Binding CloneROIDocumentCommand, Mode=OneWay}">
+                            <dxb:BarButtonItem.SuperTip>
+                                <dx:SuperTip>
+                                    <dx:SuperTipHeaderItem Content="Clone"/>
+                                    <dx:SuperTipItem Content="Make a duplicate copy of an existing ROI document"/>
+                                    <dx:SuperTipItem Content="Ctrl+D"/>
+                                </dx:SuperTip>
+                            </dxb:BarButtonItem.SuperTip>
+                        </dxb:BarButtonItem>
                         <!--<dxb:BarButtonItem x:Name="bbiSave" Content="Save" Glyph="{dx:DXImage Image=New_16x16.png}" LargeGlyph="{dx:DXImage Image=New_32x32.png}"/>
                              <dxb:BarButtonItem x:Name="bbiSaveAs" Content="Save As" Glyph="{dx:DXImage Image=New_16x16.png}" LargeGlyph="{dx:DXImage Image=New_32x32.png}"/>
                              <dxb:BarItemSeparator/>
                              <dxb:BarButtonItem x:Name="saveAsItem" Content="Save As" LargeGlyph="{dx:DXImage Image=SaveAs_32x32.png}"/>-->
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Reporting">
-                        <dxb:BarButtonItem x:Name="bbiReports" Content="Reports" Glyph="/SNROI;component/Resources/report_open-print16.png" LargeGlyph="/SNROI;component/Resources/report_open-print32.png" Command="{Binding OpenReportsDialogCommand, Mode=OneWay}"/>
-                        <!--<dxb:BarButtonItem x:Name="bbiReportEditor" Content="Report Editor" Glyph="/SNROI;component/Resources/report_open-edit16.png" LargeGlyph="/SNROI;component/Resources/report_open-edit32.png" Command="{Binding OpenReportEdtiorCommandDialogCommand, Mode=OneWay}"/>-->
+                        <dxb:BarButtonItem x:Name="bbiReports" Content="Reports" Glyph="/SNROI;component/Resources/report_open-print16.png" LargeGlyph="/SNROI;component/Resources/report_open-print32.png" Command="{Binding OpenReportsDialogCommand, Mode=OneWay}">
+                            <dxb:BarButtonItem.SuperTip>
+                                <dx:SuperTip>
+                                    <dx:SuperTipHeaderItem Content="Reports"/>
+                                    <dx:SuperTipItem Content="View reports for selected ROI documents or manage existing report templates"/>
+                                    <dx:SuperTipItem Content="Ctrl+R"/>
+                                </dx:SuperTip>
+                            </dxb:BarButtonItem.SuperTip>
+                        </dxb:BarButtonItem>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
                 <dxr:RibbonPage Caption="Tools Help" MergeOrder="99">
@@ -107,16 +153,23 @@
                 <dxb:BarEditItem Content="{Binding TotalReportsMessage}"/>
                 <dxb:BarItemSeparator />
                 <dxb:BarEditItem Content="{Binding SelectedReportsMessage}"/>
+                <dxb:BarItemSeparator />
+                <dxb:BarEditItem Content="{Binding SelectedReportName}"/>
             </dxr:RibbonStatusBarControl.LeftItems>
             <dxr:RibbonStatusBarControl.RightItems>
-                <dxb:BarButtonItem x:Name="printItem" Content="Print" Glyph="{dx:DXImage Image=Print_16x16.png}"/>
+                <!--<dxb:BarButtonItem x:Name="printItem" Content="Print" Glyph="{dx:DXImage Image=Print_16x16.png}"/>-->
             </dxr:RibbonStatusBarControl.RightItems>
         </dxr:RibbonStatusBarControl>
         <dxg:GridControl x:Name="GridControlROIDocuments" Grid.Row="1" ItemsSource="{Binding FSROIDocList, Mode=OneWay}" AutoGenerateColumns="None" SelectionMode="Row" SelectedItems="{Binding GridSelectedFSROIDocList}">
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="TableViewROIDocuments" AllowEditing="False" ShowAutoFilterRow="True"/>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="ROIDocumentName" IsSmart="True"/>
+            <dxg:GridColumn FieldName="ROIDocumentName" IsSmart="True" Header="Document Name"/>
+            <dxg:GridColumn FieldName="DateCreated" ReadOnly="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:DateEditSettings Mask="g" MaskUseAsDisplayFormat="True"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
             <dxg:GridColumn FieldName="DateModified" ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:DateEditSettings Mask="g" MaskUseAsDisplayFormat="True"/>

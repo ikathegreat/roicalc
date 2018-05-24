@@ -142,6 +142,7 @@
     <Compile Include="Reports\XtraReport3.Designer.cs">
       <DependentUpon>XtraReport3.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Utilities\UIServices.cs" />
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
@@ -174,7 +175,6 @@
       <DependentUpon>XtraReport2.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Utilities\Converters.cs" />
-    <Compile Include="ViewModels\Utilities\WaitCursor.cs" />
     <Compile Include="Reports\XtraReport1.cs">
       <SubType>Component</SubType>
     </Compile>

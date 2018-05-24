@@ -288,6 +288,8 @@ namespace SNROI.ViewModels.Utilities
 
         public void ShowAboutDialog()
         {
+            UIServices.SetBusyState();
+
             var aboutWindow = new AboutWindow();
             var aboutViewModel = new AboutViewModel();
             aboutWindow.DataContext = aboutViewModel;
@@ -296,6 +298,8 @@ namespace SNROI.ViewModels.Utilities
         }
         public void ShowReportsDialog(string defaultDataDirectory, ObservableCollection<FileSystemROIDocument> selectedFSRoiDocumentsList)
         {
+            UIServices.SetBusyState();
+
             var printReportWindow = new PrintReportWindow();
             var printReportsViewModel = new PrintReportsViewModel { DataDirectory = defaultDataDirectory, SelectedFSROIDocumentsList = selectedFSRoiDocumentsList };
             printReportWindow.DataContext = printReportsViewModel;
@@ -305,6 +309,8 @@ namespace SNROI.ViewModels.Utilities
 
         public void ShowOpenROIDocumentDialog(string defaultDataDirectory, string documentPath = "")
         {
+            UIServices.SetBusyState();
+
             var editROIDocWindow = new EditROIDocumentWindow();
 
             var roiDocumentViewModel = new ROIDocumentViewModel
@@ -333,6 +339,8 @@ namespace SNROI.ViewModels.Utilities
 
         public void ShowImageBrowserWindow(string imageDirectory)
         {
+            UIServices.SetBusyState();
+
             var imageBrowserWindow = new ImageBrowserWindow();
             var imageBrowserViewModel = new ImageBrowserViewModel { ImageDirectory = imageDirectory };
             imageBrowserViewModel.LoadExisingImages();
@@ -343,18 +351,21 @@ namespace SNROI.ViewModels.Utilities
 
         public void ShowReportEditorDialog(string reportRepxFilePath = "")
         {
+            UIServices.SetBusyState();
+
             //Todo: restore and save window settings
             ReportDesignerWindow reportEditorWindow;
-            using (new WaitCursor())
-            {
-                reportEditorWindow = new ReportDesignerWindow { ReportFilePath = reportRepxFilePath };
-            }
+
+            reportEditorWindow = new ReportDesignerWindow { ReportFilePath = reportRepxFilePath };
+
             if (reportEditorWindow != null)
                 OpenCustomDialog(reportEditorWindow);
         }
 
         public void ShowReportPreviewDialog(string reportRepxFilePath = "", object dataSource = null)
         {
+            UIServices.SetBusyState();
+
             var report = XtraReport.FromFile(reportRepxFilePath, true);
             var window = new DocumentPreviewWindow();
             window.PreviewControl.DocumentSource = report;

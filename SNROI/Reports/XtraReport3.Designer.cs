@@ -340,7 +340,7 @@
             // xrTableCell18
             // 
             this.xrTableCell18.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "ReportDate")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "DateCreated")});
             this.xrTableCell18.Name = "xrTableCell18";
             this.xrTableCell18.StyleName = "DetailData3";
             this.xrTableCell18.Text = "xrTableCell18";

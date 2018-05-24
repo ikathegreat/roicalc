@@ -29,8 +29,9 @@ namespace SNROI.Models
         //        return companyName;
         //    }
         //}
-
         public DateTime DateModified => string.IsNullOrEmpty(FilePath) ? DateTime.MinValue : new FileInfo(FilePath).LastWriteTime;
+
+        public DateTime DateCreated => string.IsNullOrEmpty(FilePath) ? DateTime.MinValue : new FileInfo(FilePath).CreationTime;
 
         public string FileSize
         {

@@ -57,6 +57,9 @@ namespace SNROI.ViewModels
             get
             {
                 SelectedReportsMessage = gridSelectedFSROIDocList.Count + " selected";
+                SelectedReportName = gridSelectedFSROIDocList.Count == 1
+                    ? gridSelectedFSROIDocList.First().ROIDocumentName
+                    : string.Empty;
                 return gridSelectedFSROIDocList;
             }
             set => gridSelectedFSROIDocList = value;
@@ -85,6 +88,20 @@ namespace SNROI.ViewModels
                 FirePropertyChanged(nameof(SelectedReportsMessage));
             }
         }
+
+        private string selectedReportName;
+
+        public string SelectedReportName
+        {
+            get => selectedReportName;
+            set
+            {
+                selectedReportName = value;
+                FirePropertyChanged(nameof(SelectedReportName));
+
+            }
+        }
+
 
         public ICommand NewROIDocumentCommand => new RelayCommand(NewROIDocument);
 

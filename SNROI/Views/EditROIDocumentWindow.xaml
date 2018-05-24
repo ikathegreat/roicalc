@@ -63,7 +63,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Report Name" Grid.Row="0"  Margin="5"  Grid.Column="0"/>
+                    <Label Content="Report Name" Grid.Row="0"  Margin="5"  Grid.Column="0" ToolTip="{Binding ROIDocument.DateModified,StringFormat='Date Modified: {0}'}"/>
                     <TextBox  Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding ROIDocument.DocumentName, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsNewReport}" />
                     <TextBlock  Grid.Row="1"  Margin="5" Text="Company Name"  />
                     <TextBox  Grid.Row="1" Grid.Column="1" Margin="5"  Text="{Binding ROIDocument.CompanyName}"  />

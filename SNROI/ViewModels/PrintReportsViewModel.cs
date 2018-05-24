@@ -18,10 +18,6 @@ namespace SNROI.ViewModels
             Export
         }
 
-        public PrintReportsViewModel()
-        {
-        }
-
         private string dataDirectory;
 
         public string DataDirectory
@@ -65,23 +61,17 @@ namespace SNROI.ViewModels
             return checkedReportTemplates;
         }
 
-        private ObservableCollection<FileSystemROIDocument> selectedFSROIDocumentsList = new ObservableCollection<FileSystemROIDocument>();
-
         /// <summary>
         /// Selected file system reports from main grid for export or printing
         /// </summary>
-        public ObservableCollection<FileSystemROIDocument> SelectedFSROIDocumentsList
-        {
-            get { return selectedFSROIDocumentsList; }
-            set { selectedFSROIDocumentsList = value; }
-        }
+        public ObservableCollection<FileSystemROIDocument> SelectedFSROIDocumentsList { get; set; } = new ObservableCollection<FileSystemROIDocument>();
 
         private ObservableCollection<CheckedListItem<string>> reportTemplateList;
 
         public ObservableCollection<CheckedListItem<string>> ReportTemplateList
         {
-            get { return reportTemplateList ?? (reportTemplateList = new ObservableCollection<CheckedListItem<string>>()); }
-            set { reportTemplateList = value; }
+            get => reportTemplateList ?? (reportTemplateList = new ObservableCollection<CheckedListItem<string>>());
+            set => reportTemplateList = value;
         }
 
         private ObservableCollection<string> selectedReportsList;
@@ -125,7 +115,7 @@ namespace SNROI.ViewModels
 
         private void OpenReportEditor()
         {
-            string selectedReportRepxFilePath = string.Empty;
+            var selectedReportRepxFilePath = string.Empty;
 
             if (SelectedReportForEdit != null)
             {

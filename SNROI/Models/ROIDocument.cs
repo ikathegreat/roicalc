@@ -25,7 +25,8 @@ namespace SNROI.Models
         {
             Units = Units.Inches;
             Language = "en-US";
-            ReportDate = DateTime.Now;
+            DateCreated = DateTime.Now;
+            DateModified = DateTime.Now;
         }
 
         public string DocumentName { get; set; }
@@ -33,7 +34,8 @@ namespace SNROI.Models
         public string ContactName { get; set; }
         public string CompanyLogoImage { get; set; }
         public Units Units { get; set; }
-        public DateTime ReportDate { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
 
         private ROIDocumentCalculations roiDocumentCalculations;
         private ObservableCollection<Material> _materialsListCollection = new ObservableCollection<Material>();
