@@ -62,11 +62,11 @@
                     <Button Content="Print" Command="{Binding PrintReportsCommand}"/>
                     <Button Content="Export" Command="{Binding ExportReportsCommand}"/>
                 </StackPanel>
-                <ListBox Grid.Row="1" ItemsSource="{Binding SelectedFSROIDocumentsList}">
+                <ListBox Grid.Row="1" ItemsSource="{Binding SelectedROIViewModelList}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding ROIDocumentName}" />
+                                <TextBlock Text="{Binding ROIDocument.DocumentName}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

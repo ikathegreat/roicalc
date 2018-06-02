@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace SNROI.Models
             Language = "en-US";
             DateCreated = DateTime.Now;
             DateModified = DateTime.Now;
+            Notes = string.Empty;
         }
 
         public string DocumentName { get; set; }
@@ -36,6 +38,7 @@ namespace SNROI.Models
         public Units Units { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+        public string Notes { get; set; }
 
         private ROIDocumentCalculations roiDocumentCalculations;
         private ObservableCollection<Material> _materialsListCollection = new ObservableCollection<Material>();
@@ -162,5 +165,6 @@ namespace SNROI.Models
                 ROIDocumentCalculations.FirePropertyChanged();
             }
         }
+
     }
 }

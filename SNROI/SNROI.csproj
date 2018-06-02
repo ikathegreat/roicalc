@@ -161,7 +161,6 @@
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\Material.cs" />
     <Compile Include="Models\ROIDocument.cs" />
-    <Compile Include="Models\FileSystemROIDocument.cs" />
     <Compile Include="Views\PrintReportWindow.xaml.cs">
       <DependentUpon>PrintReportWindow.xaml</DependentUpon>
     </Compile>

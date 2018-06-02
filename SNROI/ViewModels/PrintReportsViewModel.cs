@@ -64,7 +64,7 @@ namespace SNROI.ViewModels
         /// <summary>
         /// Selected file system reports from main grid for export or printing
         /// </summary>
-        public ObservableCollection<FileSystemROIDocument> SelectedFSROIDocumentsList { get; set; } = new ObservableCollection<FileSystemROIDocument>();
+        public ObservableCollection<ROIDocumentViewModel> SelectedROIViewModelList { get; set; } = new ObservableCollection<ROIDocumentViewModel>();
 
         private ObservableCollection<CheckedListItem<string>> reportTemplateList;
 
@@ -128,7 +128,7 @@ namespace SNROI.ViewModels
 
         private bool CanPerformReportActions()
         {
-            return SelectedFSROIDocumentsList.Count > 0;
+            return SelectedROIViewModelList.Count > 0;
         }
 
         public ICommand PreviewReportsCommand => new RelayCommand(PreviewReports, CanPerformReportActions);
@@ -186,12 +186,12 @@ namespace SNROI.ViewModels
                 return;
             }
 
-            foreach (var fileSystemROIDocument in SelectedFSROIDocumentsList)
+            foreach (var roiDocumentViewModel in SelectedROIViewModelList)
             {
-                var roiDocument = ROIDocumentViewModel.LoadROIDocumentFile(fileSystemROIDocument.FilePath);
+                var roiDocument = ROIDocumentViewModel.LoadROIDocumentFile(roiDocumentViewModel.DocumentPath);
                 if (roiDocument == null)
                 {
-                    DialogService.Instance.ShowMessageError("Unexpected error reading " + fileSystemROIDocument.FilePath);
+                    DialogService.Instance.ShowMessageError("Unexpected error reading " + roiDocumentViewModel.DocumentPath);
                     continue;
                 }
 

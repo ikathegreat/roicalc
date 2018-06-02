@@ -142,7 +142,7 @@ namespace SNROI
                 mainWindow.TableViewROIDocuments.BestFitColumns();
             }
 
-            if (mainWindowViewModel.FSROIDocList.Count > 0)
+            if (mainWindowViewModel.roiDocViewModelList.Count > 0)
             {
                 mainWindow.GridControlROIDocuments.SelectItem(0);
                 mainWindow.TableViewROIDocuments.FocusedRowHandle = 0;

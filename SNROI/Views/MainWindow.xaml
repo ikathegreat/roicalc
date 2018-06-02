@@ -160,23 +160,27 @@
                 <!--<dxb:BarButtonItem x:Name="printItem" Content="Print" Glyph="{dx:DXImage Image=Print_16x16.png}"/>-->
             </dxr:RibbonStatusBarControl.RightItems>
         </dxr:RibbonStatusBarControl>
-        <dxg:GridControl x:Name="GridControlROIDocuments" Grid.Row="1" ItemsSource="{Binding FSROIDocList, Mode=OneWay}" AutoGenerateColumns="None" SelectionMode="Row" SelectedItems="{Binding GridSelectedFSROIDocList}">
+        <dxg:GridControl x:Name="GridControlROIDocuments" Grid.Row="1" ItemsSource="{Binding roiDocViewModelList, Mode=OneWay}" AutoGenerateColumns="None" SelectionMode="Row" SelectedItems="{Binding GridSelectedROIViewModelList}">
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="TableViewROIDocuments" AllowEditing="False" ShowAutoFilterRow="True"/>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="ROIDocumentName" IsSmart="True" Header="Document Name"/>
-            <dxg:GridColumn FieldName="DateCreated" ReadOnly="True">
+            <dxg:GridColumn FieldName="ROIDocument.DocumentName" IsSmart="True" Header="Document Name"/>
+            <dxg:GridColumn FieldName="ROIDocument.CompanyName" IsSmart="True" Header="Company"/>
+            <dxg:GridColumn FieldName="ROIDocument.ContactName" IsSmart="True" Header="Contact"/>
+            <dxg:GridColumn FieldName="ROIDocument.Units" IsSmart="True" Header="Units"/>
+            <dxg:GridColumn FieldName="ROIDocument.Language" IsSmart="True" Header="Language"/>
+            <dxg:GridColumn FieldName="ROIDocument.DateCreated" Header="Date Created" ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:DateEditSettings Mask="g" MaskUseAsDisplayFormat="True"/>
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="DateModified" ReadOnly="True">
+            <dxg:GridColumn FieldName="ROIDocument.DateModified" Header="Date Modified" ReadOnly="True">
                 <dxg:GridColumn.EditSettings>
                     <dxe:DateEditSettings Mask="g" MaskUseAsDisplayFormat="True"/>
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
             <dxg:GridColumn FieldName="FileSize" IsSmart="True"/>
-            <dxg:GridColumn FieldName="FilePath" IsSmart="True"/>
+            <dxg:GridColumn FieldName="DocumentPath" IsSmart="True"/>
         </dxg:GridControl>
     </Grid>
 </dxr:DXRibbonWindow>

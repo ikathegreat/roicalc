@@ -83,7 +83,7 @@ namespace SNROI.ViewModels
             FireCloseRequest();
         }
 
-        private bool SaveROIDocument()
+        public bool SaveROIDocument()
         {
             DialogService.Instance.ShowProgressDialog();
             //New report
@@ -123,6 +123,39 @@ namespace SNROI.ViewModels
             return true;
         }
 
+        public string FileSize
+        {
+            get
+            {
+                long fileSizeLength = 0;
+                if (!string.IsNullOrEmpty(DocumentPath))
+                {
+                    if (File.Exists(DocumentPath))
+                    {
+                        try
+                        {
+                            fileSizeLength = (new FileInfo(DocumentPath)).Length;
+                        }
+                        catch { }
+                    }
+                }
+                return BytesToFormattedString(fileSizeLength);
+            }
+
+        }
+        private static string BytesToFormattedString(long value)
+        {
+            if (value < 0) { return "-" + BytesToFormattedString(-value); }
+            if (value == 0) { return "0.0 bytes"; }
+
+            var mag = (int)Math.Log(value, 1024);
+            var adjustedSize = (decimal)value / (1L << (mag * 10));
+
+            return $"{adjustedSize:n0} {SizeSuffixes[mag]}";
+        }
+
+        private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+
 
 
 
@@ -132,8 +165,12 @@ namespace SNROI.ViewModels
         {
             if (SaveROIDocument())
             {
-                var tempFSROIDoc = new FileSystemROIDocument(DocumentPath);
-                var tempFSROIDocList = new ObservableCollection<FileSystemROIDocument> { tempFSROIDoc };
+                var roiDocumentViewModel = new ROIDocumentViewModel
+                {
+                    DocumentPath = DocumentPath,
+                    DataDirectory = DataDirectory
+                };
+                var tempFSROIDocList = new ObservableCollection<ROIDocumentViewModel> { roiDocumentViewModel };
                 DialogService.Instance.ShowReportsDialog(DataDirectory, tempFSROIDocList);
             }
             else

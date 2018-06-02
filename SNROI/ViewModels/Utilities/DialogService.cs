@@ -296,12 +296,12 @@ namespace SNROI.ViewModels.Utilities
             aboutViewModel.ClosingRequest += (sender, e) => aboutWindow.Close();
             OpenCustomDialog(aboutWindow);
         }
-        public void ShowReportsDialog(string defaultDataDirectory, ObservableCollection<FileSystemROIDocument> selectedFSRoiDocumentsList)
+        public void ShowReportsDialog(string defaultDataDirectory, ObservableCollection<ROIDocumentViewModel> selectedViewModelsList)
         {
             UIServices.SetBusyState();
 
             var printReportWindow = new PrintReportWindow();
-            var printReportsViewModel = new PrintReportsViewModel { DataDirectory = defaultDataDirectory, SelectedFSROIDocumentsList = selectedFSRoiDocumentsList };
+            var printReportsViewModel = new PrintReportsViewModel { DataDirectory = defaultDataDirectory, SelectedROIViewModelList = selectedViewModelsList };
             printReportWindow.DataContext = printReportsViewModel;
             printReportsViewModel.ClosingRequest += (sender, e) => printReportWindow.Close();
             OpenCustomDialog(printReportWindow);
@@ -334,6 +334,7 @@ namespace SNROI.ViewModels.Utilities
 
             roiDocumentViewModel.ClosingRequest += (sender, e) => editROIDocWindow.Close();
             OpenCustomDialog(editROIDocWindow);
+            //Todo: check for dialog result, only reload on OK
         }
 
 

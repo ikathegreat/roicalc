@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using SNROI.Tools;
 
 namespace SNROI.ViewModels
 {
@@ -14,8 +15,8 @@ namespace SNROI.ViewModels
     {
         public MainWindowViewModel()
         {
-            FSROIDocList = new ObservableCollection<FileSystemROIDocument>();
-            GridSelectedFSROIDocList = new ObservableCollection<FileSystemROIDocument>();
+            roiDocViewModelList = new ObservableCollection<ROIDocumentViewModel>();
+            GridSelectedROIViewModelList = new ObservableCollection<ROIDocumentViewModel>();
         }
 
         public MainWindowViewModel(string aDataDirectory) : this()
@@ -34,13 +35,18 @@ namespace SNROI.ViewModels
             {
                 if (!Directory.Exists(DataDirectory))
                     Directory.CreateDirectory(DataDirectory);
-                FSROIDocList.Clear();
+                roiDocViewModelList.Clear();
                 foreach (var file in Directory.GetFiles(DataDirectory, "*.*", SearchOption.TopDirectoryOnly).ToList())
                 {
-                    FSROIDocList.Add(new FileSystemROIDocument(file));
+                    var roiDocumentViewModel = new ROIDocumentViewModel
+                    {
+                        DocumentPath = file,
+                        DataDirectory = DataDirectory
+                    };
+                    roiDocViewModelList.Add(roiDocumentViewModel);
                 }
 
-                TotalReportsMessage = FSROIDocList.Count + " reports";
+                TotalReportsMessage = roiDocViewModelList.Count + " reports";
             }
             finally
             {
@@ -48,21 +54,21 @@ namespace SNROI.ViewModels
             }
         }
 
-        public ObservableCollection<FileSystemROIDocument> FSROIDocList { get; set; }
+        public ObservableCollection<ROIDocumentViewModel> roiDocViewModelList { get; set; }
 
-        private ObservableCollection<FileSystemROIDocument> gridSelectedFSROIDocList;
+        private ObservableCollection<ROIDocumentViewModel> gridSelectedROIViewModelList;
 
-        public ObservableCollection<FileSystemROIDocument> GridSelectedFSROIDocList
+        public ObservableCollection<ROIDocumentViewModel> GridSelectedROIViewModelList
         {
             get
             {
-                SelectedReportsMessage = gridSelectedFSROIDocList.Count + " selected";
-                SelectedReportName = gridSelectedFSROIDocList.Count == 1
-                    ? gridSelectedFSROIDocList.First().ROIDocumentName
+                SelectedReportsMessage = gridSelectedROIViewModelList.Count + " selected";
+                SelectedReportName = gridSelectedROIViewModelList.Count == 1
+                    ? gridSelectedROIViewModelList.First().ROIDocument.DocumentName
                     : string.Empty;
-                return gridSelectedFSROIDocList;
+                return gridSelectedROIViewModelList;
             }
-            set => gridSelectedFSROIDocList = value;
+            set => gridSelectedROIViewModelList = value;
         }
 
         private string totalReportsMessage;
@@ -115,31 +121,32 @@ namespace SNROI.ViewModels
 
         private bool CanOpenROIDocument()
         {
-            return GridSelectedFSROIDocList.Count == 1;
+            return GridSelectedROIViewModelList.Count == 1;
         }
 
         public void OpenROIDocument()
         {
-            DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, GridSelectedFSROIDocList[0].FilePath);
+            DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, GridSelectedROIViewModelList[0].DocumentPath);
+            ScanFileSystemForROIDocuments();
         }
 
         public ICommand DeleteROIDocumentsCommand => new RelayCommand(DeleteROIDocuments, CanDeleteROIDocuments);
 
         private bool CanDeleteROIDocuments()
         {
-            return GridSelectedFSROIDocList.Count > 0;
+            return GridSelectedROIViewModelList.Count > 0;
         }
 
         private void DeleteROIDocuments()
         {
-            var messagePrompt = GridSelectedFSROIDocList.Count == 1
-                ? "Are you sure you want to delete " + GridSelectedFSROIDocList[0].ROIDocumentName + "?"
-                : "Are you sure you want to delete " + GridSelectedFSROIDocList.Count + " reports?";
+            var messagePrompt = GridSelectedROIViewModelList.Count == 1
+                ? "Are you sure you want to delete " + GridSelectedROIViewModelList[0].ROIDocument.DocumentName + "?"
+                : "Are you sure you want to delete " + GridSelectedROIViewModelList.Count + " reports?";
             if (!DialogService.Instance.ShowMessageQuestion(messagePrompt, "Delete Reports"))
                 return;
-            foreach (var report in GridSelectedFSROIDocList)
+            foreach (var report in GridSelectedROIViewModelList)
             {
-                File.Delete(report.FilePath);
+                File.Delete(report.DocumentPath);
             }
             ScanFileSystemForROIDocuments();
         }
@@ -148,22 +155,35 @@ namespace SNROI.ViewModels
 
         private bool CanCloneROIDocument()
         {
-            return GridSelectedFSROIDocList.Count == 1;
+            return GridSelectedROIViewModelList.Count == 1;
         }
 
         private void CloneROIDocument()
         {
-            var reportName = DialogService.Instance.InputDialog("Clone Report", "Enter new report name:");
+            var selectedROIViewModel = GridSelectedROIViewModelList[0];
+            if (selectedROIViewModel == null)
+                return;
+            var suggestedFileNameNoExt = Path.GetFileNameWithoutExtension(FileSystemTools.GetNextAvailableFilename(Path.Combine(DataDirectory,
+                    Path.GetFileNameWithoutExtension(selectedROIViewModel.DocumentPath) + "-copy.xml")));
+            var reportName = DialogService.Instance.InputDialog("Clone Report", "","Enter new report name:",
+                suggestedFileNameNoExt);
             if (string.IsNullOrEmpty(reportName))
                 return;
-            var newReportFilePath = Path.Combine(Path.GetDirectoryName(GridSelectedFSROIDocList[0].FilePath), reportName + ".xml");
+            var newReportFilePath = Path.Combine(Path.GetDirectoryName(selectedROIViewModel.DocumentPath), reportName + ".xml");
             if (File.Exists(newReportFilePath))
             {
                 DialogService.Instance.ShowMessageError("Error: File already exists: " + Environment.NewLine + Environment.NewLine + newReportFilePath);
             }
             else
             {
-                File.Copy(GridSelectedFSROIDocList[0].FilePath, newReportFilePath);
+                File.Copy(GridSelectedROIViewModelList[0].DocumentPath, newReportFilePath);
+                var roiDocumentViewModel = new ROIDocumentViewModel
+                {
+                    DocumentPath = newReportFilePath,
+                    DataDirectory = DataDirectory,
+                    ROIDocument = { DocumentName = reportName, DateCreated = DateTime.Now, DateModified = DateTime.Now }
+                };
+                roiDocumentViewModel.SaveROIDocument();
                 ScanFileSystemForROIDocuments();
             }
         }
@@ -179,7 +199,7 @@ namespace SNROI.ViewModels
 
         private void OpenReportsDialog()
         {
-            DialogService.Instance.ShowReportsDialog(DataDirectory, gridSelectedFSROIDocList);
+            DialogService.Instance.ShowReportsDialog(DataDirectory, gridSelectedROIViewModelList);
         }
 
         public ICommand OpenReportEdtiorCommandDialogCommand => new RelayCommand(OpenReportEditorDialog);

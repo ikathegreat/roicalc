@@ -225,11 +225,15 @@
                         </dxg:GridControl.View>
                     </dxg:GridControl>
                 </TabItem>
+
+                <TabItem Header="Notes">
+                    <dxe:TextEdit Text="{Binding ROIDocument.Notes}" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" VerticalContentAlignment="Top" />
+                </TabItem>
             </TabControl>
             <dxprg:PropertyGridControl Margin="5" Grid.Column="1" Grid.Row="1" ShowSearchBox="False" SortMode="Ascending" ReadOnly="True" UseCollectionEditor="False" AllowListItemInitializer="False" AllowInstanceInitializer="False" ShowToolPanel="False" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedObject="{Binding ROIDocument.ROIDocumentCalculations, Mode=TwoWay}" ShowMenuButtonInRows="False" ExpandButtonsVisibility="Hidden" ShowDescriptionIn="Panel" ExpandCategoriesWhenSelectedObjectChanged="True">
 
                 <dxprg:PropertyDefinition Path="{Binding ROIDocument.ROIDocumentCalculations.EmployeeCalculations.AnnualEmployeeCost}" Description="Annual Employee Cost" ApplyingMode="Always"/>
-</dxprg:PropertyGridControl>
+            </dxprg:PropertyGridControl>
         </Grid>
 
         <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
