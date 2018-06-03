@@ -33,6 +33,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Button Content="New" Command="{Binding OpenNewReportEditorCommand}"/>
                     <Button Content="Edit" Command="{Binding OpenReportEditorCommand}"/>
+                    <Button Content="Delete" Command="{Binding DeleteSelectedReportTemplatesCommand}"/>
                 </StackPanel>
                 <!--<dxe:ListBoxEdit Grid.Row="1" ItemsSource="{Binding ReportTemplateList}" EditValue="{Binding CheckedReportTemplateList}" SelectionMode="Multiple" SelectedItem="{Binding SelectedReportForEdit}">
                     <dxe:ListBoxEdit.StyleSettings>
@@ -44,6 +45,8 @@
                         <ContextMenu>
                             <MenuItem Header="New" ToolTip="Create a new report template" Command="{Binding OpenNewReportEditorCommand}"/>
                             <MenuItem Header="Edit" ToolTip="Edit the selected report template in the report design editor" Command="{Binding OpenReportEditorCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Delete" ToolTip="Delete the selected report template file" Command="{Binding DeleteSelectedReportTemplatesCommand}"/>
                             <Separator/>
                             <MenuItem Header="Open Templates Folder" ToolTip="Open the report templates directory" Command="{Binding OpenTemplateDirectoryCommand}"/>
                         </ContextMenu>

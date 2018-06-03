@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="17.1.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v17.1, Version=17.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report1" PageWidth="850" PageHeight="1100" Version="17.1" DataSource="#Ref-0">
+  <Bands>
+    <Item1 Ref="2" ControlType="TopMarginBand" Name="TopMargin1" HeightF="100" />
+    <Item2 Ref="3" ControlType="BottomMarginBand" Name="BottomMargin1" HeightF="100">
+      <Controls>
+        <Item1 Ref="4" ControlType="XRPageInfo" Name="pageInfo2" PageInfo="DateTime" SizeF="313,23" LocationFloat="6, 6" StyleName="PageInfo" />
+        <Item2 Ref="5" ControlType="XRPageInfo" Name="pageInfo1" Format="Page {0} of {1}" TextAlignment="TopRight" SizeF="313,23" LocationFloat="331, 6" StyleName="PageInfo" />
+      </Controls>
+    </Item2>
+    <Item3 Ref="6" ControlType="ReportHeaderBand" Name="ReportHeader1" HeightF="60">
+      <Controls>
+        <Item1 Ref="7" ControlType="XRLabel" Name="label1" Text="Report Title" SizeF="638,26" LocationFloat="6, 6" StyleName="Title" />
+      </Controls>
+    </Item3>
+    <Item4 Ref="8" ControlType="DetailBand" Name="Detail1" HeightF="56" KeepTogether="true">
+      <Controls>
+        <Item1 Ref="9" ControlType="XRTable" Name="table1" SizeF="650,56" LocationFloat="0, 0">
+          <Rows>
+            <Item1 Ref="10" ControlType="XRTableRow" Name="tableRow1" Weight="0.5">
+              <Cells>
+                <Item1 Ref="11" ControlType="XRTableCell" Name="tableCell1" Weight="0.031648694551908052" Text="Document Name" StyleName="DetailCaption1" Borders="None">
+                  <StylePriority Ref="12" UseBorders="false" />
+                </Item1>
+                <Item2 Ref="13" ControlType="XRTableCell" Name="tableCell2" Weight="0.030170933650090145" Text="Company Name" StyleName="DetailCaption1" />
+                <Item3 Ref="14" ControlType="XRTableCell" Name="tableCell3" Weight="0.027510965787447415" Text="Contact Name" StyleName="DetailCaption1" />
+                <Item4 Ref="15" ControlType="XRTableCell" Name="tableCell4" Weight="0.04021970015305739" Text="Company Logo Image" StyleName="DetailCaption1" />
+                <Item5 Ref="16" ControlType="XRTableCell" Name="tableCell5" Weight="0.026033204885629508" Text="Date Created" StyleName="DetailCaption1" />
+                <Item6 Ref="17" ControlType="XRTableCell" Name="tableCell6" Weight="0.02721541478083684" Text="Date Modified" StyleName="DetailCaption1" />
+                <Item7 Ref="18" ControlType="XRTableCell" Name="tableCell7" Weight="0.013915572533240685" Text="Notes" StyleName="DetailCaption1" />
+                <Item8 Ref="19" ControlType="XRTableCell" Name="tableCell8" Weight="0.082779188889723562" Text="ROIDocumentCalculations.Number of materials" TextAlignment="MiddleRight" StyleName="DetailCaption1">
+                  <StylePriority Ref="20" UseTextAlignment="false" />
+                </Item8>
+                <Item9 Ref="21" ControlType="XRTableCell" Name="tableCell9" Weight="0.08307473989633414" Text="ROIDocumentCalculations.Number of machines" TextAlignment="MiddleRight" StyleName="DetailCaption1">
+                  <StylePriority Ref="22" UseTextAlignment="false" />
+                </Item9>
+                <Item10 Ref="23" ControlType="XRTableCell" Name="tableCell10" Weight="0.084848051804762625" Text="ROIDocumentCalculations.Number of employees" TextAlignment="MiddleRight" StyleName="DetailCaption1">
+                  <StylePriority Ref="24" UseTextAlignment="false" />
+                </Item10>
+                <Item11 Ref="25" ControlType="XRTableCell" Name="tableCell11" Weight="0.081892535869891828" Text="ROIDocumentCalculations.Daily employee cost" TextAlignment="MiddleRight" StyleName="DetailCaption1">
+                  <StylePriority Ref="26" UseTextAlignment="false" />
+                </Item11>
+                <Item12 Ref="27" ControlType="XRTableCell" Name="tableCell12" Weight="0.0869169205885667" Text="ROIDocumentCalculations.Monthly employee cost" TextAlignment="MiddleRight" StyleName="DetailCaption1">
+                  <StylePriority Ref="28" UseTextAlignment="false" />
+                </Item12>
+                <Item13 Ref="29" ControlType="XRTableCell" Name="tableCell13" Weight="0.085143608680138219" Text="ROIDocumentCalculations.Annual employee cost" TextAlignment="MiddleRight" StyleName="DetailCaption1">
+                  <StylePriority Ref="30" UseTextAlignment="false" />
+                </Item13>
+                <Item14 Ref="31" ControlType="XRTableCell" Name="tableCell14" Weight="0.079232565072866593" Text="ROIDocumentCalculations.Daily total savings" TextAlignment="MiddleRight" StyleName="DetailCaption1">
+                  <StylePriority Ref="32" UseTextAlignment="false" />
+                </Item14>
+                <Item15 Ref="33" ControlType="XRTableCell" Name="tableCell15" Weight="0.084256949791541469" Text="ROIDocumentCalculations.Monthly total savings" TextAlignment="MiddleRight" StyleName="DetailCaption1">
+                  <StylePriority Ref="34" UseTextAlignment="false" />
+                </Item15>
+                <Item16 Ref="35" ControlType="XRTableCell" Name="tableCell16" Weight="0.082483637883112984" Text="ROIDocumentCalculations.Annual total savings" TextAlignment="MiddleRight" StyleName="DetailCaption1">
+                  <StylePriority Ref="36" UseTextAlignment="false" />
+                </Item16>
+                <Item17 Ref="37" ControlType="XRTableCell" Name="tableCell17" Weight="0.020417718153733475" Text="Language" StyleName="DetailCaption1" />
+                <Item18 Ref="38" ControlType="XRTableCell" Name="tableCell18" Weight="0.032239514864408056" Text="Currency Symbol" StyleName="DetailCaption1" />
+              </Cells>
+            </Item1>
+            <Item2 Ref="39" ControlType="XRTableRow" Name="tableRow2" Weight="0.5">
+              <Cells>
+                <Item1 Ref="40" ControlType="XRTableCell" Name="tableCell19" Weight="0.031648694551908052" StyleName="DetailData1" Borders="None">
+                  <DataBindings>
+                    <Item1 Ref="41" PropertyName="Text" DataMember="DocumentName" />
+                  </DataBindings>
+                  <StylePriority Ref="42" UseBorders="false" />
+                </Item1>
+                <Item2 Ref="43" ControlType="XRTableCell" Name="tableCell20" Weight="0.030170933650090145" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="44" PropertyName="Text" DataMember="CompanyName" />
+                  </DataBindings>
+                </Item2>
+                <Item3 Ref="45" ControlType="XRTableCell" Name="tableCell21" Weight="0.027510965787447415" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="46" PropertyName="Text" DataMember="ContactName" />
+                  </DataBindings>
+                </Item3>
+                <Item4 Ref="47" ControlType="XRTableCell" Name="tableCell22" Weight="0.04021970015305739" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="48" PropertyName="Text" DataMember="CompanyLogoImage" />
+                  </DataBindings>
+                </Item4>
+                <Item5 Ref="49" ControlType="XRTableCell" Name="tableCell23" Weight="0.026033204885629508" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="50" PropertyName="Text" DataMember="DateCreated" />
+                  </DataBindings>
+                </Item5>
+                <Item6 Ref="51" ControlType="XRTableCell" Name="tableCell24" Weight="0.02721541478083684" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="52" PropertyName="Text" DataMember="DateModified" />
+                  </DataBindings>
+                </Item6>
+                <Item7 Ref="53" ControlType="XRTableCell" Name="tableCell25" Weight="0.013915572533240685" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="54" PropertyName="Text" DataMember="Notes" />
+                  </DataBindings>
+                </Item7>
+                <Item8 Ref="55" ControlType="XRTableCell" Name="tableCell26" Weight="0.082779188889723562" TextAlignment="MiddleRight" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="56" PropertyName="Text" DataMember="ROIDocumentCalculations.NumberOfMaterials" />
+                  </DataBindings>
+                  <StylePriority Ref="57" UseTextAlignment="false" />
+                </Item8>
+                <Item9 Ref="58" ControlType="XRTableCell" Name="tableCell27" Weight="0.08307473989633414" TextAlignment="MiddleRight" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="59" PropertyName="Text" DataMember="ROIDocumentCalculations.NumberOfMachines" />
+                  </DataBindings>
+                  <StylePriority Ref="60" UseTextAlignment="false" />
+                </Item9>
+                <Item10 Ref="61" ControlType="XRTableCell" Name="tableCell28" Weight="0.084848051804762625" TextAlignment="MiddleRight" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="62" PropertyName="Text" DataMember="ROIDocumentCalculations.NumberOfEmployees" />
+                  </DataBindings>
+                  <StylePriority Ref="63" UseTextAlignment="false" />
+                </Item10>
+                <Item11 Ref="64" ControlType="XRTableCell" Name="tableCell29" Weight="0.081892535869891828" TextAlignment="MiddleRight" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="65" PropertyName="Text" DataMember="ROIDocumentCalculations.DailyEmployeeCost" />
+                  </DataBindings>
+                  <StylePriority Ref="66" UseTextAlignment="false" />
+                </Item11>
+                <Item12 Ref="67" ControlType="XRTableCell" Name="tableCell30" Weight="0.0869169205885667" TextAlignment="MiddleRight" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="68" PropertyName="Text" DataMember="ROIDocumentCalculations.MonthlyEmployeeCost" />
+                  </DataBindings>
+                  <StylePriority Ref="69" UseTextAlignment="false" />
+                </Item12>
+                <Item13 Ref="70" ControlType="XRTableCell" Name="tableCell31" Weight="0.085143608680138219" TextAlignment="MiddleRight" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="71" PropertyName="Text" DataMember="ROIDocumentCalculations.AnnualEmployeeCost" />
+                  </DataBindings>
+                  <StylePriority Ref="72" UseTextAlignment="false" />
+                </Item13>
+                <Item14 Ref="73" ControlType="XRTableCell" Name="tableCell32" Weight="0.079232565072866593" TextAlignment="MiddleRight" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="74" PropertyName="Text" DataMember="ROIDocumentCalculations.DailyTotalSavings" />
+                  </DataBindings>
+                  <StylePriority Ref="75" UseTextAlignment="false" />
+                </Item14>
+                <Item15 Ref="76" ControlType="XRTableCell" Name="tableCell33" Weight="0.084256949791541469" TextAlignment="MiddleRight" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="77" PropertyName="Text" DataMember="ROIDocumentCalculations.MonthlyTotalSavings" />
+                  </DataBindings>
+                  <StylePriority Ref="78" UseTextAlignment="false" />
+                </Item15>
+                <Item16 Ref="79" ControlType="XRTableCell" Name="tableCell34" Weight="0.082483637883112984" TextAlignment="MiddleRight" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="80" PropertyName="Text" DataMember="ROIDocumentCalculations.TotalAnnualSavings" />
+                  </DataBindings>
+                  <StylePriority Ref="81" UseTextAlignment="false" />
+                </Item16>
+                <Item17 Ref="82" ControlType="XRTableCell" Name="tableCell35" Weight="0.020417718153733475" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="83" PropertyName="Text" DataMember="Language" />
+                  </DataBindings>
+                </Item17>
+                <Item18 Ref="84" ControlType="XRTableCell" Name="tableCell36" Weight="0.032239514864408056" StyleName="DetailData1">
+                  <DataBindings>
+                    <Item1 Ref="85" PropertyName="Text" DataMember="CurrencySymbol" />
+                  </DataBindings>
+                </Item18>
+              </Cells>
+            </Item2>
+          </Rows>
+        </Item1>
+      </Controls>
+    </Item4>
+    <Item5 Ref="86" ControlType="DetailReportBand" Name="DetailReport1" Level="0" DataMember="MaterialsListCollection" DataSource="#Ref-0">
+      <Bands>
+        <Item1 Ref="87" ControlType="GroupHeaderBand" Name="GroupHeader1" GroupUnion="WithFirstDetail" HeightF="48">
+          <Controls>
+            <Item1 Ref="88" ControlType="XRPanel" Name="panel1" SizeF="650,48" LocationFloat="0, 0" StyleName="DetailCaptionBackground3">
+              <Controls>
+                <Item1 Ref="89" ControlType="XRTable" Name="table2" SizeF="650,28" LocationFloat="0, 20">
+                  <Rows>
+                    <Item1 Ref="90" ControlType="XRTableRow" Name="tableRow3" Weight="1">
+                      <Cells>
+                        <Item1 Ref="91" ControlType="XRTableCell" Name="tableCell37" Weight="0.082266910259540263" Text="Name" StyleName="DetailCaption3" />
+                        <Item2 Ref="92" ControlType="XRTableCell" Name="tableCell38" Weight="0.23583179180438701" Text="Cost Per Weight Unit" TextAlignment="MiddleRight" StyleName="DetailCaption3">
+                          <StylePriority Ref="93" UseTextAlignment="false" />
+                        </Item2>
+                        <Item3 Ref="94" ControlType="XRTableCell" Name="tableCell39" Weight="0.35466177133413462" Text="Total Monthly Purchased Weight" TextAlignment="MiddleRight" StyleName="DetailCaption3">
+                          <StylePriority Ref="95" UseTextAlignment="false" />
+                        </Item3>
+                        <Item4 Ref="96" ControlType="XRTableCell" Name="tableCell40" Weight="0.3272394737830529" Text="Total Monthly Purchased Cost" TextAlignment="MiddleRight" StyleName="DetailCaption3">
+                          <StylePriority Ref="97" UseTextAlignment="false" />
+                        </Item4>
+                      </Cells>
+                    </Item1>
+                  </Rows>
+                </Item1>
+              </Controls>
+            </Item1>
+          </Controls>
+        </Item1>
+        <Item2 Ref="98" ControlType="DetailBand" Name="Detail2" HeightF="25">
+          <Controls>
+            <Item1 Ref="99" ControlType="XRTable" Name="table3" SizeF="650,25" LocationFloat="0, 0" OddStyleName="DetailData3_Odd">
+              <Rows>
+                <Item1 Ref="100" ControlType="XRTableRow" Name="tableRow4" Weight="11.5">
+                  <Cells>
+                    <Item1 Ref="101" ControlType="XRTableCell" Name="tableCell41" Weight="0.082266916128305292" StyleName="DetailData3">
+                      <DataBindings>
+                        <Item1 Ref="102" PropertyName="Text" DataMember="MaterialsListCollection.Name" />
+                      </DataBindings>
+                    </Item1>
+                    <Item2 Ref="103" ControlType="XRTableCell" Name="tableCell42" Weight="0.23583181527944711" TextAlignment="MiddleRight" StyleName="DetailData3">
+                      <DataBindings>
+                        <Item1 Ref="104" PropertyName="Text" DataMember="MaterialsListCollection.CostPerWeightUnit" />
+                      </DataBindings>
+                      <StylePriority Ref="105" UseTextAlignment="false" />
+                    </Item2>
+                    <Item3 Ref="106" ControlType="XRTableCell" Name="tableCell43" Weight="0.35466179480919469" TextAlignment="MiddleRight" StyleName="DetailData3">
+                      <DataBindings>
+                        <Item1 Ref="107" PropertyName="Text" DataMember="MaterialsListCollection.TotalMonthlyPurchasedWeight" />
+                      </DataBindings>
+                      <StylePriority Ref="108" UseTextAlignment="false" />
+                    </Item3>
+                    <Item4 Ref="109" ControlType="XRTableCell" Name="tableCell44" Weight="0.3272394737830529" TextAlignment="MiddleRight" StyleName="DetailData3">
+                      <DataBindings>
+                        <Item1 Ref="110" PropertyName="Text" DataMember="MaterialsListCollection.TotalMonthlyPurchasedCost" />
+                      </DataBindings>
+                      <StylePriority Ref="111" UseTextAlignment="false" />
+                    </Item4>
+                  </Cells>
+                </Item1>
+              </Rows>
+            </Item1>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item5>
+    <Item6 Ref="112" ControlType="DetailReportBand" Name="DetailReport2" Level="1" DataMember="MachinesListCollection" DataSource="#Ref-0">
+      <Bands>
+        <Item1 Ref="113" ControlType="GroupHeaderBand" Name="GroupHeader2" GroupUnion="WithFirstDetail" HeightF="48">
+          <Controls>
+            <Item1 Ref="114" ControlType="XRPanel" Name="panel2" SizeF="650,48" LocationFloat="0, 0" StyleName="DetailCaptionBackground3">
+              <Controls>
+                <Item1 Ref="115" ControlType="XRTable" Name="table4" SizeF="650,28" LocationFloat="0, 20">
+                  <Rows>
+                    <Item1 Ref="116" ControlType="XRTableRow" Name="tableRow5" Weight="1">
+                      <Cells>
+                        <Item1 Ref="117" ControlType="XRTableCell" Name="tableCell45" Weight="0.25423727182241584" Text="Name" StyleName="DetailCaption3" />
+                        <Item2 Ref="118" ControlType="XRTableCell" Name="tableCell46" Weight="0.745762704702524" Text="Cost Per Hour To Run" StyleName="DetailCaption3" />
+                      </Cells>
+                    </Item1>
+                  </Rows>
+                </Item1>
+              </Controls>
+            </Item1>
+          </Controls>
+        </Item1>
+        <Item2 Ref="119" ControlType="DetailBand" Name="Detail3" HeightF="25">
+          <Controls>
+            <Item1 Ref="120" ControlType="XRTable" Name="table5" SizeF="650,25" LocationFloat="0, 0" OddStyleName="DetailData3_Odd">
+              <Rows>
+                <Item1 Ref="121" ControlType="XRTableRow" Name="tableRow6" Weight="11.5">
+                  <Cells>
+                    <Item1 Ref="122" ControlType="XRTableCell" Name="tableCell47" Weight="0.25423727182241584" StyleName="DetailData3">
+                      <DataBindings>
+                        <Item1 Ref="123" PropertyName="Text" DataMember="MachinesListCollection.Name" />
+                      </DataBindings>
+                    </Item1>
+                    <Item2 Ref="124" ControlType="XRTableCell" Name="tableCell48" Weight="0.74576275165264427" StyleName="DetailData3">
+                      <DataBindings>
+                        <Item1 Ref="125" PropertyName="Text" DataMember="MachinesListCollection.CostPerHourToRun" />
+                      </DataBindings>
+                    </Item2>
+                  </Cells>
+                </Item1>
+              </Rows>
+            </Item1>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item6>
+    <Item7 Ref="126" ControlType="DetailReportBand" Name="DetailReport3" Level="2" DataMember="PeopleListCollection" DataSource="#Ref-0">
+      <Bands>
+        <Item1 Ref="127" ControlType="GroupHeaderBand" Name="GroupHeader3" GroupUnion="WithFirstDetail" HeightF="48">
+          <Controls>
+            <Item1 Ref="128" ControlType="XRPanel" Name="panel3" SizeF="650,48" LocationFloat="0, 0" StyleName="DetailCaptionBackground3">
+              <Controls>
+                <Item1 Ref="129" ControlType="XRTable" Name="table6" SizeF="650,28" LocationFloat="0, 20">
+                  <Rows>
+                    <Item1 Ref="130" ControlType="XRTableRow" Name="tableRow7" Weight="1">
+                      <Cells>
+                        <Item1 Ref="131" ControlType="XRTableCell" Name="tableCell49" Weight="0.34883720984825722" Text="Name" StyleName="DetailCaption3" />
+                        <Item2 Ref="132" ControlType="XRTableCell" Name="tableCell50" Weight="0.65116281362680284" Text="Hourly Wage" TextAlignment="MiddleRight" StyleName="DetailCaption3">
+                          <StylePriority Ref="133" UseTextAlignment="false" />
+                        </Item2>
+                      </Cells>
+                    </Item1>
+                  </Rows>
+                </Item1>
+              </Controls>
+            </Item1>
+          </Controls>
+        </Item1>
+        <Item2 Ref="134" ControlType="DetailBand" Name="Detail4" HeightF="25">
+          <Controls>
+            <Item1 Ref="135" ControlType="XRTable" Name="table7" SizeF="650,25" LocationFloat="0, 0" OddStyleName="DetailData3_Odd">
+              <Rows>
+                <Item1 Ref="136" ControlType="XRTableRow" Name="tableRow8" Weight="11.5">
+                  <Cells>
+                    <Item1 Ref="137" ControlType="XRTableCell" Name="tableCell51" Weight="0.34883720984825722" StyleName="DetailData3">
+                      <DataBindings>
+                        <Item1 Ref="138" PropertyName="Text" DataMember="PeopleListCollection.Name" />
+                      </DataBindings>
+                    </Item1>
+                    <Item2 Ref="139" ControlType="XRTableCell" Name="tableCell52" Weight="0.65116276667668271" TextAlignment="MiddleRight" StyleName="DetailData3">
+                      <DataBindings>
+                        <Item1 Ref="140" PropertyName="Text" DataMember="PeopleListCollection.HourlyWage" />
+                      </DataBindings>
+                      <StylePriority Ref="141" UseTextAlignment="false" />
+                    </Item2>
+                  </Cells>
+                </Item1>
+              </Rows>
+            </Item1>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item7>
+  </Bands>
+  <StyleSheet>
+    <Item1 Ref="142" Name="Title" BorderStyle="Inset" Font="Tahoma, 14pt" ForeColor="255,75,75,75" BackColor="Transparent" BorderColor="Black" Sides="None" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="1" />
+    <Item2 Ref="143" Name="DetailCaption1" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Tahoma, 8pt, style=Bold" ForeColor="White" BackColor="255,75,75,75" BorderColor="White" Sides="Left" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="2" />
+    <Item3 Ref="144" Name="DetailData1" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Tahoma, 8pt" ForeColor="Black" BackColor="Transparent" BorderColor="Transparent" Sides="Left" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="2" />
+    <Item4 Ref="145" Name="DetailCaption3" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Tahoma, 8pt, style=Bold" ForeColor="255,75,75,75" BackColor="Transparent" BorderColor="Transparent" Sides="None" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item5 Ref="146" Name="DetailData3" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Tahoma, 8pt" ForeColor="Black" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item6 Ref="147" Name="DetailData3_Odd" BorderStyle="Inset" Padding="6,6,0,0,100" Font="Tahoma, 8pt" ForeColor="Black" BackColor="255,231,231,231" BorderColor="Transparent" Sides="None" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" BorderWidthSerializable="1" />
+    <Item7 Ref="148" Name="DetailCaptionBackground3" BorderStyle="Inset" BackColor="Transparent" BorderColor="255,206,206,206" Sides="Top" StringFormat="Near;Near;0;None;Character;Default" BorderWidthSerializable="2" />
+    <Item8 Ref="149" Name="PageInfo" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Tahoma, 8pt, style=Bold" ForeColor="255,75,75,75" StringFormat="Near;Near;0;None;Character;Default" />
+  </StyleSheet>
+  <ObjectStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.ObjectBinding.ObjectDataSource,DevExpress.DataAccess.v17.1" Name="objectDataSource" Base64="PE9iamVjdERhdGFTb3VyY2U+PE5hbWU+b2JqZWN0RGF0YVNvdXJjZTwvTmFtZT48RGF0YVNvdXJjZSBUeXBlPSJTTlJPSS5Nb2RlbHMuUk9JRG9jdW1lbnQsIFNOUk9JLCBWZXJzaW9uPTEuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49bnVsbCIgLz48L09iamVjdERhdGFTb3VyY2U+" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

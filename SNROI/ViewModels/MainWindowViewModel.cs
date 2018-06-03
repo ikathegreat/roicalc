@@ -24,6 +24,45 @@ namespace SNROI.ViewModels
         {
             DataDirectory = aDataDirectory;
             ScanFileSystemForROIDocuments();
+            InstallFactoryReportTemplates();
+        }
+
+        private void InstallFactoryReportTemplates(bool doFactoryReset = false)
+        {
+            var reportTemplateDirectory = Path.Combine(DataDirectory, Constants.ReportTemplateDirectoryName);
+            if (!Directory.Exists(reportTemplateDirectory))
+                Directory.CreateDirectory(reportTemplateDirectory);
+
+            if ((Directory.GetFiles(reportTemplateDirectory, "*.repx", SearchOption.TopDirectoryOnly).Length == 0) || doFactoryReset)
+            {
+                var factoryTemplateFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates");
+
+                foreach (var file in Directory.GetFiles(factoryTemplateFolder, "*.repx", SearchOption.TopDirectoryOnly).ToList())
+                {
+                    if (doFactoryReset)
+                    {
+                        var targetFilePath = Path.Combine(reportTemplateDirectory, Path.GetFileName(file));
+                        try
+                        {
+                            if (DialogService.Instance.ShowMessageQuestion(
+                                $"{Path.GetFileName(file)} already exists. Create a backup copy?", "Backup Template"))
+                            {
+                                var backupTargetFilePath = FileSystemTools.GetNextAvailableFilename(targetFilePath);
+                                File.Move(targetFilePath, backupTargetFilePath);
+                            }
+                            File.Copy(file, targetFilePath, true);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+                    }
+                    else
+                    {
+                        File.Copy(file, Path.Combine(reportTemplateDirectory, Path.GetFileName(file)));
+                    }
+                }
+            }
         }
 
         public string DataDirectory { get; set; }
@@ -242,6 +281,24 @@ namespace SNROI.ViewModels
         private void OpenReportsDirectory()
         {
             Process.Start(DataDirectory);
+        }
+        public ICommand OpenApplicationDirectoryCommand => new RelayCommand(OpenApplicationDirectory);
+
+        private static void OpenApplicationDirectory()
+        {
+            Process.Start(AppDomain.CurrentDomain.BaseDirectory);
+        }
+
+        public ICommand ResetReportTemplatesCommand => new RelayCommand(ResetReportTemplates);
+
+        private void ResetReportTemplates()
+        {
+            if (DialogService.Instance.ShowMessageQuestion("Are you sure you want to re-install all factory report templates?"
+                                                           + Environment.NewLine + Environment.NewLine + "All custom reports will be presevered.", "Reset Report Templates"))
+            {
+                InstallFactoryReportTemplates(true);
+                DialogService.Instance.ShowMessageInfo("Report templates restored to factory defaults");
+            }
         }
     }
 }

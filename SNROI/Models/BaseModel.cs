@@ -13,4 +13,11 @@ namespace SNROI.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(aPropertyName));
         }
     }
+
+    public static class Constants
+    {
+        public const string ReportTemplateDirectoryName = "Templates";
+        public const string AppSettingsDirectoryName = "AppSettings";
+        public const string ImagesDirectoryName = "Images";
+    }
 }

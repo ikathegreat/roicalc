@@ -136,12 +136,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\ROIDocumentCalculations.cs" />
-    <Compile Include="Reports\XtraReport3.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\XtraReport3.Designer.cs">
-      <DependentUpon>XtraReport3.cs</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\Utilities\UIServices.cs" />
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
@@ -167,19 +161,7 @@
     <Compile Include="Views\ReportDesignerWindow.xaml.cs">
       <DependentUpon>ReportDesignerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Reports\XtraReport2.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\XtraReport2.Designer.cs">
-      <DependentUpon>XtraReport2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Utilities\Converters.cs" />
-    <Compile Include="Reports\XtraReport1.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\XtraReport1.Designer.cs">
-      <DependentUpon>XtraReport1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\SplashWindow.xaml.cs">
       <DependentUpon>SplashWindow.xaml</DependentUpon>
     </Compile>
@@ -246,21 +228,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\XtraReport1.resx">
-      <DependentUpon>XtraReport1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\XtraReport2.resx">
-      <DependentUpon>XtraReport2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\XtraReport3.resx">
-      <DependentUpon>XtraReport3.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Templates\ReportTest.repx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -347,6 +323,7 @@
   <ItemGroup>
     <Resource Include="Resources\file_text16.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

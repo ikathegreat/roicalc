@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using System;
+using GalaSoft.MvvmLight.CommandWpf;
 using SNROI.Models;
 using SNROI.ViewModels.Utilities;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace SNROI.ViewModels
 
         private void PopulateReportTemplatesList()
         {
-            var reportsDirectory = Path.Combine(dataDirectory, "Reports");
+            var reportsDirectory = Path.Combine(dataDirectory, Constants.ReportTemplateDirectoryName);
             if (!Directory.Exists(reportsDirectory))
                 Directory.CreateDirectory(reportsDirectory);
 
@@ -112,19 +113,50 @@ namespace SNROI.ViewModels
             FirePropertyChanged(nameof(ReportTemplateList));
         }
 
-        public ICommand OpenReportEditorCommand => new RelayCommand(OpenReportEditor);
+        private bool CanEditOrDeleteReportTemplate()
+        {
+            return !string.IsNullOrEmpty(SelectedReportForEdit?.Item);
+        }
+
+        public ICommand OpenReportEditorCommand => new RelayCommand(OpenReportEditor, CanEditOrDeleteReportTemplate);
 
         private void OpenReportEditor()
         {
             var selectedReportRepxFilePath = string.Empty;
 
-            if (SelectedReportForEdit != null)
-            {
-                var repxFilePath = Path.Combine(dataDirectory, "Reports", SelectedReportForEdit.Item + ".repx");
-                if (File.Exists(repxFilePath))
-                    selectedReportRepxFilePath = repxFilePath;
-            }
+            var repxFilePath = Path.Combine(dataDirectory, Constants.ReportTemplateDirectoryName,
+                SelectedReportForEdit.Item + ".repx");
+            if (File.Exists(repxFilePath))
+                selectedReportRepxFilePath = repxFilePath;
+
             DialogService.Instance.ShowReportEditorDialog(selectedReportRepxFilePath);
+        }
+        public ICommand DeleteSelectedReportTemplatesCommand => new RelayCommand(DeleteSelectedReportTemplates, CanEditOrDeleteReportTemplate);
+
+        private void DeleteSelectedReportTemplates()
+        {
+            var selectedReportRepxFilePath = string.Empty;
+
+            var repxFilePath = Path.Combine(dataDirectory, Constants.ReportTemplateDirectoryName,
+                SelectedReportForEdit.Item + ".repx");
+            if (File.Exists(repxFilePath))
+                selectedReportRepxFilePath = repxFilePath;
+
+            if (!DialogService.Instance.ShowMessageQuestion(
+                $"Delete {Path.GetFileName(selectedReportRepxFilePath)} report template?",
+                "Delete Report Template"))
+                return;
+            try
+            {
+                File.Delete(selectedReportRepxFilePath);
+            }
+            catch (Exception e)
+            {
+                DialogService.Instance.ShowMessageError(e, "Delete File Error");
+            }
+
+            PopulateReportTemplatesList();
+            FirePropertyChanged(nameof(ReportTemplateList));
         }
 
         private bool CanPerformReportActions()
@@ -156,7 +188,7 @@ namespace SNROI.ViewModels
 
         private void OpenTemplateDirectory()
         {
-            Process.Start(Path.Combine(DataDirectory, "Reports"));
+            Process.Start(Path.Combine(DataDirectory, Constants.ReportTemplateDirectoryName));
         }
 
         public ICommand CloseWindowCommand => new RelayCommand(CloseWindow);
@@ -176,7 +208,8 @@ namespace SNROI.ViewModels
                 if (checkedListItem.IsChecked)
                     checkedReportTemplates.Add(checkedListItem.Item);
             }
-            var selectedReportsTemplatesFilePath = Path.Combine(dataDirectory, "AppSettings", "SelectedReportsTemplates.txt");
+            var selectedReportsTemplatesFilePath = Path.Combine(dataDirectory,
+                Constants.AppSettingsDirectoryName, "SelectedReportsTemplates.txt");
             File.WriteAllLines(selectedReportsTemplatesFilePath, checkedReportTemplates);
         }
 
@@ -207,11 +240,12 @@ namespace SNROI.ViewModels
                     if (!reportTemplate.IsChecked)
                         continue;
 
-                    var repxFilePath = Path.Combine(DataDirectory, "Reports", reportTemplate.Item + ".repx");
+                    var repxFilePath = Path.Combine(DataDirectory, Constants.ReportTemplateDirectoryName,
+                        reportTemplate.Item + ".repx");
                     if (!File.Exists(repxFilePath))
                         continue;
 
-                    DialogService.Instance.ShowMessage(action + " " + reportTemplate.Item + " for " + roiDocument.DocumentName);
+                    //DialogService.Instance.ShowMessage(action + " " + reportTemplate.Item + " for " + roiDocument.DocumentName);
 
                     if (action == ReportAction.Preview)
                     {

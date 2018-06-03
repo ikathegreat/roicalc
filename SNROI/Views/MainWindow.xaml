@@ -135,8 +135,10 @@
                     <dxr:RibbonPageGroup Caption="Tools">
                         <dxr:RibbonPageGroup.Items>
                             <dxb:BarSubItem Content="File Manager" LargeGlyph="/SNROI;component/Resources/folder_open-find.png" Glyph="/SNROI;component/Resources/folder_open-find.png">
+                                <dxb:BarButtonItem Content="File Manager" Glyph="/SNROI;component/Resources/folder_open-find.png" Command="{Binding OpenApplicationDirectoryCommand}" />
                                 <dxb:BarButtonItem Content="Reports Folder" Glyph="/SNROI;component/Resources/folder_open.png" Command="{Binding OpenReportsDirectoryCommand}" />
                             </dxb:BarSubItem>
+                            <dxb:BarButtonItem Content="Reset Templates" Command="{Binding ResetReportTemplatesCommand}" />
                         </dxr:RibbonPageGroup.Items>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Help">

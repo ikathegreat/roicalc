@@ -23,7 +23,7 @@ namespace SNROI.ViewModels
 
         public void LoadExistingImages()
         {
-            var imageDirectory = Path.Combine(DataDirectory, "Images");
+            var imageDirectory = Path.Combine(DataDirectory, Constants.ImagesDirectoryName);
             if (string.IsNullOrEmpty(imageDirectory))
                 return;
             if (!Directory.Exists(imageDirectory))
@@ -223,7 +223,7 @@ namespace SNROI.ViewModels
 
         private void OpenImagesWindow()
         {
-            DialogService.Instance.ShowImageBrowserWindow(Path.Combine(DataDirectory, "Images"));
+            DialogService.Instance.ShowImageBrowserWindow(Path.Combine(DataDirectory, Constants.ImagesDirectoryName));
             LoadExistingImages();
             FirePropertyChanged(nameof(ImageList));
         }

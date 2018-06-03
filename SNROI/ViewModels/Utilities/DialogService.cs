@@ -1,7 +1,6 @@
 ﻿using DevExpress.Xpf.Printing;
 using SigmaTEK.Dialogs.Model;
 using SNROI.Models;
-using SNROI.Reports;
 using SNROI.Tools;
 using SNROI.Views;
 using System;
