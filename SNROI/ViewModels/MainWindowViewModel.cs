@@ -2,6 +2,7 @@
 using SNROI.Models;
 using SNROI.ViewModels.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -109,11 +110,31 @@ namespace SNROI.ViewModels
         }
 
 
+        public List<string> CompaniesList
+        {
+            get
+            {
+                var companyList = new List<string>();
+
+                if (roiDocViewModelList.Count > 0)
+                {
+                    companyList = roiDocViewModelList.Where(y => !string.IsNullOrWhiteSpace(y.ROIDocument.CompanyName))
+                        .GroupBy(p => p.ROIDocument.CompanyName)
+                        .Select(g => g.First())
+                        .Select(x => x.ROIDocument.CompanyName)
+                        .ToList();
+                    companyList.Sort();
+                }
+                return companyList;
+            }
+        }
+
+
         public ICommand NewROIDocumentCommand => new RelayCommand(NewROIDocument);
 
         private void NewROIDocument()
         {
-            DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory);
+            DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, CompaniesList);
             ScanFileSystemForROIDocuments();
         }
 
@@ -126,7 +147,7 @@ namespace SNROI.ViewModels
 
         public void OpenROIDocument()
         {
-            DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, GridSelectedROIViewModelList[0].DocumentPath);
+            DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, CompaniesList, GridSelectedROIViewModelList[0].DocumentPath);
             ScanFileSystemForROIDocuments();
         }
 
@@ -172,7 +193,7 @@ namespace SNROI.ViewModels
                 return;
             var suggestedFileNameNoExt = Path.GetFileNameWithoutExtension(FileSystemTools.GetNextAvailableFilename(Path.Combine(DataDirectory,
                     Path.GetFileNameWithoutExtension(selectedROIViewModel.DocumentPath) + "-copy.xml")));
-            var reportName = DialogService.Instance.InputDialog("Clone Report", "","Enter new report name:",
+            var reportName = DialogService.Instance.InputDialog("Clone Report", "", "Enter new report name:",
                 suggestedFileNameNoExt);
             if (string.IsNullOrEmpty(reportName))
                 return;

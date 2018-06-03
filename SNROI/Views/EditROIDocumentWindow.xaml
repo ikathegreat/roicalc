@@ -14,8 +14,8 @@
                     xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid" x:Class="SNROI.Views.EditROIDocumentWindow"
                     mc:Ignorable="d"
                     Title="Edit ROI Document"
-                    Height="500"
-                    Width="800"
+                    Height="600"
+                    Width="1200"
                     WindowStartupLocation="CenterScreen"
                     WindowStyle="ToolWindow"
                     DisplayShowModeSelector="False">
@@ -49,6 +49,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.5*"/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <GroupBox Header="General" Margin="5">
                 <Grid>
@@ -66,7 +67,20 @@
                     <Label Content="Report Name" Grid.Row="0"  Margin="5"  Grid.Column="0" ToolTip="{Binding ROIDocument.DateModified,StringFormat='Date Modified: {0}'}"/>
                     <TextBox  Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding ROIDocument.DocumentName, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsNewReport}" />
                     <TextBlock  Grid.Row="1"  Margin="5" Text="Company Name"  />
-                    <TextBox  Grid.Row="1" Grid.Column="1" Margin="5"  Text="{Binding ROIDocument.CompanyName}"  />
+                    <dxg:LookUpEdit Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding CompaniesList}" AutoComplete="True" IsTextEditable="True" CausesValidation="False" ValidateOnTextInput="False" ValidateOnEnterKeyPressed="False" AcceptsReturn="True" ImmediatePopup="True" EditValue="{Binding ROIDocument.CompanyName}" VerticalScrollBarVisibility="Auto"  >
+                        <!--<dxg:LookUpEdit.PopupContentTemplate>
+                            <ControlTemplate>
+                                <dxg:GridControl Name="PART_GridControl">
+                                    <dxg:GridControl.Columns>
+                                        <dxg:GridColumn Header="Company"/>
+                                    </dxg:GridControl.Columns>
+                                    <dxg:GridControl.View>
+                                        <dxg:TableView AutoWidth="True"/>
+                                    </dxg:GridControl.View>
+                                </dxg:GridControl>
+                            </ControlTemplate>
+                        </dxg:LookUpEdit.PopupContentTemplate>-->
+                    </dxg:LookUpEdit>
                     <TextBlock Grid.Row="2"  Margin="5" Text="Contact Name"  />
                     <TextBox  Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding ROIDocument.ContactName}"  />
                     <Label Grid.Row="3"  Margin="5" Content="Company Logo" />
@@ -101,7 +115,7 @@
                     <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding Source={StaticResource unitsEnum}}"  SelectedItem="{Binding ROIDocument.Units}"/>
                 </Grid>
             </GroupBox>
-            <TabControl Grid.Row="1" Grid.Column="0"  >
+            <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
                 <TabItem Header="Material">
                     <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MaterialsListCollection, Mode=TwoWay}">
                         <dxg:GridControl.View>
@@ -230,7 +244,7 @@
                     <dxe:TextEdit Text="{Binding ROIDocument.Notes}" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" VerticalContentAlignment="Top" />
                 </TabItem>
             </TabControl>
-            <dxprg:PropertyGridControl Margin="5" Grid.Column="1" Grid.Row="1" ShowSearchBox="False" SortMode="Ascending" ReadOnly="True" UseCollectionEditor="False" AllowListItemInitializer="False" AllowInstanceInitializer="False" ShowToolPanel="False" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedObject="{Binding ROIDocument.ROIDocumentCalculations, Mode=TwoWay}" ShowMenuButtonInRows="False" ExpandButtonsVisibility="Hidden" ShowDescriptionIn="Panel" ExpandCategoriesWhenSelectedObjectChanged="True">
+            <dxprg:PropertyGridControl Margin="5" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" ShowSearchBox="False" SortMode="Ascending" ReadOnly="True" UseCollectionEditor="False" AllowListItemInitializer="False" AllowInstanceInitializer="False" ShowToolPanel="False" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedObject="{Binding ROIDocument.ROIDocumentCalculations, Mode=TwoWay}" ShowMenuButtonInRows="False" ExpandButtonsVisibility="Hidden" ShowDescriptionIn="Panel" ExpandCategoriesWhenSelectedObjectChanged="True">
 
                 <dxprg:PropertyDefinition Path="{Binding ROIDocument.ROIDocumentCalculations.EmployeeCalculations.AnnualEmployeeCost}" Description="Annual Employee Cost" ApplyingMode="Always"/>
             </dxprg:PropertyGridControl>

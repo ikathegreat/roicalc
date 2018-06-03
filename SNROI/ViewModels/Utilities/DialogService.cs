@@ -5,6 +5,7 @@ using SNROI.Reports;
 using SNROI.Tools;
 using SNROI.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -307,7 +308,8 @@ namespace SNROI.ViewModels.Utilities
             OpenCustomDialog(printReportWindow);
         }
 
-        public void ShowOpenROIDocumentDialog(string defaultDataDirectory, string documentPath = "")
+        public void ShowOpenROIDocumentDialog(string defaultDataDirectory,
+            List<string> companiesList, string documentPath = "")
         {
             UIServices.SetBusyState();
 
@@ -328,6 +330,8 @@ namespace SNROI.ViewModels.Utilities
 
                 //Todo: Recall modal last new report defaults (culture, etc.)
             }
+
+            roiDocumentViewModel.CompaniesList = companiesList;
 
             roiDocumentViewModel.LoadExistingImages();
             editROIDocWindow.DataContext = roiDocumentViewModel;

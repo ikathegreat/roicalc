@@ -40,6 +40,14 @@
                     </dxe:ListBoxEdit.StyleSettings>
                 </dxe:ListBoxEdit>-->
                 <ListBox Grid.Row="1" ItemsSource="{Binding ReportTemplateList}" SelectedItem="{Binding SelectedReportForEdit}" SelectionMode="Single">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="New" ToolTip="Create a new report template" Command="{Binding OpenNewReportEditorCommand}"/>
+                            <MenuItem Header="Edit" ToolTip="Edit the selected report template in the report design editor" Command="{Binding OpenReportEditorCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Open Templates Folder" ToolTip="Open the report templates directory" Command="{Binding OpenTemplateDirectoryCommand}"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <!--<ListBoxItem IsSelected="{Binding IsChecked}">

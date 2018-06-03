@@ -3,6 +3,7 @@ using Microsoft.WindowsAPICodePack.Shell;
 using SNROI.Models;
 using SNROI.ViewModels.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -52,6 +53,7 @@ namespace SNROI.ViewModels
         public string DocumentPath { get; set; }
         public string DataDirectory { get; set; }
         public bool IsNewReport { get; set; }
+        public List<string> CompaniesList { get; set; }
 
         private ROIDocument roiDocument;
 

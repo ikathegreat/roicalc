@@ -56,5 +56,26 @@ namespace SNROI.Models
         [Category("Employees"), DisplayName("Annual employee cost"), Description("Total cost of all employees per year")]
         public double AnnualEmployeeCost => MonthlyEmployeeCost * 12;
         #endregion
+
+        #region Summary
+
+        [Category("Summary"), DisplayName("Daily total savings"), Description("Total cost of all employees per day")]
+        public double DailyTotalSavings
+        {
+            get
+            {
+                var people = RoiDocument.PeopleListCollection;
+                return people.Sum(x => x.HourlyWage * 8);
+            }
+        }
+        [Category("Summary"), DisplayName("Monthly total savings"), Description("")]
+        public double MonthlyTotalSavings => DailyEmployeeCost * 30;
+
+
+        [Category("Summary"), DisplayName("Annual total savings"), Description("")]
+        public double TotalAnnualSavings => RoiDocument.PeopleListCollection.Count;
+
+
+        #endregion
     }
 }

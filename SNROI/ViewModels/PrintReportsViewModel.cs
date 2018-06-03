@@ -3,6 +3,7 @@ using SNROI.Models;
 using SNROI.ViewModels.Utilities;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -150,6 +151,12 @@ namespace SNROI.ViewModels
         private void ExportReports()
         {
             ExecuteReportActionsOnSelectedReports(ReportAction.Export);
+        }
+        public ICommand OpenTemplateDirectoryCommand => new RelayCommand(OpenTemplateDirectory);
+
+        private void OpenTemplateDirectory()
+        {
+            Process.Start(Path.Combine(DataDirectory, "Reports"));
         }
 
         public ICommand CloseWindowCommand => new RelayCommand(CloseWindow);
