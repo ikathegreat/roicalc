@@ -45,18 +45,21 @@ namespace SNROI.ViewModels
 
             foreach (var file in Directory.GetFiles(reportsDirectory))
             {
-                //Todo: Recall previously checked reported
                 ReportTemplateList.Add(new CheckedListItem<string>()
                 {
                     IsChecked = checkedReportTemplates.Contains(Path.GetFileNameWithoutExtension(file)),
                     Item = Path.GetFileNameWithoutExtension(file)
                 });
             }
+
+            SelectedReportForEdit = ReportTemplateList.FirstOrDefault();
+            FirePropertyChanged(nameof(SelectedReportForEdit));
+
         }
 
         private List<string> LoadPreviouslySelectedReportTemplates()
         {
-            var selectedReportsTemplatesFilePath = Path.Combine(dataDirectory, "AppSettings", "SelectedReportsTemplates.txt");
+            var selectedReportsTemplatesFilePath = Path.Combine(dataDirectory, Constants.AppSettingsDirectoryName, "SelectedReportsTemplates.txt");
             var checkedReportTemplates = new List<string>();
             if (File.Exists(selectedReportsTemplatesFilePath))
                 checkedReportTemplates.AddRange(File.ReadAllLines(selectedReportsTemplatesFilePath));

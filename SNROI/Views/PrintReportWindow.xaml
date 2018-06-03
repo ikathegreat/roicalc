@@ -56,9 +56,13 @@
                             <!--<ListBoxItem IsSelected="{Binding IsChecked}">
                                 <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Path=Item}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                             </ListBoxItem>-->
-                                <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Item}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            </CheckBox>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+                    <ListBox.InputBindings>
+                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenReportEditorCommand}"/>
+                    </ListBox.InputBindings>
                 </ListBox>
             </Grid>
         </GroupBox>
