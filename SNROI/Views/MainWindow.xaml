@@ -161,6 +161,38 @@
             </dxr:RibbonStatusBarControl.RightItems>
         </dxr:RibbonStatusBarControl>
         <dxg:GridControl x:Name="GridControlROIDocuments" Grid.Row="1" ItemsSource="{Binding roiDocViewModelList, Mode=OneWay}" AutoGenerateColumns="None" SelectionMode="Row" SelectedItems="{Binding GridSelectedROIViewModelList}">
+            <dxg:GridControl.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open" Command="{Binding OpenROIDocumentCommand, Mode=OneWay}">
+                        <MenuItem.Icon>
+                            <Image Source="/SNROI;component/Resources/document-open16.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="View Source" Command="{Binding OpenROIDocumentSourceCommand, Mode=OneWay}">
+                        <MenuItem.Icon>
+                            <Image Source="/SNROI;component/Resources/file_text16.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Delete" Command="{Binding DeleteROIDocumentsCommand, Mode=OneWay}">
+                        <MenuItem.Icon>
+                            <Image Source="/SNROI;component/Resources/document-delete16.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Clone" Command="{Binding CloneROIDocumentCommand, Mode=OneWay}">
+                        <MenuItem.Icon>
+                            <Image Source="/SNROI;component/Resources/clipboard_copy16.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Reports" Command="{Binding OpenReportsDialogCommand, Mode=OneWay}">
+                        <MenuItem.Icon>
+                            <Image Source="/SNROI;component/Resources/report_open-print16.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </dxg:GridControl.ContextMenu>
             <dxg:GridControl.View>
                 <dxg:TableView x:Name="TableViewROIDocuments" AllowEditing="False" ShowAutoFilterRow="True"/>
             </dxg:GridControl.View>

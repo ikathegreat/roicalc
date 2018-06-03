@@ -130,6 +130,13 @@ namespace SNROI.ViewModels
             ScanFileSystemForROIDocuments();
         }
 
+        public ICommand OpenROIDocumentSourceCommand => new RelayCommand(OpenROIDocumentSource);
+
+        public void OpenROIDocumentSource()
+        {
+            Process.Start(GridSelectedROIViewModelList[0].DocumentPath);
+        }
+
         public ICommand DeleteROIDocumentsCommand => new RelayCommand(DeleteROIDocuments, CanDeleteROIDocuments);
 
         private bool CanDeleteROIDocuments()
