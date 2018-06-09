@@ -31,108 +31,123 @@ namespace SNROI.Models
             Notes = string.Empty;
         }
 
-        public string DocumentName { get; set; }
-        public string CompanyName { get; set; }
-        public string ContactName { get; set; }
-        public string CompanyLogoImage { get; set; }
-        public Units Units { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
-        public string Notes { get; set; }
+        public string DocumentName
+        {
+            get => documentName;
+            set
+            {
+                documentName = value;
+                FirePropertyChanged(nameof(DocumentName));
+            }
+        }
+
+        public string CompanyName
+        {
+            get => companyName;
+            set
+            {
+                companyName = value;
+                FirePropertyChanged(nameof(CompanyName));
+            }
+        }
+
+        public string ContactName
+        {
+            get => contactName;
+            set
+            {
+                contactName = value;
+                FirePropertyChanged(nameof(ContactName));
+            }
+        }
+
+        public string CompanyLogoImage
+        {
+            get => companyLogoImage;
+            set
+            {
+                companyLogoImage = value;
+                FirePropertyChanged(nameof(CompanyLogoImage));
+            }
+        }
+
+        public Units Units
+        {
+            get => units;
+            set
+            {
+                units = value;
+                FirePropertyChanged(nameof(Units));
+            }
+        }
+
+        public DateTime DateCreated
+        {
+            get => dateCreated;
+            set
+            {
+                dateCreated = value;
+                FirePropertyChanged(nameof(DateCreated));
+            }
+
+        }
+
+        public DateTime DateModified
+        {
+            get => dateModified;
+            set
+            {
+                dateModified = value;
+                FirePropertyChanged(nameof(DateModified));
+            }
+        }
+
+        public string Notes
+        {
+            get => notes;
+            set
+            {
+                notes = value;
+                FirePropertyChanged(nameof(Notes));
+            }
+        }
 
         private ROIDocumentCalculations roiDocumentCalculations;
         private ObservableCollection<Material> _materialsListCollection = new ObservableCollection<Material>();
         private ObservableCollection<HourlyPerson> _peopleListCollection = new ObservableCollection<HourlyPerson>();
         private ObservableCollection<Machine> _machinesListCollection = new ObservableCollection<Machine>();
+        private string documentName;
+        private string companyName;
+        private string contactName;
+        private string companyLogoImage;
+        private Units units;
+        private DateTime dateCreated;
+        private DateTime dateModified;
+        private string notes;
+        private string language;
 
         [XmlIgnore]
         public ROIDocumentCalculations ROIDocumentCalculations
         {
             get => roiDocumentCalculations ?? (roiDocumentCalculations = new ROIDocumentCalculations(this));
-            set => roiDocumentCalculations = value;
+            set
+            {
+                roiDocumentCalculations = value;
+                FirePropertyChanged(nameof(ROIDocumentCalculations));
+            }
         }
 
 
         /// <summary>
         /// plain english language name (e.g. United Kingdom)
         /// </summary>
-        public string Language { get; set; }
-
-        public string CultureCodeString
+        public string Language
         {
-            get
+            get => language;
+            set
             {
-                if (string.IsNullOrEmpty(Language))
-                {
-                    return "en-US";
-                }
-
-                try
-                {
-                    //Todo: improve displayed language to culture convert
-                    var cultureCode = "en-US";
-                    switch (Language)
-                    {
-                        case "United States":
-                            cultureCode = "en-US";
-                            break;
-                        case "Korea":
-                            cultureCode = "en-US";
-                            break;
-                        case "Germany":
-                            cultureCode = "en-GB";
-                            break;
-                        case "Japan":
-                            cultureCode = "ja-JP";
-                            break;
-                    }
-                    return cultureCode;
-                }
-                catch
-                {
-                    return "en-US";
-                }
-            }
-        }
-
-        public CultureInfo Culture
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(CultureCodeString))
-                {
-                    return new CultureInfo("en-US");
-                }
-                else
-                {
-                    try
-                    {
-                        return new CultureInfo(CultureCodeString);
-                    }
-                    catch
-                    {
-                        return new CultureInfo("en-US");
-                    }
-                }
-            }
-        }
-
-        [XmlIgnore]
-        public string CurrencySymbol
-        {
-            get
-            {
-                var result = "$";
-                try
-                {
-                    var cultureInfo = new CultureInfo(CultureCodeString);
-                    result = cultureInfo.NumberFormat.CurrencySymbol;
-                }
-                catch
-                {
-                    //invalid code
-                }
-                return result;
+                language = value;
+                FirePropertyChanged(nameof(Language));
             }
         }
 
@@ -143,6 +158,7 @@ namespace SNROI.Models
             {
                 _materialsListCollection = value;
                 ROIDocumentCalculations.FirePropertyChanged();
+                FirePropertyChanged(nameof(MaterialsListCollection));
             }
         }
 
@@ -153,6 +169,7 @@ namespace SNROI.Models
             {
                 _machinesListCollection = value;
                 ROIDocumentCalculations.FirePropertyChanged();
+                FirePropertyChanged(nameof(MachinesListCollection));
                 //Todo: Bug: these FirePropertyChanged's aren't working after EditDialog is accepted.
             }
         }
@@ -163,6 +180,7 @@ namespace SNROI.Models
             {
                 _peopleListCollection = value;
                 ROIDocumentCalculations.FirePropertyChanged();
+                FirePropertyChanged(nameof(PeopleListCollection));
             }
         }
 

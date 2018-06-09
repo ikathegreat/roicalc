@@ -59,9 +59,21 @@ namespace SNROI.ViewModels
 
         public ROIDocument ROIDocument
         {
-            get => roiDocument ?? (roiDocument = string.IsNullOrEmpty(DocumentPath)
-                       ? new ROIDocument()
-                       : LoadROIDocumentFile(DocumentPath));
+            get
+            {
+                if (roiDocument == null)
+                {
+
+                    var roiDoc = roiDocument ?? (roiDocument = string.IsNullOrEmpty(DocumentPath)
+                          ? new ROIDocument()
+                          : LoadROIDocumentFile(DocumentPath));
+                    roiDoc.IsDirty = false;
+                    return roiDoc;
+                }
+
+                return roiDocument;
+            }
+
             set
             {
                 roiDocument = value;
@@ -185,6 +197,15 @@ namespace SNROI.ViewModels
 
         private void CancelDocumentEdit()
         {
+            if (ROIDocument.IsDirty)
+            {
+                if (DialogService.Instance.ShowMessageQuestion($"Save changes to {ROIDocument.DocumentName}?",
+                    "Save Changes"))
+                {
+                    SaveROIDocument();
+
+                }
+            }
             FireCloseRequest();
         }
 
