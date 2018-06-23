@@ -1,6 +1,8 @@
-﻿using DevExpress.Xpf.Printing;
+﻿using DevExpress.DataAccess.ObjectBinding;
+using DevExpress.XtraReports.UI;
+using SigmaTEK.Dialogs;
 using SigmaTEK.Dialogs.Model;
-using SNROI.Models;
+using SigmaTEK.Dialogs.Mvvm;
 using SNROI.Tools;
 using SNROI.Views;
 using System;
@@ -9,8 +11,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using DevExpress.DataAccess.ObjectBinding;
-using DevExpress.XtraReports.UI;
 
 namespace SNROI.ViewModels.Utilities
 {
@@ -18,7 +18,7 @@ namespace SNROI.ViewModels.Utilities
     {
         private static volatile DialogService instance;
         private static readonly object syncRoot = new Object();
-        private readonly SigmaTEK.Dialogs.IDialogService dialogService;
+        private readonly IDialogService dialogService;
 
         public static DialogService Instance
         {
@@ -96,12 +96,11 @@ namespace SNROI.ViewModels.Utilities
         /// <param name="defaultFileName">The file to display when the dialog opens.</param>
         /// <param name="filterIndex">The initial filter index.</param>
         /// <returns>
-        /// SXOpenFileDialogResult
+        /// IOpenFileDialogResult
         /// </returns>
-        public SXOpenFileDialogResult OpenFileDialog(string title, string filter, string defaultFileName, int filterIndex)
+        public IOpenFileDialogResult OpenFileDialog(string title, string filter, string defaultFileName, int filterIndex)
         {
-            var result = dialogService.OpenFileDialog(title, filter, defaultFileName, filterIndex);
-            return new SXOpenFileDialogResult { SelectedFiles = result.SelectedFiles, SelectedFilterIndex = result.SelectedFilterIndex };
+            return dialogService.OpenFileDialog(title, filter, defaultFileName, filterIndex);
         }
 
         /// <summary>
@@ -126,12 +125,11 @@ namespace SNROI.ViewModels.Utilities
         /// <param name="initialDirectory">The directory to start with when the dialog opens.</param>
         /// <param name="filterIndex">The initial filter index.</param>
         /// <returns>
-        /// SXOpenFileDialogResult
+        /// IOpenFileDialogResult
         /// </returns>
-        public SXOpenFileDialogResult OpenMultiFileDialog(string title, string filter, string initialDirectory, int filterIndex)
+        public IOpenFileDialogResult OpenMultiFileDialog(string title, string filter, string initialDirectory, int filterIndex)
         {
-            var result = dialogService.OpenMultiFileDialog(title, filter, initialDirectory, filterIndex);
-            return new SXOpenFileDialogResult { SelectedFiles = result.SelectedFiles, SelectedFilterIndex = result.SelectedFilterIndex };
+            return dialogService.OpenMultiFileDialog(title, filter, initialDirectory, filterIndex);
 
         }
 
@@ -273,52 +271,49 @@ namespace SNROI.ViewModels.Utilities
             dialogService.ShowProgressDialog(title, messageText);
         }
 
-        private void OpenCustomDialog(Window dialog)
+        /// <summary>
+        /// Hides the progress dialog.
+        /// </summary>
+        public void HideProgressDialog()
         {
-            try
-            {
-                dialog.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                ShowMessageError(ex, string.Format($"Show {dialog.Name} Exception"));
-            }
+            dialogService.HideProgressDialog();
         }
 
+        /// <summary>
+        /// Unhides the progress dialog if previously hidden.
+        /// </summary>
+        public void UnhideProgressDialog()
+        {
+            dialogService.UnhideProgressDialog();
+        }
 
         public void ShowAboutDialog()
         {
             UIServices.SetBusyState();
 
-            var aboutWindow = new AboutWindow();
+            var aboutView = new AboutView();
             var aboutViewModel = new AboutViewModel();
-            aboutWindow.DataContext = aboutViewModel;
-            aboutViewModel.ClosingRequest += (sender, e) => aboutWindow.Close();
-            OpenCustomDialog(aboutWindow);
+
+            dialogService.ShowDialogWindow("About SigmaNEST ROI Calculator", null, null, aboutView, aboutViewModel, false);
         }
+
         public void ShowReportsDialog(string defaultDataDirectory, ObservableCollection<ROIDocumentViewModel> selectedViewModelsList)
         {
             UIServices.SetBusyState();
 
-            var printReportWindow = new PrintReportWindow();
+            var printReportWindow = new PrintReportView();
             var printReportsViewModel = new PrintReportsViewModel { DataDirectory = defaultDataDirectory, SelectedROIViewModelList = selectedViewModelsList };
-            printReportWindow.DataContext = printReportsViewModel;
-            printReportsViewModel.ClosingRequest += (sender, e) => printReportWindow.Close();
-            OpenCustomDialog(printReportWindow);
+            var closeCommand = new ButtonServiceCommand("Close", printReportsViewModel.SaveSelectedReportTemplatesCommand, false, true, true);
+
+            dialogService.ShowDialogWindow("Print ROI Report", new[] { closeCommand }, null, printReportWindow, printReportsViewModel, false);
         }
 
-        public void ShowOpenROIDocumentDialog(string defaultDataDirectory,
-            List<string> companiesList, string documentPath = "")
+        public bool ShowOpenROIDocumentDialog(string defaultDataDirectory, List<string> companiesList, string documentPath = "")
         {
             UIServices.SetBusyState();
 
-            var editROIDocWindow = new EditROIDocumentWindow();
-
-            var roiDocumentViewModel = new ROIDocumentViewModel
-            {
-                DocumentPath = documentPath,
-                DataDirectory = defaultDataDirectory
-            };
+            var editROIDocView = new EditROIDocumentView();
+            var roiDocumentViewModel = new ROIDocumentViewModel { DocumentPath = documentPath, DataDirectory = defaultDataDirectory };
 
             //Pre-populate new report's default name
             if (string.IsNullOrEmpty(documentPath))
@@ -331,13 +326,17 @@ namespace SNROI.ViewModels.Utilities
             }
 
             roiDocumentViewModel.CompaniesList = companiesList;
-
             roiDocumentViewModel.LoadExistingImages();
-            editROIDocWindow.DataContext = roiDocumentViewModel;
+            
+            var editReportCommand = new ButtonServiceCommand("Edit Report", roiDocumentViewModel.EditReportCommand, false, false, false);
+            var okCommand = new ButtonServiceCommand("OK", roiDocumentViewModel.SaveROIDocumentCommand, false, true, true);
+            var cancelCommand = new ButtonServiceCommand("Cancel", roiDocumentViewModel.CancelCommand, true, false, true);
 
-            roiDocumentViewModel.ClosingRequest += (sender, e) => editROIDocWindow.Close();
-            OpenCustomDialog(editROIDocWindow);
-            //Todo: check for dialog result, only reload on OK
+            var result = dialogService.ShowDialogWindow("Edit ROI Document", new[] { editReportCommand, okCommand, cancelCommand }, null, editROIDocView, roiDocumentViewModel, false);
+            if (result == okCommand)
+                return true;
+            else
+                return false;
         }
 
 
@@ -345,12 +344,14 @@ namespace SNROI.ViewModels.Utilities
         {
             UIServices.SetBusyState();
 
-            var imageBrowserWindow = new ImageBrowserWindow();
+            var imageBrowserWindow = new ImageBrowserView();
             var imageBrowserViewModel = new ImageBrowserViewModel { ImageDirectory = imageDirectory };
-            imageBrowserViewModel.LoadExisingImages();
-            imageBrowserWindow.DataContext = imageBrowserViewModel;
-            imageBrowserViewModel.ClosingRequest += (sender, e) => imageBrowserWindow.Close();
-            OpenCustomDialog(imageBrowserWindow);
+            imageBrowserViewModel.LoadExistingImages();
+
+            var okCommand = new ButtonServiceCommand("OK", imageBrowserViewModel.OkCommand, false, true, true);
+            var cancelCommand = new ButtonServiceCommand("Cancel", null, true, false, true);
+
+            dialogService.ShowDialogWindow("Image Browser", new[] { okCommand, cancelCommand }, null, imageBrowserWindow, imageBrowserViewModel, false);
         }
 
         public void ShowReportEditorDialog(string reportRepxFilePath = "")
@@ -358,12 +359,8 @@ namespace SNROI.ViewModels.Utilities
             UIServices.SetBusyState();
 
             //Todo: restore and save window settings
-            ReportDesignerWindow reportEditorWindow;
-
-            reportEditorWindow = new ReportDesignerWindow { ReportFilePath = reportRepxFilePath };
-
-            if (reportEditorWindow != null)
-                OpenCustomDialog(reportEditorWindow);
+            var reportEditorWindow = new ReportDesignerWindow { ReportFilePath = reportRepxFilePath };
+            reportEditorWindow.ShowDialog();
         }
 
         public void ShowReportPreviewDialog(string reportRepxFilePath = "", object dataSource = null)
@@ -371,7 +368,7 @@ namespace SNROI.ViewModels.Utilities
             UIServices.SetBusyState();
 
             var report = XtraReport.FromFile(reportRepxFilePath, true);
-            var window = new DocumentPreviewWindow();
+            var window = new DevExpress.Xpf.Printing.DocumentPreviewWindow();
             window.PreviewControl.DocumentSource = report;
 
             if (dataSource != null)
@@ -386,35 +383,6 @@ namespace SNROI.ViewModels.Utilities
 
             report.CreateDocument();
             window.ShowDialog();
-        }
-    }
-
-
-    /// <summary>
-    /// Implements <see cref="IOpenFileDialogResult" />
-    /// </summary>
-    public class SXOpenFileDialogResult : IOpenFileDialogResult
-    {
-        /// <summary>
-        /// Gets or sets the selected files.
-        /// </summary>
-        /// <value>
-        /// The selected files.
-        /// </value>
-        public string[] SelectedFiles { get; set; }
-
-        /// <summary>
-        /// Gets or sets the index of the selected filter.
-        /// </summary>
-        /// <value>
-        /// The index of the selected filter.
-        /// </value>
-        public int SelectedFilterIndex { get; set; }
-
-        public SXOpenFileDialogResult()
-        {
-            SelectedFiles = new string[0];
-            SelectedFilterIndex = 0;
         }
     }
 }

@@ -9,10 +9,11 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using SNROI.Tools;
+using GalaSoft.MvvmLight;
 
 namespace SNROI.ViewModels
 {
-    public class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : ViewModelBase
     {
         public MainWindowViewModel()
         {
@@ -119,7 +120,7 @@ namespace SNROI.ViewModels
             set
             {
                 totalReportsMessage = value;
-                FirePropertyChanged(nameof(TotalReportsMessage));
+                RaisePropertyChanged(nameof(TotalReportsMessage));
             }
         }
 
@@ -131,7 +132,7 @@ namespace SNROI.ViewModels
             set
             {
                 selectedReportsMessage = value;
-                FirePropertyChanged(nameof(SelectedReportsMessage));
+                RaisePropertyChanged(nameof(SelectedReportsMessage));
             }
         }
 
@@ -143,7 +144,7 @@ namespace SNROI.ViewModels
             set
             {
                 selectedReportName = value;
-                FirePropertyChanged(nameof(SelectedReportName));
+                RaisePropertyChanged(nameof(SelectedReportName));
 
             }
         }
@@ -173,8 +174,8 @@ namespace SNROI.ViewModels
 
         private void NewROIDocument()
         {
-            DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, CompaniesList);
-            ScanFileSystemForROIDocuments();
+            if (DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, CompaniesList))
+                ScanFileSystemForROIDocuments();
         }
 
         public ICommand OpenROIDocumentCommand => new RelayCommand(OpenROIDocument, CanOpenROIDocument);
@@ -186,8 +187,8 @@ namespace SNROI.ViewModels
 
         public void OpenROIDocument()
         {
-            DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, CompaniesList, GridSelectedROIViewModelList[0].DocumentPath);
-            ScanFileSystemForROIDocuments();
+            if (DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, CompaniesList, GridSelectedROIViewModelList[0].DocumentPath))
+                ScanFileSystemForROIDocuments();
         }
 
         public ICommand OpenROIDocumentSourceCommand => new RelayCommand(OpenROIDocumentSource);

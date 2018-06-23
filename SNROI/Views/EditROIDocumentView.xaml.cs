@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,14 +16,13 @@ using System.Windows.Shapes;
 namespace SNROI.Views
 {
     /// <summary>
-    /// Interaction logic for PrintReportWindow.xaml
+    /// Interaction logic for EditROIDocumentView.xaml
     /// </summary>
-    public partial class PrintReportWindow : Window
+    public partial class EditROIDocumentView : UserControl
     {
-        public PrintReportWindow()
+        public EditROIDocumentView()
         {
             InitializeComponent();
         }
-        
     }
 }

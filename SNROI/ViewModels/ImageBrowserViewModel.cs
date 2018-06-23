@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using DevExpress.Mvvm;
+using GalaSoft.MvvmLight.CommandWpf;
 using SNROI.ViewModels.Utilities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Windows.Input;
 
 namespace SNROI.ViewModels
 {
-    public class ImageBrowserViewModel : BaseViewModel
+    public class ImageBrowserViewModel : ViewModelBase
     {
         private readonly ObservableCollection<string> imageFilesToCopy = new ObservableCollection<string>();
         private readonly ObservableCollection<string> imageFilesToDelete = new ObservableCollection<string>();
@@ -34,7 +35,7 @@ namespace SNROI.ViewModels
 
         public ICommand AddImageCommand => new RelayCommand(ImportImage);
 
-        public void LoadExisingImages()
+        public void LoadExistingImages()
         {
             if (string.IsNullOrEmpty(ImageDirectory))
                 return;
@@ -89,48 +90,47 @@ namespace SNROI.ViewModels
             }
         }
 
-        public ICommand OKCommand => new RelayCommand(OKWindow);
-
-        private void OKWindow()
+        private RelayCommand okCommand;
+        public RelayCommand OkCommand
         {
-            if (!string.IsNullOrEmpty(ImageDirectory))
+            get
             {
-                if (!Directory.Exists(ImageDirectory))
-                    Directory.CreateDirectory(ImageDirectory);
+                return okCommand
+                    ?? (okCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (!string.IsNullOrEmpty(ImageDirectory))
+                        {
+                            if (!Directory.Exists(ImageDirectory))
+                                Directory.CreateDirectory(ImageDirectory);
 
-                foreach (var file in imageFilesToCopy)
-                {
-                    var fileName = Path.GetFileName(file);
-                    try
-                    {
-                        File.Copy(file, Path.Combine(ImageDirectory, fileName), false);
-                    }
-                    catch (Exception ex)
-                    {
-                        DialogService.Instance.ShowMessageError(ex);
-                    }
-                }
-                foreach (var file in imageFilesToDelete)
-                {
-                    var fileName = Path.GetFileName(file);
-                    try
-                    {
-                        File.Delete(Path.Combine(ImageDirectory, fileName));
-                    }
-                    catch (Exception ex)
-                    {
-                        DialogService.Instance.ShowMessageError(ex);
-                    }
-                }
+                            foreach (var file in imageFilesToCopy)
+                            {
+                                var fileName = Path.GetFileName(file);
+                                try
+                                {
+                                    File.Copy(file, Path.Combine(ImageDirectory, fileName), false);
+                                }
+                                catch (Exception ex)
+                                {
+                                    DialogService.Instance.ShowMessageError(ex);
+                                }
+                            }
+                            foreach (var file in imageFilesToDelete)
+                            {
+                                var fileName = Path.GetFileName(file);
+                                try
+                                {
+                                    File.Delete(Path.Combine(ImageDirectory, fileName));
+                                }
+                                catch (Exception ex)
+                                {
+                                    DialogService.Instance.ShowMessageError(ex);
+                                }
+                            }
+                        }
+                    }));
             }
-            FireCloseRequest();
-        }
-
-        public ICommand CancelCommand => new RelayCommand(CancelWindow);
-
-        private void CancelWindow()
-        {
-            FireCloseRequest();
         }
     }
 }

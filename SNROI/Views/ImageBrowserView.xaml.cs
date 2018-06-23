@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace SNROI.Views
 {
     /// <summary>
-    /// Interaction logic for ImageBrowserWindow.xaml
+    /// Interaction logic for ImageBrowserView.xaml
     /// </summary>
-    public partial class ImageBrowserWindow : Window
+    public partial class ImageBrowserView : UserControl
     {
-        public ImageBrowserWindow()
+        public ImageBrowserView()
         {
             InitializeComponent();
         }

@@ -94,8 +94,8 @@
     <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="SigmaTEK.Dialogs, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SigmaTEK.Dialogs.1.2.2\lib\net46\SigmaTEK.Dialogs.dll</HintPath>
+    <Reference Include="SigmaTEK.Dialogs, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SigmaTEK.Dialogs.1.4.6\lib\net46\SigmaTEK.Dialogs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -137,16 +137,16 @@
     </ApplicationDefinition>
     <Compile Include="Models\ROIDocumentCalculations.cs" />
     <Compile Include="ViewModels\Utilities\UIServices.cs" />
-    <Compile Include="Views\AboutWindow.xaml.cs">
-      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    <Compile Include="Views\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Utilities\DialogService.cs" />
-    <Compile Include="Views\EditROIDocumentWindow.xaml.cs">
-      <DependentUpon>EditROIDocumentWindow.xaml</DependentUpon>
+    <Compile Include="Views\EditROIDocumentView.xaml.cs">
+      <DependentUpon>EditROIDocumentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\FileSystemTools.cs" />
-    <Compile Include="Views\ImageBrowserWindow.xaml.cs">
-      <DependentUpon>ImageBrowserWindow.xaml</DependentUpon>
+    <Compile Include="Views\ImageBrowserView.xaml.cs">
+      <DependentUpon>ImageBrowserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CheckedListItem.cs" />
@@ -155,8 +155,8 @@
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\Material.cs" />
     <Compile Include="Models\ROIDocument.cs" />
-    <Compile Include="Views\PrintReportWindow.xaml.cs">
-      <DependentUpon>PrintReportWindow.xaml</DependentUpon>
+    <Compile Include="Views\PrintReportView.xaml.cs">
+      <DependentUpon>PrintReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReportDesignerWindow.xaml.cs">
       <DependentUpon>ReportDesignerWindow.xaml</DependentUpon>
@@ -170,19 +170,19 @@
     <Compile Include="ViewModels\PrintReportsViewModel.cs" />
     <Compile Include="ViewModels\ROIDocumentViewModel.cs" />
     <Compile Include="Models\WindowSettings.cs" />
-    <Page Include="Views\AboutWindow.xaml">
+    <Page Include="Views\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditROIDocumentWindow.xaml">
+    <Page Include="Views\EditROIDocumentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ImageBrowserWindow.xaml">
+    <Page Include="Views\ImageBrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PrintReportWindow.xaml">
+    <Page Include="Views\PrintReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,7 +202,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

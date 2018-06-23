@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace SNROI.Views
 {
     /// <summary>
-    /// Interaction logic for AboutWindow.xaml
+    /// Interaction logic for AboutView.xaml
     /// </summary>
-    public partial class AboutWindow : Window
+    public partial class AboutView : UserControl
     {
-        public AboutWindow()
+        public AboutView()
         {
             InitializeComponent();
         }

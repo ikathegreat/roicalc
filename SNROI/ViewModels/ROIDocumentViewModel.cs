@@ -11,11 +11,12 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.XtraReports.Wizards;
+using GalaSoft.MvvmLight;
 
 namespace SNROI.ViewModels
 {
     [HighlightedClass]
-    public class ROIDocumentViewModel : BaseViewModel
+    public class ROIDocumentViewModel : ViewModelBase
     {
         public ROIDocumentViewModel()
         {
@@ -32,9 +33,8 @@ namespace SNROI.ViewModels
             var existingFiles = Directory.GetFiles(imageDirectory);
             foreach (var existingFile in existingFiles)
             {
-                var fileNameNoExt = Path.GetFileName(existingFile);
-                if (!ImageList.Contains(fileNameNoExt))
-                    ImageList.Add(fileNameNoExt);
+                if (!ImageList.Contains(existingFile))
+                    ImageList.Add(existingFile);
             }
             //Todo: Bug with removing an image and not removing it from the list
         }
@@ -77,12 +77,12 @@ namespace SNROI.ViewModels
             set
             {
                 roiDocument = value;
-                FirePropertyChanged(nameof(ROIDocument));
+                RaisePropertyChanged(nameof(ROIDocument));
 
             }
         }
 
-        public ICommand SaveROIDocumentCommand => new RelayCommand(SaveROIDocumentAndClose, CanSaveROIDocument);
+        public ICommand SaveROIDocumentCommand => new RelayCommand(() => { SaveROIDocument(); }, CanSaveROIDocument);
 
         private bool CanSaveROIDocument()
         {
@@ -90,11 +90,6 @@ namespace SNROI.ViewModels
                          && !(ROIDocument.DocumentName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0);
             return result;
 
-        }
-        private void SaveROIDocumentAndClose()
-        {
-            SaveROIDocument();
-            FireCloseRequest();
         }
 
         public bool SaveROIDocument()
@@ -106,9 +101,17 @@ namespace SNROI.ViewModels
                     DocumentPath = Path.Combine(DataDirectory, ROIDocument.DocumentName + ".xml");
 
             if (File.Exists(DocumentPath) && IsNewReport)
-                if (!DialogService.Instance.ShowMessageQuestion(
-                    $"{ROIDocument.DocumentName} already exists. Overwrite?", "File Exists"))
+            {
+                DialogService.Instance.HideProgressDialog();
+
+                if (!DialogService.Instance.ShowMessageQuestion($"{ROIDocument.DocumentName} already exists. Overwrite?", "File Exists"))
+                {
+                    DialogService.Instance.CloseProgressDialog();
                     return false;
+                }
+
+                DialogService.Instance.UnhideProgressDialog();
+            }
 
             var directoryName = Path.GetDirectoryName(DocumentPath);
             if (!Directory.Exists(directoryName))
@@ -126,6 +129,7 @@ namespace SNROI.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine($"Exception occurred while writing to XML: {ex.Message}");
+                DialogService.Instance.CloseProgressDialog();
                 return false;
             }
             finally
@@ -206,7 +210,6 @@ namespace SNROI.ViewModels
 
                 }
             }
-            FireCloseRequest();
         }
 
 
@@ -246,7 +249,7 @@ namespace SNROI.ViewModels
         {
             DialogService.Instance.ShowImageBrowserWindow(Path.Combine(DataDirectory, Constants.ImagesDirectoryName));
             LoadExistingImages();
-            FirePropertyChanged(nameof(ImageList));
+            RaisePropertyChanged(nameof(ImageList));
         }
 
         public ReportType ReportType => ReportType.Standard;

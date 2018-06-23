@@ -8,10 +8,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using GalaSoft.MvvmLight;
 
 namespace SNROI.ViewModels
 {
-    public class PrintReportsViewModel : BaseViewModel
+    public class PrintReportsViewModel : ViewModelBase
     {
         private enum ReportAction
         {
@@ -53,7 +54,7 @@ namespace SNROI.ViewModels
             }
 
             SelectedReportForEdit = ReportTemplateList.FirstOrDefault();
-            FirePropertyChanged(nameof(SelectedReportForEdit));
+            RaisePropertyChanged(nameof(SelectedReportForEdit));
 
         }
 
@@ -103,7 +104,7 @@ namespace SNROI.ViewModels
             set
             {
                 selectedReportForEdit = value;
-                FirePropertyChanged(nameof(SelectedReportForEdit));
+                RaisePropertyChanged(nameof(SelectedReportForEdit));
             }
         }
 
@@ -113,7 +114,7 @@ namespace SNROI.ViewModels
         {
             DialogService.Instance.ShowReportEditorDialog();
             PopulateReportTemplatesList();
-            FirePropertyChanged(nameof(ReportTemplateList));
+            RaisePropertyChanged(nameof(ReportTemplateList));
         }
 
         private bool CanEditOrDeleteReportTemplate()
@@ -159,7 +160,7 @@ namespace SNROI.ViewModels
             }
 
             PopulateReportTemplatesList();
-            FirePropertyChanged(nameof(ReportTemplateList));
+            RaisePropertyChanged(nameof(ReportTemplateList));
         }
 
         private bool CanPerformReportActions()
@@ -194,13 +195,7 @@ namespace SNROI.ViewModels
             Process.Start(Path.Combine(DataDirectory, Constants.ReportTemplateDirectoryName));
         }
 
-        public ICommand CloseWindowCommand => new RelayCommand(CloseWindow);
-
-        private void CloseWindow()
-        {
-            SaveSelectedReportTemplates();
-            FireCloseRequest();
-        }
+        public ICommand SaveSelectedReportTemplatesCommand => new RelayCommand(SaveSelectedReportTemplates);
 
         private void SaveSelectedReportTemplates()
         {
@@ -256,8 +251,6 @@ namespace SNROI.ViewModels
                     }
                 }
             }
-
-            CloseWindow();
         }
     }
 }

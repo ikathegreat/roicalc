@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="SNROI.Views.ImageBrowserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SNROI.ViewModels"
+             mc:Ignorable="d"
+             Height="350" Width="500"
+             d:DataContext="{d:DesignInstance Type=vm:ImageBrowserViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Height="35">
+            <Button Content="Import" Margin="0,0,0,5" Width="90" Command="{Binding AddImageCommand}" />
+            <Button Content="Delete" Margin="5,0,0,5" Width="90" Command="{Binding RemoveImageCommand}" />
+        </StackPanel>
+        <dxg:GridControl Grid.Row="1" ItemsSource="{Binding DisplayImageList, Mode=TwoWay}" IsFilterEnabled="False" AllowMRUFilterList="False" AllowColumnMRUFilterList="False" SelectionMode="Row" SelectedItems="{Binding SelectedImageNamesList}" EnableSmartColumnsGeneration="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <dxg:GridControl.View>
+                <dxg:TableView AllowFilterEditor="False" AllowColumnFiltering="False" AllowColumnMoving="False" AllowGrouping="False" ShowGroupPanel="False" BestFitMode="AllRows" AutoWidth="True" NavigationStyle="Row" />
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="Column" Header="Image File" IsSmart="True" />
+        </dxg:GridControl>
+    </Grid>
+</UserControl>
