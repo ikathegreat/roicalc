@@ -7,25 +7,26 @@ namespace SNROI.Models
 
     public abstract class BaseModel : INotifyPropertyChanged
     {
-        private bool _isDirty;
+        //private bool _isDirty;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void FirePropertyChanged([CallerMemberName] string aPropertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(aPropertyName));
-            IsDirty = true;
+            //IsDirty = true;
         }
 
-        [XmlIgnore]
-        public bool IsDirty
-        {
-            get => _isDirty;
-            set
-            {
-                _isDirty = value;
-            }
-        }
+        //Todo: IsDirty is present on the UI, unintended
+        //[XmlIgnore]
+        //public bool IsDirty
+        //{
+        //    get => _isDirty;
+        //    set
+        //    {
+        //        _isDirty = value;
+        //    }
+        //}
     }
 
     public static class Constants

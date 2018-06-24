@@ -113,6 +113,7 @@ namespace SNROI.Models
         }
 
         private ROIDocumentCalculations roiDocumentCalculations;
+        private ROIDocumentMeasurements roiDocumentMeasurements;
         private ObservableCollection<Material> _materialsListCollection = new ObservableCollection<Material>();
         private ObservableCollection<HourlyPerson> _peopleListCollection = new ObservableCollection<HourlyPerson>();
         private ObservableCollection<Machine> _machinesListCollection = new ObservableCollection<Machine>();
@@ -136,6 +137,22 @@ namespace SNROI.Models
                 FirePropertyChanged(nameof(ROIDocumentCalculations));
             }
         }
+
+
+        public ROIDocumentMeasurements ROIDocumentMeasurements
+        {
+            get
+            {
+                return roiDocumentMeasurements ?? (roiDocumentMeasurements = new ROIDocumentMeasurements());
+            }
+            set
+            {
+                roiDocumentMeasurements = value;
+                FirePropertyChanged(nameof(ROIDocumentCalculations));
+                FirePropertyChanged(nameof(ROIDocumentMeasurements));
+            }
+        }
+
 
 
         /// <summary>

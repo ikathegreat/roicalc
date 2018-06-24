@@ -12,6 +12,7 @@ using System.Xml.Serialization;
 using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.XtraReports.Wizards;
 using GalaSoft.MvvmLight;
+using SNROI.Enums;
 
 namespace SNROI.ViewModels
 {
@@ -67,7 +68,7 @@ namespace SNROI.ViewModels
                     var roiDoc = roiDocument ?? (roiDocument = string.IsNullOrEmpty(DocumentPath)
                           ? new ROIDocument()
                           : LoadROIDocumentFile(DocumentPath));
-                    roiDoc.IsDirty = false;
+                    //roiDoc.IsDirty = false;
                     return roiDoc;
                 }
 
@@ -201,15 +202,15 @@ namespace SNROI.ViewModels
 
         private void CancelDocumentEdit()
         {
-            if (ROIDocument.IsDirty)
-            {
-                if (DialogService.Instance.ShowMessageQuestion($"Save changes to {ROIDocument.DocumentName}?",
-                    "Save Changes"))
-                {
-                    SaveROIDocument();
+            //if (ROIDocument.IsDirty)
+            //{
+            //    if (DialogService.Instance.ShowMessageQuestion($"Save changes to {ROIDocument.DocumentName}?",
+            //        "Save Changes"))
+            //    {
+            //        SaveROIDocument();
 
-                }
-            }
+            //    }
+            //}
         }
 
 

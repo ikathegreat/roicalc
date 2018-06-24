@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Markup;
 
 namespace SNROI.Views.Utilities
 {
@@ -208,6 +209,55 @@ namespace SNROI.Views.Utilities
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public class EnumBindingSourceExtension : MarkupExtension
+    {
+        public EnumBindingSourceExtension()
+        {
+
+        }
+
+        private Type enumType;
+        public Type EnumType
+        {
+            get => enumType;
+            set
+            {
+                if (value == this.enumType)
+                    return;
+                if (null != value)
+                {
+                    var underlyingEnumType = Nullable.GetUnderlyingType(value) ?? value;
+                    if (!underlyingEnumType.IsEnum)
+                        throw new ArgumentException("Type must be an Enum!");
+                }
+
+                this.enumType = value;
+            }
+        }
+
+
+        public EnumBindingSourceExtension(Type enumType)
+        {
+            EnumType = enumType;
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            if (null == this.enumType)
+                throw new InvalidOperationException("The EnumType must be specified!");
+
+            var actualEnumType = Nullable.GetUnderlyingType(this.enumType) ?? this.enumType;
+            var enumValues = Enum.GetValues(actualEnumType);
+
+            if (actualEnumType == this.enumType)
+                return enumValues;
+
+            var tempArray = Array.CreateInstance(actualEnumType, enumValues.Length + 1);
+            enumValues.CopyTo(tempArray, 1);
+            return tempArray;
         }
     }
 }

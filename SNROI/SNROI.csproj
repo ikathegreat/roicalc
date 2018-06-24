@@ -135,7 +135,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums\TimeUnitsEnums.cs" />
     <Compile Include="Models\ROIDocumentCalculations.cs" />
+    <Compile Include="Models\ROIDocumentMeasurements.cs" />
+    <Compile Include="Tools\DateTimeTools.cs" />
     <Compile Include="ViewModels\Utilities\UIServices.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
