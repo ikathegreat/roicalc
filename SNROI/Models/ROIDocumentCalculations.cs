@@ -121,16 +121,16 @@ namespace SNROI.Models
         {
             get
             {
-                var people = RoiDocument.PeopleListCollection;
-                return people.Sum(x => x.HourlyWage * WorkHoursInADay);
+                //Todo: Add other savings here
+                return DailyEmployeeSavings;
             }
         }
         [Category("Summary"), DisplayName("Monthly total savings"), Description(""), DisplayFormat(DataFormatString = "0.00")]
-        public double MonthlyTotalSavings => DailyEmployeeCost * WorkDaysInAMonth;
+        public double MonthlyTotalSavings => DailyEmployeeSavings * WorkDaysInAMonth;
 
 
         [Category("Summary"), DisplayName("Annual total savings"), Description(""), DisplayFormat(DataFormatString = "0.00")]
-        public double TotalAnnualSavings => DailyTotalSavings * WorkDaysInAYear;
+        public double TotalAnnualSavings => DailyEmployeeSavings * WorkDaysInAYear;
 
 
         #endregion
