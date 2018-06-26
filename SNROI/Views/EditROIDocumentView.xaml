@@ -14,7 +14,7 @@
              mc:Ignorable="d"
              Height="600"
              Width="1350"
-             d:DataContext="{d:DesignInstance Type=vm:ROIDocumentViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=vm:ROIDocumentViewModel, IsDesignTimeCreatable=True}" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <vu:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <vu:FileNameWithoutPathConverter x:Key="FileNameWithoutPathConverter" />
@@ -115,7 +115,7 @@
         </GroupBox>
         <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
             <TabItem Header="Material">
-                <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MaterialsListCollection, Mode=TwoWay}">
+                <dxg:GridControl x:Name="GridControlMaterials" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MaterialsListCollection, Mode=TwoWay}">
                     <dxg:GridControl.View>
                         <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom">
                             <dxg:TableView.EditFormTemplate>
@@ -174,7 +174,7 @@
                 </dxg:GridControl>
             </TabItem>
             <TabItem Header="Machines">
-                <dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MachinesListCollection, Mode=TwoWay}">
+                <dxg:GridControl x:Name="GridControlMachines" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MachinesListCollection, Mode=TwoWay}">
                     <dxg:GridControl.View>
                         <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom">
                             <dxg:TableView.EditFormTemplate>
@@ -221,7 +221,7 @@
                                   ItemsSource="{Binding Source={vu:EnumBindingSource {x:Type Enums:TimeUnitsEnums}}}" SelectedItem="{Binding ROIDocument.ROIDocumentMeasurements.TimeUnitsEnums}"/>
                     </StackPanel>
                     </GroupBox>
-                    <dxg:GridControl Grid.Row="1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.PeopleListCollection, Mode=TwoWay}">
+                    <dxg:GridControl x:Name="GridControlPeople" Grid.Row="1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.PeopleListCollection, Mode=TwoWay}">
                         <dxg:GridControl.View>
                             <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom" EditFormPostMode="Immediate">
                                 <dxg:TableView.EditFormTemplate>

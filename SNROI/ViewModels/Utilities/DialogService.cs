@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using SNROI.Models;
 
 namespace SNROI.ViewModels.Utilities
 {
@@ -332,9 +333,12 @@ namespace SNROI.ViewModels.Utilities
             var okCommand = new ButtonServiceCommand("OK", roiDocumentViewModel.SaveROIDocumentCommand, false, true, true);
             var cancelCommand = new ButtonServiceCommand("Cancel", roiDocumentViewModel.CancelCommand, true, false, true);
 
-            var result = dialogService.ShowDialogWindow("Edit ROI Document", new[] { editReportCommand, okCommand, cancelCommand }, null, editROIDocView, roiDocumentViewModel, false);
+            var result = dialogService.ShowDialogWindow($"Edit {roiDocumentViewModel.ROIDocument.DocumentName}", new[] { editReportCommand, okCommand, cancelCommand }, null, editROIDocView, roiDocumentViewModel, false);
             if (result == okCommand)
+            {
+                editROIDocView.SaveDocumentGrids(Path.Combine(defaultDataDirectory, Constants.AppSettingsDirectoryName));
                 return true;
+            }
             else
                 return false;
         }

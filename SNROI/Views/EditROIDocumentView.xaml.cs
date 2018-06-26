@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevExpress.Xpf.Grid;
+using SNROI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +13,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SNROI.Views
 {
@@ -23,6 +24,29 @@ namespace SNROI.Views
         public EditROIDocumentView()
         {
             InitializeComponent();
+        }
+
+        public void SaveDocumentGrids(string directory)
+        {
+            GridControlMaterials.SaveLayoutToXml(Path.Combine(directory, "MaterialsGrid.xml"));
+            GridControlMachines.SaveLayoutToXml(Path.Combine(directory, "MachinesGrid.xml"));
+            GridControlPeople.SaveLayoutToXml(Path.Combine(directory, "PeopleGrid.xml"));
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            restoreGridLayoutFromXml(GridControlMaterials, "MaterialsGrid.xml");
+            restoreGridLayoutFromXml(GridControlMachines, "MachinesGrid.xml");
+            restoreGridLayoutFromXml(GridControlPeople, "PeopleGrid.xml");
+        }
+
+        private void restoreGridLayoutFromXml(GridControl grid, string xmlFileName)
+        {
+            var directory = (this.DataContext as ROIDocumentViewModel).DataDirectory;
+            var gridXmlPath = Path.Combine(directory, "AppSettings", xmlFileName);
+            if (File.Exists(gridXmlPath))
+                grid.RestoreLayoutFromXml(gridXmlPath);
+
         }
     }
 }

@@ -43,7 +43,7 @@ namespace SNROI
             if (!(mainWindow.DataContext is MainWindowViewModel mainWindowViewModel))
                 return;
 
-            var windowSettingsPath = Path.Combine(mainWindowViewModel.DataDirectory, "AppSettings", "window.xml");
+            var windowSettingsPath = Path.Combine(mainWindowViewModel.DataDirectory, "AppSettings", "MainWindow.xml");
             if (!File.Exists(windowSettingsPath))
                 return;
             TextReader reader = new StreamReader(windowSettingsPath);
@@ -80,7 +80,7 @@ namespace SNROI
             if (!(mainWindow.DataContext is MainWindowViewModel mainWindowViewModel))
                 return;
 
-            var gridpath = Path.Combine(mainWindowViewModel.DataDirectory, "AppSettings", "grid.xml");
+            var gridpath = Path.Combine(mainWindowViewModel.DataDirectory, "AppSettings", "MainGrid.xml");
 
             var gridpathDir = Path.GetDirectoryName(gridpath);
             if (!Directory.Exists(gridpathDir))
@@ -98,7 +98,7 @@ namespace SNROI
             if (!(mainWindow.DataContext is MainWindowViewModel mainWindowViewModel))
                 return;
 
-            var windowSettingsPath = Path.Combine(mainWindowViewModel.DataDirectory, "AppSettings", "window.xml");
+            var windowSettingsPath = Path.Combine(mainWindowViewModel.DataDirectory, "AppSettings", "MainWindow.xml");
 
             TextWriter writer = new StreamWriter(windowSettingsPath);
             var xmlSerializer = new XmlSerializer(typeof(WindowSettings));
@@ -131,7 +131,7 @@ namespace SNROI
             if (!(mainWindow.DataContext is MainWindowViewModel mainWindowViewModel))
                 return;
 
-            var gridpath = Path.Combine(mainWindowViewModel.DataDirectory, "AppSettings", "grid.xml");
+            var gridpath = Path.Combine(mainWindowViewModel.DataDirectory, "AppSettings", "MainGrid.xml");
 
             if (File.Exists(gridpath))
             {

@@ -187,6 +187,8 @@ namespace SNROI.ViewModels
 
         public void OpenROIDocument()
         {
+            if (GridSelectedROIViewModelList.Count < 1)
+                return;
             if (DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, CompaniesList, GridSelectedROIViewModelList[0].DocumentPath))
                 ScanFileSystemForROIDocuments();
         }
