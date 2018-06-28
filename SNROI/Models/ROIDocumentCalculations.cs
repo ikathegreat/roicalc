@@ -32,9 +32,6 @@ namespace SNROI.Models
             WorkDaysInAMonth = (double)WorkDaysInAYear / 12;
 
             WorkDaysInAWeek = 5; //Keep is simple, no compensation for holidays
-            CultureInfo fr = new CultureInfo(roiDocument.Language);
-
-            var symbol = new CultureInfo(roiDocument.Language).NumberFormat.CurrencySymbol;
         }
 
         #region Information
