@@ -11,12 +11,20 @@ namespace SNROI.Models
     {
         public ROIDocumentMeasurements()
         {
+            MaterialMinutesSavedPerUnit = 1;
+            MaterialTimeUnits = TimeUnitsEnums.Day;
+            MachineMinutesSavedPerUnit = 1;
+            MachineTimeUnits = TimeUnitsEnums.Day;
             ProgrammingMinutesSavedPerUnit = 1;
-            TimeUnitsEnums = TimeUnitsEnums.Day;
+            ProgrammingTimeUnits = TimeUnitsEnums.Day;
 
         }
 
-        public int ProgrammingMinutesSavedPerUnit { get; set; }
-        public TimeUnitsEnums TimeUnitsEnums { get; set; }
+        public double MaterialMinutesSavedPerUnit { get; set; }
+        public double MachineMinutesSavedPerUnit { get; set; }
+        public double ProgrammingMinutesSavedPerUnit { get; set; }
+        public TimeUnitsEnums MaterialTimeUnits { get; set; }
+        public TimeUnitsEnums MachineTimeUnits { get; set; }
+        public TimeUnitsEnums ProgrammingTimeUnits { get; set; }
     }
 }
