@@ -10,7 +10,7 @@
     </Item2>
     <Item3 Ref="6" ControlType="ReportHeaderBand" Name="ReportHeader1" HeightF="899.536743">
       <Controls>
-        <Item1 Ref="7" ControlType="XRPictureBox" Name="pictureBox3" Image="iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAI3SURBVHhe5dvBSWZBFERhI5t4DMEUNB1jEcxEcBbPfmBBUR7GGujFhV58m+J/p7lLFz5c13U0HE+C40lwPAmOJ8HxJDhO9ufp9Xn5XK7S/dtnat1wnOz7IDr0Xz6pdcNxMjiukh3BcTI6rpEdwXEyOq6RHcFxMjqukR3BcTI6rpEdwXEyOq6RHcFxMjqukR3BcTI6rpEdwXEyOq6RHcFxMjqukR3BcTI6rpEdwXEyOq6RHcHRrY8fl7flvXT/9pFaO6w2Hvib7AiObn38kbHCB7V2gLcq2REcHcUa2dmF3mpkR3B0FGtkZxd6q5EdwdFRrJGdXeitRnYER0exRnZ2obca2REcHcUa2dmF3mpkR3B0FGtkZxd6q5EdwdFRrJGdXeitRnYER0exRnZ2obca2REcHcUa2dmF3mpkR3B0FGtkZxd6q5EdwdFRrJGdXeitRnYER0exRnZ2obca2REcHcUa0NnyV+Xa8L3fZEdwdBRrQGfLX5Xwm0p2BEdHscb0juDoKNaY3hEcHcUa0zuCo6NYY3pHcHQUa0zvCI6OYo3pHcHRUawxvSM4Ooo1pncER0exxvSO4Ogo1pjeERwdxRrTO4Kjo1hjekdwdBRrTO8Ijo5ijekdwdFRrDG9Izg6ijWmdwRHR7HG9I7g6CjWmN4RHB3FGtM7gqOjWGN6R3B0FGtM7wiOjmKN6R3B0a2P/2as8ONfVNY2qiM4uvXxy/I/j96/fZneERxPguNJcDwJjue4Hr4AMA/2lRIz30sAAAAASUVORK5CYII=" SizeF="82.2916641,81.59723" LocationFloat="1.041687, 69.70485">
+        <Item1 Ref="7" ControlType="XRPictureBox" Name="pictureBox3" Image="iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAjdJREFUeF7l28FJZkEURGEjm3gMwRQ0HWMRzERwFs9+YEFRHsYa6MWFXnyb4n+nuUsXPlzXdTQcT4LjSXA8CY4nwfEkOE725+n1eflcrtL922dq3XCc7PsgOvRfPql1w3EyOK6SHcFxMjqukR3BcTI6rpEdwXEyOq6RHcFxMjqukR3BcTI6rpEdwXEyOq6RHcFxMjqukR3BcTI6rpEdwXEyOq6RHcFxMjqukR3BcTI6rpEdwdGtjx+Xt+W9dP/2kVo7rDYe+JvsCI5uffyRscIHtXaAtyrZERwdxRrZ2YXeamRHcHQUa2RnF3qrkR3B0VGskZ1d6K1GdgRHR7FGdnahtxrZERwdxRrZ2YXeamRHcHQUa2RnF3qrkR3B0VGskZ1d6K1GdgRHR7FGdnahtxrZERwdxRrZ2YXeamRHcHQUa2RnF3qrkR3B0VGskZ1d6K1GdgRHR7FGdnahtxrZERwdxRrQ2fJX5drwvd9kR3B0FGtAZ8tflfCbSnYER0exxvSO4Ogo1pjeERwdxRrTO4Kjo1hjekdwdBRrTO8Ijo5ijekdwdFRrDG9Izg6ijWmdwRHR7HG9I7g6CjWmN4RHB3FGtM7gqOjWGN6R3B0FGtM7wiOjmKN6R3B0VGsMb0jODqKNaZ3BEdHscb0juDoKNaY3hEcHcUa0zuCo6NYY3pHcHQUa0zvCI6OYo3pHcHRrY//Zqzw419U1jaqIzi69fHL8j+P3r99md4RHE+C40lwPAmO57gevgAwD/aVEjPfSwAAAABJRU5ErkJggg==" SizeF="82.2916641,81.59723" LocationFloat="1.041687, 69.70485">
           <StylePriority Ref="8" UseTextAlignment="false" />
         </Item1>
         <Item2 Ref="9" ControlType="XRLabel" Name="label9" Text="Preparer&#xD;&#xA;" SizeF="100,23" LocationFloat="113.014168, 803.620056" Font="Tahoma, 8pt">
@@ -19,9 +19,9 @@
         <Item3 Ref="11" ControlType="XRLabel" Name="label5" Text="Prepared By:&#xD;&#xA;" SizeF="100,23" LocationFloat="6.25, 803.620056" Font="Tahoma, 8pt">
           <StylePriority Ref="12" UseFont="false" />
         </Item3>
-        <Item4 Ref="13" ControlType="XRPictureBox" Name="pictureBox2" SizeF="395.833344,81.59722" LocationFloat="243.055542, 244.536728">
+        <Item4 Ref="13" ControlType="XRPictureBox" Name="pictureBox2" Sizing="Squeeze" SizeF="395.833344,81.59722" LocationFloat="243.055542, 244.536728">
           <DataBindings>
-            <Item1 Ref="14" PropertyName="Image" DataMember="CompanyLogoImage" />
+            <Item1 Ref="14" PropertyName="ImageUrl" DataMember="CompanyLogoImage" />
           </DataBindings>
         </Item4>
         <Item5 Ref="15" ControlType="XRLabel" Name="label4" Text="SigmaNEST Software" SizeF="638,50" LocationFloat="0.8888889, 276.133942" StyleName="Title" Font="Tahoma, 12pt">
