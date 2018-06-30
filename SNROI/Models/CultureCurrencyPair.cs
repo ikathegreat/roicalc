@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GalaSoft.MvvmLight;
 
 namespace SNROI.Models
 {
-    public class CultureCurrencyPair : BaseModel
+    public class CultureCurrencyPair : ObservableObject
     {
         public string Country { get; set; }
         public string CultureCode { get; set; }

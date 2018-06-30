@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GalaSoft.MvvmLight;
 
 namespace SNROI.Models
 {
@@ -17,7 +13,7 @@ namespace SNROI.Models
         Knife,
         Other
     }
-    public class Machine : BaseModel
+    public class Machine : ObservableObject
     {
 
         public string Name { get; set; }

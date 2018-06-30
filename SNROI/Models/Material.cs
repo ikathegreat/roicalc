@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GalaSoft.MvvmLight;
 
 namespace SNROI.Models
 {
-    public class Material : BaseModel
+    public class Material : ObservableObject
     {
         public string Name { get; set; }
         public double CostPerWeightUnit { get; set; }

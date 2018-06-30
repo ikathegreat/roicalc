@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight;
+using SNROI.Tools;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SNROI.Tools;
 
 namespace SNROI.Models
 {
-    public class ROIDocumentCalculations : BaseModel
+    public class ROIDocumentCalculations : ObservableObject
     {
         private readonly int WorkHoursInADay; //Business Hours
         private readonly double WorkDaysInAMonth; //Average

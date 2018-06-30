@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DevExpress.DataAccess.ObjectBinding;
+using GalaSoft.MvvmLight;
+using System;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using DevExpress.DataAccess.ObjectBinding;
-using DevExpress.XtraReports.Wizards;
 
 namespace SNROI.Models
 {
@@ -20,7 +13,7 @@ namespace SNROI.Models
     }
 
     [HighlightedClass]
-    public class ROIDocument : BaseModel
+    public class ROIDocument : ObservableObject
     {
         public ROIDocument()
         {
@@ -37,7 +30,7 @@ namespace SNROI.Models
             set
             {
                 documentName = value;
-                FirePropertyChanged(nameof(DocumentName));
+                RaisePropertyChanged(nameof(DocumentName));
             }
         }
 
@@ -47,7 +40,7 @@ namespace SNROI.Models
             set
             {
                 companyName = value;
-                FirePropertyChanged(nameof(CompanyName));
+                RaisePropertyChanged(nameof(CompanyName));
             }
         }
 
@@ -57,7 +50,7 @@ namespace SNROI.Models
             set
             {
                 contactName = value;
-                FirePropertyChanged(nameof(ContactName));
+                RaisePropertyChanged(nameof(ContactName));
             }
         }
 
@@ -67,7 +60,7 @@ namespace SNROI.Models
             set
             {
                 companyLogoImage = value;
-                FirePropertyChanged(nameof(CompanyLogoImage));
+                RaisePropertyChanged(nameof(CompanyLogoImage));
             }
         }
 
@@ -77,7 +70,7 @@ namespace SNROI.Models
             set
             {
                 units = value;
-                FirePropertyChanged(nameof(Units));
+                RaisePropertyChanged(nameof(Units));
             }
         }
 
@@ -87,7 +80,7 @@ namespace SNROI.Models
             set
             {
                 dateCreated = value;
-                FirePropertyChanged(nameof(DateCreated));
+                RaisePropertyChanged(nameof(DateCreated));
             }
 
         }
@@ -98,7 +91,7 @@ namespace SNROI.Models
             set
             {
                 dateModified = value;
-                FirePropertyChanged(nameof(DateModified));
+                RaisePropertyChanged(nameof(DateModified));
             }
         }
 
@@ -108,7 +101,7 @@ namespace SNROI.Models
             set
             {
                 notes = value;
-                FirePropertyChanged(nameof(Notes));
+                RaisePropertyChanged(nameof(Notes));
             }
         }
 
@@ -134,7 +127,7 @@ namespace SNROI.Models
             set
             {
                 roiDocumentCalculations = value;
-                FirePropertyChanged(nameof(ROIDocumentCalculations));
+                RaisePropertyChanged(nameof(ROIDocumentCalculations));
             }
         }
 
@@ -148,8 +141,8 @@ namespace SNROI.Models
             set
             {
                 roiDocumentMeasurements = value;
-                FirePropertyChanged(nameof(ROIDocumentCalculations));
-                FirePropertyChanged(nameof(ROIDocumentMeasurements));
+                RaisePropertyChanged(nameof(ROIDocumentCalculations));
+                RaisePropertyChanged(nameof(ROIDocumentMeasurements));
             }
         }
 
@@ -164,7 +157,7 @@ namespace SNROI.Models
             set
             {
                 language = value;
-                FirePropertyChanged(nameof(Language));
+                RaisePropertyChanged(nameof(Language));
             }
         }
 
@@ -174,8 +167,8 @@ namespace SNROI.Models
             set
             {
                 _materialsListCollection = value;
-                ROIDocumentCalculations.FirePropertyChanged();
-                FirePropertyChanged(nameof(MaterialsListCollection));
+                ROIDocumentCalculations.RaisePropertyChanged();
+                RaisePropertyChanged(nameof(MaterialsListCollection));
             }
         }
 
@@ -185,8 +178,8 @@ namespace SNROI.Models
             set
             {
                 _machinesListCollection = value;
-                ROIDocumentCalculations.FirePropertyChanged();
-                FirePropertyChanged(nameof(MachinesListCollection));
+                ROIDocumentCalculations.RaisePropertyChanged();
+                RaisePropertyChanged(nameof(MachinesListCollection));
                 //Todo: Bug: these FirePropertyChanged's aren't working after EditDialog is accepted.
             }
         }
@@ -196,8 +189,8 @@ namespace SNROI.Models
             set
             {
                 _peopleListCollection = value;
-                ROIDocumentCalculations.FirePropertyChanged();
-                FirePropertyChanged(nameof(PeopleListCollection));
+                ROIDocumentCalculations.RaisePropertyChanged();
+                RaisePropertyChanged(nameof(PeopleListCollection));
             }
         }
 

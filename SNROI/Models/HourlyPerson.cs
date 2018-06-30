@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GalaSoft.MvvmLight;
 
 namespace SNROI.Models
 {
@@ -16,7 +12,7 @@ namespace SNROI.Models
         Shipping,
         Other
     }
-    public class HourlyPerson : BaseModel
+    public class HourlyPerson : ObservableObject
     {
         public string Name { get; set; }
         public EmployeeKind EmployeeKind { get; set; }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GalaSoft.MvvmLight;
 
 namespace SNROI.Models
 {
-    public class CheckedListItem<T> : BaseModel
+    public class CheckedListItem<T> : ObservableObject
     {
         private bool isChecked;
         private T item;
@@ -28,7 +24,7 @@ namespace SNROI.Models
             set
             {
                 item = value;
-                FirePropertyChanged(nameof(Item));
+                RaisePropertyChanged(nameof(Item));
             }
         }
 
@@ -39,7 +35,7 @@ namespace SNROI.Models
             set
             {
                 isChecked = value;
-                FirePropertyChanged(nameof(IsChecked));
+                RaisePropertyChanged(nameof(IsChecked));
             }
         }
     }
