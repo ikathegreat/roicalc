@@ -151,7 +151,7 @@
     <Compile Include="Views\ImageBrowserView.xaml.cs">
       <DependentUpon>ImageBrowserView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\CheckedListItem.cs" />
     <Compile Include="Models\CultureCurrencyPair.cs" />
     <Compile Include="Models\HourlyPerson.cs" />
@@ -173,6 +173,7 @@
     <Compile Include="ViewModels\PrintReportsViewModel.cs" />
     <Compile Include="ViewModels\ROIDocumentViewModel.cs" />
     <Compile Include="Models\WindowSettings.cs" />
+    <Compile Include="Views\Utilities\Validators.cs" />
     <Page Include="Views\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -23,9 +23,7 @@ namespace SNROI
             DXSplashScreen.Show<SplashWindow>();
 
             var mainWindow = new MainWindow();
-            var mainWindowViewModel =
-                new MainWindowViewModel(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    "SNROI"));
+            var mainWindowViewModel = new MainWindowViewModel(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Constants.DataFolderName));
             mainWindow.DataContext = mainWindowViewModel;
             LoadWindowSettings(mainWindow);
             mainWindow.Closed += MainWindow_Closed;

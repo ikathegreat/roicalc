@@ -52,7 +52,16 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Content="Report Name" Grid.Row="0"  Margin="5"  Grid.Column="0" ToolTip="{Binding ROIDocument.DateModified,StringFormat='Date Modified: {0}'}" />
-                <TextBox  Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding ROIDocument.DocumentName, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsNewReport}" />
+                <dxe:TextEdit Grid.Row="0" Grid.Column="1" Margin="5" IsEnabled="{Binding IsNewReport}">
+                    <dxe:TextEdit.EditValue>
+                        <Binding Path="ROIDocument.DocumentName" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <vu:IllegalPathCharsValidationRule FieldName="Document Name"/>
+                                <vu:FileNameExistsValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </dxe:TextEdit.EditValue>
+                </dxe:TextEdit>
                 <TextBlock  Grid.Row="1"  Margin="5" Text="Company Name" />
                 <dxg:LookUpEdit Grid.Row="1" Grid.Column="1" Margin="5" ItemsSource="{Binding CompaniesList}" AutoComplete="True" IsTextEditable="True" CausesValidation="False" ValidateOnTextInput="False" ValidateOnEnterKeyPressed="False" AcceptsReturn="True" ImmediatePopup="True" EditValue="{Binding ROIDocument.CompanyName}" VerticalScrollBarVisibility="Auto">
                     <!--<dxg:LookUpEdit.PopupContentTemplate>
