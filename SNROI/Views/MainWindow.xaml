@@ -20,13 +20,15 @@
                     d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}">
     <dxr:DXRibbonWindow.Resources>
         <vu:ObjectsEqualityConverter x:Key="ObjectsEqualityConverter" />
+        <vu:StringFormatConverter x:Key="StringFormatConverter" />
+        <vu:NullToFalseConverter x:Key="NullToFalseConverter" />
     </dxr:DXRibbonWindow.Resources>
     <dxr:DXRibbonWindow.InputBindings>
-        <KeyBinding Command="{Binding NewROIDocumentCommand, Mode=OneWay}" Gesture="CTRL+N" />
-        <KeyBinding Command="{Binding OpenROIDocumentCommand, Mode=OneWay}" Gesture="CTRL+O" />
-        <KeyBinding Command="{Binding DeleteROIDocumentsCommand, Mode=OneWay}" Gesture="Delete" />
-        <KeyBinding Command="{Binding CloneROIDocumentCommand, Mode=OneWay}" Gesture="CTRL+D" />
-        <KeyBinding Command="{Binding OpenReportsDialogCommand, Mode=OneWay}" Gesture="CTRL+R" />
+        <KeyBinding Command="{Binding NewROIDocumentCommand}" Gesture="CTRL+N" />
+        <KeyBinding Command="{Binding OpenROIDocumentCommand}" Gesture="CTRL+O" />
+        <KeyBinding Command="{Binding DeleteROIDocumentsCommand}" Gesture="Delete" />
+        <KeyBinding Command="{Binding CloneROIDocumentCommand}" Gesture="CTRL+D" />
+        <KeyBinding Command="{Binding OpenReportsDialogCommand}" Gesture="CTRL+R" />
     </dxr:DXRibbonWindow.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -47,7 +49,7 @@
             <dxr:RibbonDefaultPageCategory>
                 <dxr:RibbonPage Caption="Home" MergeOrder="0">
                     <dxr:RibbonPageGroup Caption="File" ShowCaptionButton="True" CaptionButtonCommand="{Binding OpenReportsDirectoryCommand}">
-                        <dxb:BarButtonItem x:Name="bbiNew" Content="New" Glyph="/SNROI;component/Resources/document_text-new16.png" Command="{Binding NewROIDocumentCommand, Mode=OneWay}" GlyphSize="Large" LargeGlyph="/SNROI;component/Resources/document_text-new32.png">
+                        <dxb:BarButtonItem x:Name="bbiNew" Content="New" Glyph="/SNROI;component/Resources/document_text-new16.png" Command="{Binding NewROIDocumentCommand}" GlyphSize="Large" LargeGlyph="/SNROI;component/Resources/document_text-new32.png">
                             <dxb:BarButtonItem.SuperTip>
                                 <dx:SuperTip>
                                     <dx:SuperTipHeaderItem Content="New" />
@@ -56,7 +58,7 @@
                                 </dx:SuperTip>
                             </dxb:BarButtonItem.SuperTip>
                         </dxb:BarButtonItem>
-                        <dxb:BarButtonItem x:Name="bbiOpen" Content="Open" Glyph="/SNROI;component/Resources/document_text-import16.png" LargeGlyph="/SNROI;component/Resources/document_text-import32.png" Command="{Binding OpenROIDocumentCommand, Mode=OneWay}">
+                        <dxb:BarButtonItem x:Name="bbiOpen" Content="Open" Glyph="/SNROI;component/Resources/document_text-import16.png" LargeGlyph="/SNROI;component/Resources/document_text-import32.png" Command="{Binding OpenROIDocumentCommand}">
                             <dxb:BarButtonItem.SuperTip>
                                 <dx:SuperTip>
                                     <dx:SuperTipHeaderItem Content="Open" />
@@ -65,7 +67,7 @@
                                 </dx:SuperTip>
                             </dxb:BarButtonItem.SuperTip>
                         </dxb:BarButtonItem>
-                        <dxb:BarButtonItem x:Name="bbiDelete" Content="Delete" Glyph="/SNROI;component/Resources/document_text-delete216.png" LargeGlyph="/SNROI;component/Resources/document_text-delete232.png" Command="{Binding DeleteROIDocumentsCommand, Mode=OneWay}">
+                        <dxb:BarButtonItem x:Name="bbiDelete" Content="Delete" Glyph="/SNROI;component/Resources/document_text-delete216.png" LargeGlyph="/SNROI;component/Resources/document_text-delete232.png" Command="{Binding DeleteROIDocumentsCommand}">
                             <dxb:BarButtonItem.SuperTip>
                                 <dx:SuperTip>
                                     <dx:SuperTipHeaderItem Content="Delete" />
@@ -74,7 +76,7 @@
                                 </dx:SuperTip>
                             </dxb:BarButtonItem.SuperTip>
                         </dxb:BarButtonItem>
-                        <dxb:BarButtonItem x:Name="bbiClone" Content="Clone" Glyph="/SNROI;component/Resources/clipboard_copy16.png" LargeGlyph="/SNROI;component/Resources/clipboard_copy32.png" Command="{Binding CloneROIDocumentCommand, Mode=OneWay}">
+                        <dxb:BarButtonItem x:Name="bbiClone" Content="Clone" Glyph="/SNROI;component/Resources/clipboard_copy16.png" LargeGlyph="/SNROI;component/Resources/clipboard_copy32.png" Command="{Binding CloneROIDocumentCommand}">
                             <dxb:BarButtonItem.SuperTip>
                                 <dx:SuperTip>
                                     <dx:SuperTipHeaderItem Content="Clone" />
@@ -83,13 +85,9 @@
                                 </dx:SuperTip>
                             </dxb:BarButtonItem.SuperTip>
                         </dxb:BarButtonItem>
-                        <!--<dxb:BarButtonItem x:Name="bbiSave" Content="Save" Glyph="{dx:DXImage Image=New_16x16.png}" LargeGlyph="{dx:DXImage Image=New_32x32.png}" />
-                             <dxb:BarButtonItem x:Name="bbiSaveAs" Content="Save As" Glyph="{dx:DXImage Image=New_16x16.png}" LargeGlyph="{dx:DXImage Image=New_32x32.png}" />
-                             <dxb:BarItemSeparator />
-                             <dxb:BarButtonItem x:Name="saveAsItem" Content="Save As" LargeGlyph="{dx:DXImage Image=SaveAs_32x32.png}" />-->
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Reporting">
-                        <dxb:BarButtonItem x:Name="bbiReports" Content="Reports" Glyph="/SNROI;component/Resources/report_open-print16.png" LargeGlyph="/SNROI;component/Resources/report_open-print32.png" Command="{Binding OpenReportsDialogCommand, Mode=OneWay}">
+                        <dxb:BarButtonItem x:Name="bbiReports" Content="Reports" Glyph="/SNROI;component/Resources/report_open-print16.png" LargeGlyph="/SNROI;component/Resources/report_open-print32.png" Command="{Binding OpenReportsDialogCommand}">
                             <dxb:BarButtonItem.SuperTip>
                                 <dx:SuperTip>
                                     <dx:SuperTipHeaderItem Content="Reports" />
@@ -144,7 +142,7 @@
                     <dxr:RibbonPageGroup Caption="Help">
                         <dxr:RibbonPageGroup.Items>
                             <dxb:BarButtonItem Content="Check for Updates" LargeGlyph="/SNROI;component/Resources/internet_update.png" Glyph="/SNROI;component/Resources/internet_update.png" IsEnabled="False" />
-                            <dxb:BarButtonItem Content="About" Glyph="/SNROI;component/Resources/info16.png" LargeGlyph="/SNROI;component/Resources/info32.png" Command="{Binding OpenAboutDialogCommand, Mode=OneWay}" />
+                            <dxb:BarButtonItem Content="About" Glyph="/SNROI;component/Resources/info16.png" LargeGlyph="/SNROI;component/Resources/info32.png" Command="{Binding OpenAboutDialogCommand}" />
                         </dxr:RibbonPageGroup.Items>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
@@ -152,43 +150,45 @@
         </dxr:RibbonControl>
         <dxr:RibbonStatusBarControl Grid.Row="2">
             <dxr:RibbonStatusBarControl.LeftItems>
-                <dxb:BarEditItem Content="{Binding TotalReportsMessage}" />
+                <dxb:BarStaticItem Content="{Binding RoiDocViewModelList.Count, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0} reports available'}" />
                 <dxb:BarItemSeparator />
-                <dxb:BarEditItem Content="{Binding SelectedReportsMessage}" />
-                <dxb:BarItemSeparator />
-                <dxb:BarEditItem Content="{Binding SelectedReportName}" />
+                <dxb:BarStaticItem Content="{Binding SelectedRoiDocViewModelList.Count, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0} items selected'}" />
+                <dxb:BarItemSeparator IsVisible="{Binding SelectedRoiDocViewModel, Converter={StaticResource NullToFalseConverter}}"/>
+                <dxb:BarStaticItem Content="{Binding SelectedRoiDocViewModel.ROIDocument.DocumentName}" />
             </dxr:RibbonStatusBarControl.LeftItems>
-            <dxr:RibbonStatusBarControl.RightItems>
-                <!--<dxb:BarButtonItem x:Name="printItem" Content="Print" Glyph="{dx:DXImage Image=Print_16x16.png}" />-->
-            </dxr:RibbonStatusBarControl.RightItems>
         </dxr:RibbonStatusBarControl>
-        <dxg:GridControl x:Name="GridControlROIDocuments" Grid.Row="1" ItemsSource="{Binding roiDocViewModelList, Mode=OneWay}" AutoGenerateColumns="None" SelectionMode="Row" SelectedItems="{Binding GridSelectedROIViewModelList}">
+        <dxg:GridControl x:Name="GridControlROIDocuments" Grid.Row="1"
+                         AutoGenerateColumns="None" 
+                         ItemsSource="{Binding RoiDocViewModelList}"
+                         CurrentItem="{Binding SelectedRoiDocViewModel}"
+                         SelectedItems="{Binding SelectedRoiDocViewModelList}" 
+                         SelectionMode="Row">
             <dxg:GridControl.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Open" Command="{Binding OpenROIDocumentCommand, Mode=OneWay}">
+                    <MenuItem Header="Open" Command="{Binding OpenROIDocumentCommand}">
                         <MenuItem.Icon>
                             <Image Source="/SNROI;component/Resources/document-open16.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="View Source" Command="{Binding OpenROIDocumentSourceCommand, Mode=OneWay}">
+                    <MenuItem Header="View Source" Command="{Binding OpenROIDocumentSourceCommand}">
                         <MenuItem.Icon>
                             <Image Source="/SNROI;component/Resources/file_text16.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator />
-                    <MenuItem Header="Delete" Command="{Binding DeleteROIDocumentsCommand, Mode=OneWay}">
+                    <MenuItem Header="Delete" Command="{Binding DeleteROIDocumentsCommand}">
                         <MenuItem.Icon>
                             <Image Source="/SNROI;component/Resources/document-delete16.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator />
-                    <MenuItem Header="Clone" Command="{Binding CloneROIDocumentCommand, Mode=OneWay}">
+                    <MenuItem Header="Clone" Command="{Binding CloneROIDocumentCommand}">
                         <MenuItem.Icon>
                             <Image Source="/SNROI;component/Resources/clipboard_copy16.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator />
-                    <MenuItem Header="Reports" Command="{Binding OpenReportsDialogCommand, Mode=OneWay}">
+                    <MenuItem Header="Reports" Command="{Binding OpenReportsDialogCommand}">
                         <MenuItem.Icon>
                             <Image Source="/SNROI;component/Resources/report_open-print16.png" />
                         </MenuItem.Icon>
@@ -196,7 +196,7 @@
                 </ContextMenu>
             </dxg:GridControl.ContextMenu>
             <dxg:GridControl.View>
-                <dxg:TableView x:Name="TableViewROIDocuments" AllowEditing="False" ShowAutoFilterRow="True" />
+                <dxg:TableView x:Name="TableViewROIDocuments" AllowEditing="False" ShowAutoFilterRow="True" UseEvenRowBackground="True" />
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="ROIDocument.DocumentName" IsSmart="True" Header="Document Name" />
             <dxg:GridColumn FieldName="ROIDocument.CompanyName" IsSmart="True" Header="Company" />

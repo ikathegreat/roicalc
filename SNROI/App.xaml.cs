@@ -23,7 +23,7 @@ namespace SNROI
             DXSplashScreen.Show<SplashWindow>();
 
             var mainWindow = new MainWindow();
-            var mainWindowViewModel = new MainWindowViewModel(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Constants.DataFolderName));
+            var mainWindowViewModel = new MainWindowViewModel();
             mainWindow.DataContext = mainWindowViewModel;
             LoadWindowSettings(mainWindow);
             mainWindow.Closed += MainWindow_Closed;
@@ -140,7 +140,7 @@ namespace SNROI
                 mainWindow.TableViewROIDocuments.BestFitColumns();
             }
 
-            if (mainWindowViewModel.roiDocViewModelList.Count > 0)
+            if (mainWindowViewModel.RoiDocViewModelList.Count > 0)
             {
                 mainWindow.GridControlROIDocuments.SelectItem(0);
                 mainWindow.TableViewROIDocuments.FocusedRowHandle = 0;

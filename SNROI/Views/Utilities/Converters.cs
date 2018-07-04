@@ -3,16 +3,13 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace SNROI.Views.Utilities
 {
-    [ValueConversion(typeof(bool), typeof(bool))]
     public class InverseBooleanConverter : IValueConverter
     {
-        #region IValueConverter Members
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var output = value != null && (bool)value;
@@ -24,8 +21,6 @@ namespace SNROI.Views.Utilities
             var output = value != null && (bool)value;
             return !output;
         }
-
-        #endregion
     }
 
     public class FileNameWithoutPathConverter : IValueConverter
@@ -216,10 +211,10 @@ namespace SNROI.Views.Utilities
     {
         public EnumBindingSourceExtension()
         {
-
         }
 
         private Type enumType;
+
         public Type EnumType
         {
             get => enumType;
@@ -237,7 +232,6 @@ namespace SNROI.Views.Utilities
                 this.enumType = value;
             }
         }
-
 
         public EnumBindingSourceExtension(Type enumType)
         {

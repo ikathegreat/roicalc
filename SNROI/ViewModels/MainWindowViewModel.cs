@@ -1,5 +1,7 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using SNROI.Models;
+using SNROI.Tools;
 using SNROI.ViewModels.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,25 +9,295 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Input;
-using SNROI.Tools;
-using GalaSoft.MvvmLight;
 
 namespace SNROI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public MainWindowViewModel()
+        #region Public Fields
+
+        public readonly string DataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Constants.DataFolderName);
+
+        #endregion Public Fields
+
+        #region Observable Properties
+
+        private ObservableCollection<ROIDocumentViewModel> selectedRoiDocViewModelList = new ObservableCollection<ROIDocumentViewModel>();
+        public ObservableCollection<ROIDocumentViewModel> SelectedRoiDocViewModelList
         {
-            roiDocViewModelList = new ObservableCollection<ROIDocumentViewModel>();
-            GridSelectedROIViewModelList = new ObservableCollection<ROIDocumentViewModel>();
+            get { return selectedRoiDocViewModelList; }
+            set { Set(ref selectedRoiDocViewModelList, value); }
         }
 
-        public MainWindowViewModel(string aDataDirectory) : this()
+        private ObservableCollection<ROIDocumentViewModel> roiDocViewModelList = new ObservableCollection<ROIDocumentViewModel>();
+        public ObservableCollection<ROIDocumentViewModel> RoiDocViewModelList
         {
-            DataDirectory = aDataDirectory;
+            get { return roiDocViewModelList; }
+            set { Set(ref roiDocViewModelList, value); }
+        }
+
+        private ROIDocumentViewModel selectedRoiDocViewModel;
+        public ROIDocumentViewModel SelectedRoiDocViewModel
+        {
+            get { return selectedRoiDocViewModel; }
+            set { Set(ref selectedRoiDocViewModel, value); }
+        }
+
+        #endregion Observable Properties
+
+        #region Constructor
+
+        public MainWindowViewModel()
+        {
+            if (IsInDesignMode)
+            {
+                RoiDocViewModelList = new ObservableCollection<ROIDocumentViewModel>
+                {
+                    new ROIDocumentViewModel(){ROIDocument = new ROIDocument(){DocumentName = "Designer Doc 1"}},
+                    new ROIDocumentViewModel(){ROIDocument = new ROIDocument(){DocumentName = "Designer Doc 2"}},
+                    new ROIDocumentViewModel(){ROIDocument = new ROIDocument(){DocumentName = "Designer Doc 3"}}
+                };
+            }
+            else
+            {
+                ScanFileSystemForROIDocuments();
+                InstallFactoryReportTemplates();
+            }
+        }
+
+        #endregion Constructor
+
+        #region Commands
+
+        private RelayCommand cloneROIDocumentCommand;
+        public RelayCommand CloneROIDocumentCommand
+        {
+            get
+            {
+                return cloneROIDocumentCommand ??
+                      (cloneROIDocumentCommand = new RelayCommand(CloneROIDocument, CanCloneROIDocument));
+            }
+        }
+
+        private RelayCommand deleteROIDocumentsCommand;
+        public RelayCommand DeleteROIDocumentsCommand
+        {
+            get
+            {
+                return deleteROIDocumentsCommand ??
+                      (deleteROIDocumentsCommand = new RelayCommand(DeleteROIDocuments, CanDeleteROIDocuments));
+            }
+        }
+
+        private RelayCommand newROIDocumentCommand;
+        public RelayCommand NewROIDocumentCommand
+        {
+            get
+            {
+                return newROIDocumentCommand ??
+                      (newROIDocumentCommand = new RelayCommand(NewROIDocument));
+            }
+        }
+
+        private RelayCommand openAboutDialogCommand;
+        public RelayCommand OpenAboutDialogCommand
+        {
+            get
+            {
+                return openAboutDialogCommand ??
+                      (openAboutDialogCommand = new RelayCommand(OpenAboutDialog));
+            }
+        }
+
+        private RelayCommand openApplicationDirectoryCommand;
+        public RelayCommand OpenApplicationDirectoryCommand
+        {
+            get
+            {
+                return openApplicationDirectoryCommand ??
+                      (openApplicationDirectoryCommand = new RelayCommand(OpenApplicationDirectory));
+            }
+        }
+
+        private RelayCommand openReportEdtiorCommandDialogCommand;
+        public RelayCommand OpenReportEdtiorCommandDialogCommand
+        {
+            get
+            {
+                return openReportEdtiorCommandDialogCommand ??
+                      (openReportEdtiorCommandDialogCommand = new RelayCommand(OpenReportEditorDialog));
+            }
+        }
+
+        private RelayCommand openReportsDialogCommand;
+        public RelayCommand OpenReportsDialogCommand
+        {
+            get
+            {
+                return openReportsDialogCommand ??
+                      (openReportsDialogCommand = new RelayCommand(OpenReportsDialog));
+            }
+        }
+
+        private RelayCommand openReportsDirectoryCommand;
+        public RelayCommand OpenReportsDirectoryCommand
+        {
+            get
+            {
+                return openReportsDirectoryCommand ??
+                      (openReportsDirectoryCommand = new RelayCommand(OpenReportsDirectory));
+            }
+        }
+
+        private RelayCommand openROIDocumentCommand;
+        public RelayCommand OpenROIDocumentCommand
+        {
+            get
+            {
+                return openROIDocumentCommand ??
+                      (openROIDocumentCommand = new RelayCommand(OpenROIDocument, CanOpenROIDocument));
+            }
+        }
+
+        private RelayCommand openROIDocumentSourceCommand;
+        public RelayCommand OpenROIDocumentSourceCommand
+        {
+            get
+            {
+                return openROIDocumentSourceCommand ??
+                      (openROIDocumentSourceCommand = new RelayCommand(OpenROIDocumentSource));
+            }
+        }
+
+        private RelayCommand resetReportTemplatesCommand;
+        public RelayCommand ResetReportTemplatesCommand
+        {
+            get
+            {
+                return resetReportTemplatesCommand ??
+                      (resetReportTemplatesCommand = new RelayCommand(ResetReportTemplates));
+            }
+        }
+
+        #endregion Commands
+
+        #region Public Methods
+
+        public List<string> GetCompaniesList()
+        {
+            var companyList = new List<string>();
+            if (RoiDocViewModelList.Count > 0)
+            {
+                companyList = RoiDocViewModelList.Where(y => !string.IsNullOrWhiteSpace(y.ROIDocument.CompanyName))
+                                                 .GroupBy(p => p.ROIDocument.CompanyName)
+                                                 .Select(g => g.First())
+                                                 .Select(x => x.ROIDocument.CompanyName)
+                                                 .ToList();
+                companyList.Sort();
+            }
+            return companyList;
+        }
+
+        public void OpenROIDocument()
+        {
+            if (SelectedRoiDocViewModel == null)
+                return;
+
+            if (DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, GetCompaniesList(), SelectedRoiDocViewModel.DocumentPath))
+                ScanFileSystemForROIDocuments();
+        }
+
+        public void OpenROIDocumentSource()
+        {
+            var doc = SelectedRoiDocViewModelList.FirstOrDefault();
+
+            if (doc != null)
+                Process.Start(doc.DocumentPath);
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private static void OpenAboutDialog()
+        {
+            DialogService.Instance.ShowAboutDialog();
+        }
+
+        private static void OpenApplicationDirectory()
+        {
+            Process.Start(AppDomain.CurrentDomain.BaseDirectory);
+        }
+
+        private static void OpenReportEditorDialog()
+        {
+            DialogService.Instance.ShowReportEditorDialog();
+        }
+
+        private bool CanCloneROIDocument()
+        {
+            return SelectedRoiDocViewModelList.Count == 1;
+        }
+
+        private bool CanDeleteROIDocuments()
+        {
+            return SelectedRoiDocViewModelList.Count > 0;
+        }
+
+        private bool CanOpenROIDocument()
+        {
+            return SelectedRoiDocViewModelList.Count == 1;
+        }
+
+        private void CloneROIDocument()
+        {
+            var selectedROIViewModel = SelectedRoiDocViewModelList[0];
+            if (selectedROIViewModel == null)
+                return;
+
+            var suggestedFileNameNoExt = Path.GetFileNameWithoutExtension(FileSystemTools.GetNextAvailableFilename(Path.Combine(DataDirectory,
+                    Path.GetFileNameWithoutExtension(selectedROIViewModel.DocumentPath) + "-copy.xml")));
+
+            var reportName = DialogService.Instance.InputDialog("Clone Report", "", "Enter new report name:",
+                suggestedFileNameNoExt);
+
+            if (string.IsNullOrEmpty(reportName))
+                return;
+
+            var newReportFilePath = Path.Combine(Path.GetDirectoryName(selectedROIViewModel.DocumentPath), reportName + ".xml");
+            if (File.Exists(newReportFilePath))
+            {
+                DialogService.Instance.ShowMessageError("Error: File already exists: " + Environment.NewLine + Environment.NewLine + newReportFilePath);
+            }
+            else
+            {
+                File.Copy(SelectedRoiDocViewModelList[0].DocumentPath, newReportFilePath);
+                var roiDocumentViewModel = new ROIDocumentViewModel
+                {
+                    DocumentPath = newReportFilePath,
+                    DataDirectory = DataDirectory,
+                    ROIDocument = { DocumentName = reportName, DateCreated = DateTime.Now, DateModified = DateTime.Now }
+                };
+                roiDocumentViewModel.SaveROIDocument();
+                ScanFileSystemForROIDocuments();
+            }
+        }
+
+        private void DeleteROIDocuments()
+        {
+            var messagePrompt = SelectedRoiDocViewModelList.Count == 1
+                ? "Are you sure you want to delete " + SelectedRoiDocViewModelList[0].ROIDocument.DocumentName + "?"
+                : "Are you sure you want to delete " + SelectedRoiDocViewModelList.Count + " reports?";
+
+            if (!DialogService.Instance.ShowMessageQuestion(messagePrompt, "Delete Reports"))
+                return;
+
+            foreach (var report in SelectedRoiDocViewModelList)
+            {
+                File.Delete(report.DocumentPath);
+            }
+
             ScanFileSystemForROIDocuments();
-            InstallFactoryReportTemplates();
         }
 
         private void InstallFactoryReportTemplates(bool doFactoryReset = false)
@@ -37,7 +309,6 @@ namespace SNROI.ViewModels
             if ((Directory.GetFiles(reportTemplateDirectory, "*.repx", SearchOption.TopDirectoryOnly).Length == 0) || doFactoryReset)
             {
                 var factoryTemplateFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates");
-
                 foreach (var file in Directory.GetFiles(factoryTemplateFolder, "*.repx", SearchOption.TopDirectoryOnly).ToList())
                 {
                     if (doFactoryReset)
@@ -66,17 +337,39 @@ namespace SNROI.ViewModels
             }
         }
 
-        public string DataDirectory { get; set; }
+        private void NewROIDocument()
+        {
+            if (DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, GetCompaniesList()))
+                ScanFileSystemForROIDocuments();
+        }
+
+        private void OpenReportsDialog()
+        {
+            DialogService.Instance.ShowReportsDialog(DataDirectory, selectedRoiDocViewModelList);
+        }
+
+        private void OpenReportsDirectory()
+        {
+            Process.Start(DataDirectory);
+        }
+
+        private void ResetReportTemplates()
+        {
+            if (DialogService.Instance.ShowMessageQuestion("Are you sure you want to re-install all factory report templates?" + Environment.NewLine + Environment.NewLine + "All custom reports will be preserved.", "Reset Report Templates"))
+            {
+                InstallFactoryReportTemplates(true);
+                DialogService.Instance.ShowMessageInfo("Report templates restored to factory defaults");
+            }
+        }
 
         private void ScanFileSystemForROIDocuments()
         {
-            //DialogService.Instance.ShowProgressDialog();
-
             try
             {
                 if (!Directory.Exists(DataDirectory))
                     Directory.CreateDirectory(DataDirectory);
-                roiDocViewModelList.Clear();
+
+                var roiDocList = new List<ROIDocumentViewModel>();
                 foreach (var file in Directory.GetFiles(DataDirectory, "*.*", SearchOption.TopDirectoryOnly).ToList())
                 {
                     var roiDocumentViewModel = new ROIDocumentViewModel
@@ -84,224 +377,17 @@ namespace SNROI.ViewModels
                         DocumentPath = file,
                         DataDirectory = DataDirectory
                     };
-                    roiDocViewModelList.Add(roiDocumentViewModel);
+                    roiDocList.Add(roiDocumentViewModel);
                 }
 
-                TotalReportsMessage = roiDocViewModelList.Count + " reports";
+                RoiDocViewModelList = new ObservableCollection<ROIDocumentViewModel>(roiDocList);
             }
-            finally
+            catch (Exception ex)
             {
-                //DialogService.Instance.CloseProgressDialog();
+                DialogService.Instance.ShowMessageError(ex);
             }
         }
 
-        public ObservableCollection<ROIDocumentViewModel> roiDocViewModelList { get; set; }
-
-        private ObservableCollection<ROIDocumentViewModel> gridSelectedROIViewModelList;
-
-        public ObservableCollection<ROIDocumentViewModel> GridSelectedROIViewModelList
-        {
-            get
-            {
-                SelectedReportsMessage = gridSelectedROIViewModelList.Count + " selected";
-                SelectedReportName = gridSelectedROIViewModelList.Count == 1
-                    ? gridSelectedROIViewModelList.First().ROIDocument.DocumentName
-                    : string.Empty;
-                return gridSelectedROIViewModelList;
-            }
-            set => gridSelectedROIViewModelList = value;
-        }
-
-        private string totalReportsMessage;
-
-        public string TotalReportsMessage
-        {
-            get => totalReportsMessage;
-            set
-            {
-                totalReportsMessage = value;
-                RaisePropertyChanged(nameof(TotalReportsMessage));
-            }
-        }
-
-        private string selectedReportsMessage;
-
-        public string SelectedReportsMessage
-        {
-            get => selectedReportsMessage;
-            set
-            {
-                selectedReportsMessage = value;
-                RaisePropertyChanged(nameof(SelectedReportsMessage));
-            }
-        }
-
-        private string selectedReportName;
-
-        public string SelectedReportName
-        {
-            get => selectedReportName;
-            set
-            {
-                selectedReportName = value;
-                RaisePropertyChanged(nameof(SelectedReportName));
-
-            }
-        }
-
-
-        public List<string> CompaniesList
-        {
-            get
-            {
-                var companyList = new List<string>();
-
-                if (roiDocViewModelList.Count > 0)
-                {
-                    companyList = roiDocViewModelList.Where(y => !string.IsNullOrWhiteSpace(y.ROIDocument.CompanyName))
-                        .GroupBy(p => p.ROIDocument.CompanyName)
-                        .Select(g => g.First())
-                        .Select(x => x.ROIDocument.CompanyName)
-                        .ToList();
-                    companyList.Sort();
-                }
-                return companyList;
-            }
-        }
-
-
-        public ICommand NewROIDocumentCommand => new RelayCommand(NewROIDocument);
-
-        private void NewROIDocument()
-        {
-            if (DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, CompaniesList))
-                ScanFileSystemForROIDocuments();
-        }
-
-        public ICommand OpenROIDocumentCommand => new RelayCommand(OpenROIDocument, CanOpenROIDocument);
-
-        private bool CanOpenROIDocument()
-        {
-            return GridSelectedROIViewModelList.Count == 1;
-        }
-
-        public void OpenROIDocument()
-        {
-            if (GridSelectedROIViewModelList.Count < 1)
-                return;
-            if (DialogService.Instance.ShowOpenROIDocumentDialog(DataDirectory, CompaniesList, GridSelectedROIViewModelList[0].DocumentPath))
-                ScanFileSystemForROIDocuments();
-        }
-
-        public ICommand OpenROIDocumentSourceCommand => new RelayCommand(OpenROIDocumentSource);
-
-        public void OpenROIDocumentSource()
-        {
-            Process.Start(GridSelectedROIViewModelList[0].DocumentPath);
-        }
-
-        public ICommand DeleteROIDocumentsCommand => new RelayCommand(DeleteROIDocuments, CanDeleteROIDocuments);
-
-        private bool CanDeleteROIDocuments()
-        {
-            return GridSelectedROIViewModelList.Count > 0;
-        }
-
-        private void DeleteROIDocuments()
-        {
-            var messagePrompt = GridSelectedROIViewModelList.Count == 1
-                ? "Are you sure you want to delete " + GridSelectedROIViewModelList[0].ROIDocument.DocumentName + "?"
-                : "Are you sure you want to delete " + GridSelectedROIViewModelList.Count + " reports?";
-            if (!DialogService.Instance.ShowMessageQuestion(messagePrompt, "Delete Reports"))
-                return;
-            foreach (var report in GridSelectedROIViewModelList)
-            {
-                File.Delete(report.DocumentPath);
-            }
-            ScanFileSystemForROIDocuments();
-        }
-
-        public ICommand CloneROIDocumentCommand => new RelayCommand(CloneROIDocument, CanCloneROIDocument);
-
-        private bool CanCloneROIDocument()
-        {
-            return GridSelectedROIViewModelList.Count == 1;
-        }
-
-        private void CloneROIDocument()
-        {
-            var selectedROIViewModel = GridSelectedROIViewModelList[0];
-            if (selectedROIViewModel == null)
-                return;
-            var suggestedFileNameNoExt = Path.GetFileNameWithoutExtension(FileSystemTools.GetNextAvailableFilename(Path.Combine(DataDirectory,
-                    Path.GetFileNameWithoutExtension(selectedROIViewModel.DocumentPath) + "-copy.xml")));
-            var reportName = DialogService.Instance.InputDialog("Clone Report", "", "Enter new report name:",
-                suggestedFileNameNoExt);
-            if (string.IsNullOrEmpty(reportName))
-                return;
-            var newReportFilePath = Path.Combine(Path.GetDirectoryName(selectedROIViewModel.DocumentPath), reportName + ".xml");
-            if (File.Exists(newReportFilePath))
-            {
-                DialogService.Instance.ShowMessageError("Error: File already exists: " + Environment.NewLine + Environment.NewLine + newReportFilePath);
-            }
-            else
-            {
-                File.Copy(GridSelectedROIViewModelList[0].DocumentPath, newReportFilePath);
-                var roiDocumentViewModel = new ROIDocumentViewModel
-                {
-                    DocumentPath = newReportFilePath,
-                    DataDirectory = DataDirectory,
-                    ROIDocument = { DocumentName = reportName, DateCreated = DateTime.Now, DateModified = DateTime.Now }
-                };
-                roiDocumentViewModel.SaveROIDocument();
-                ScanFileSystemForROIDocuments();
-            }
-        }
-
-        public ICommand OpenAboutDialogCommand => new RelayCommand(OpenAboutDialog);
-
-        private static void OpenAboutDialog()
-        {
-            DialogService.Instance.ShowAboutDialog();
-        }
-
-        public ICommand OpenReportsDialogCommand => new RelayCommand(OpenReportsDialog);
-
-        private void OpenReportsDialog()
-        {
-            DialogService.Instance.ShowReportsDialog(DataDirectory, gridSelectedROIViewModelList);
-        }
-
-        public ICommand OpenReportEdtiorCommandDialogCommand => new RelayCommand(OpenReportEditorDialog);
-
-        private static void OpenReportEditorDialog()
-        {
-            DialogService.Instance.ShowReportEditorDialog();
-        }
-
-        public ICommand OpenReportsDirectoryCommand => new RelayCommand(OpenReportsDirectory);
-
-        private void OpenReportsDirectory()
-        {
-            Process.Start(DataDirectory);
-        }
-        public ICommand OpenApplicationDirectoryCommand => new RelayCommand(OpenApplicationDirectory);
-
-        private static void OpenApplicationDirectory()
-        {
-            Process.Start(AppDomain.CurrentDomain.BaseDirectory);
-        }
-
-        public ICommand ResetReportTemplatesCommand => new RelayCommand(ResetReportTemplates);
-
-        private void ResetReportTemplates()
-        {
-            if (DialogService.Instance.ShowMessageQuestion("Are you sure you want to re-install all factory report templates?"
-                                                           + Environment.NewLine + Environment.NewLine + "All custom reports will be presevered.", "Reset Report Templates"))
-            {
-                InstallFactoryReportTemplates(true);
-                DialogService.Instance.ShowMessageInfo("Report templates restored to factory defaults");
-            }
-        }
+        #endregion Private Methods
     }
 }
