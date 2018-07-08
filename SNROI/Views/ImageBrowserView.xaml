@@ -14,12 +14,22 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Height="35">
-            <Button Content="Import" Margin="0,0,0,5" Width="90" Command="{Binding AddImageCommand}" />
-            <Button Content="Delete" Margin="5,0,0,5" Width="90" Command="{Binding RemoveImageCommand}" />
+            <Button Margin="0,0,0,5" Height="25" Width="90" Command="{Binding AddImageCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/SNROI;component/Resources/add16.png" Stretch="Uniform"/>
+                    <TextBlock Text="Import" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                </StackPanel>
+            </Button>
+            <Button Margin="5,0,0,5" Height="25" Width="90" Command="{Binding RemoveImageCommand}" >
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/SNROI;component/Resources/delete16.png" Stretch="Uniform"/>
+                    <TextBlock Text="Delete" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
         <dxg:GridControl Grid.Row="1" ItemsSource="{Binding DisplayImageList, Mode=TwoWay}" IsFilterEnabled="False" AllowMRUFilterList="False" AllowColumnMRUFilterList="False" SelectionMode="Row" SelectedItems="{Binding SelectedImageNamesList}" EnableSmartColumnsGeneration="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <dxg:GridControl.View>
-                <dxg:TableView AllowFilterEditor="False" AllowColumnFiltering="False" AllowColumnMoving="False" AllowGrouping="False" ShowGroupPanel="False" BestFitMode="AllRows" AutoWidth="True" NavigationStyle="Row" />
+                <dxg:TableView AllowFilterEditor="False" AllowColumnFiltering="False" AllowColumnMoving="False" AllowGrouping="False" ShowGroupPanel="False" BestFitMode="AllRows" AutoWidth="True" NavigationStyle="Row" ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalScrollbarVisibility="Auto" />
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Column" Header="Image File" IsSmart="True" />
         </dxg:GridControl>

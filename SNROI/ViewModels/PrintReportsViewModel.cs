@@ -9,17 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
+using SNROI.Enums;
 
 namespace SNROI.ViewModels
 {
     public class PrintReportsViewModel : ViewModelBase
     {
-        private enum ReportAction
-        {
-            Preview,
-            Print,
-            Export
-        }
 
         private string dataDirectory;
 
@@ -168,6 +163,12 @@ namespace SNROI.ViewModels
             return SelectedROIViewModelList.Count > 0;
         }
 
+        //Maybe this can be consolidated
+        private bool CanPerformReportActions(ReportExportType arg)
+        {
+            return SelectedROIViewModelList.Count > 0;
+        }
+
         public ICommand PreviewReportsCommand => new RelayCommand(PreviewReports, CanPerformReportActions);
 
         private void PreviewReports()
@@ -182,12 +183,14 @@ namespace SNROI.ViewModels
             ExecuteReportActionsOnSelectedReports(ReportAction.Print);
         }
 
-        public ICommand ExportReportsCommand => new RelayCommand(ExportReports, CanPerformReportActions);
+        public ICommand ExportReportsCommand => new RelayCommand<ReportExportType>(ExportReports, CanPerformReportActions);
 
-        private void ExportReports()
+        private void ExportReports(ReportExportType reportExportType)
         {
-            ExecuteReportActionsOnSelectedReports(ReportAction.Export);
+            ExecuteReportActionsOnSelectedReports(ReportAction.Export, reportExportType);
+            
         }
+
         public ICommand OpenTemplateDirectoryCommand => new RelayCommand(OpenTemplateDirectory);
 
         private void OpenTemplateDirectory()
@@ -211,7 +214,8 @@ namespace SNROI.ViewModels
             File.WriteAllLines(selectedReportsTemplatesFilePath, checkedReportTemplates);
         }
 
-        private void ExecuteReportActionsOnSelectedReports(ReportAction action)
+        private void ExecuteReportActionsOnSelectedReports(ReportAction action,
+            ReportExportType reportExportType = ReportExportType.None)
         {
             //Iterate documents, then report template(s) for each doc.
 
@@ -248,6 +252,22 @@ namespace SNROI.ViewModels
                     if (action == ReportAction.Preview)
                     {
                         DialogService.Instance.ShowReportPreviewDialog(repxFilePath, roiDocument);
+                    }
+                    else if (action == ReportAction.Print)
+                    {
+                        DXReportHelper.PrintReport(repxFilePath, roiDocument);
+                    }
+                    else if (action == ReportAction.Export)
+                    {
+                        //var filePath = DialogService.Instance.SaveFileDialog("Export Report", roiDocument.DocumentName,
+                        //    "Files (*.*)|*.*");
+
+                        //if (!string.IsNullOrEmpty(filePath))
+                        //{
+
+                            DXReportHelper.ExportReport(repxFilePath, roiDocument, reportExportType,
+                                Path.Combine(DataDirectory, Constants.ExportDirectory), roiDocument.DocumentName);
+                        //}
                     }
                 }
             }

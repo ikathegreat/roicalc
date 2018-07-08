@@ -1,9 +1,11 @@
-﻿<UserControl x:Class="SNROI.Views.PrintReportView"
+﻿<UserControl xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"  x:Class="SNROI.Views.PrintReportView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:SNROI.ViewModels"
+             xmlns:enums="clr-namespace:SNROI.Enums"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
              mc:Ignorable="d"
              Height="500"
              Width="450"
@@ -26,9 +28,24 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="New" Command="{Binding OpenNewReportEditorCommand}" />
-                    <Button Content="Edit" Command="{Binding OpenReportEditorCommand}" />
-                    <Button Content="Delete" Command="{Binding DeleteSelectedReportTemplatesCommand}" />
+                    <Button Command="{Binding OpenNewReportEditorCommand}" >
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/SNROI;component/Resources/documents-add216.png" Stretch="Uniform"/>
+                            <TextBlock Text="New" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding OpenReportEditorCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/SNROI;component/Resources/documents-edit16.png" Stretch="Uniform"/>
+                            <TextBlock Text="Edit" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding DeleteSelectedReportTemplatesCommand}" >
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/SNROI;component/Resources/documents-delete216.png" Stretch="Uniform"/>
+                            <TextBlock Text="Delete" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <!--<dxe:ListBoxEdit Grid.Row="1" ItemsSource="{Binding ReportTemplateList}" EditValue="{Binding CheckedReportTemplateList}" SelectionMode="Multiple" SelectedItem="{Binding SelectedReportForEdit}">
                      <dxe:ListBoxEdit.StyleSettings>
@@ -68,9 +85,26 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Preview" Command="{Binding PreviewReportsCommand}" />
-                    <Button Content="Print" Command="{Binding PrintReportsCommand}" />
-                    <Button Content="Export" Command="{Binding ExportReportsCommand}" />
+                    <Button Command="{Binding PreviewReportsCommand}" >
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/SNROI;component/Resources/find16.png" Stretch="Uniform"/>
+                            <TextBlock Text="Preview" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding PrintReportsCommand}" >
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/SNROI;component/Resources/print16.png" Stretch="Uniform"/>
+                            <TextBlock Text="Print" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </Button>
+                    <dx:DropDownButton Margin="0,5,0,5" Content="Export" Glyph="/SNROI;component/Resources/document_text-export16.png" >
+
+                        <dxb:PopupMenu>
+                            <dxb:BarButtonItem Content="PDF" Command="{Binding ExportReportsCommand}" CommandParameter="{x:Static enums:ReportExportType.PDF}"/>
+                            <dxb:BarButtonItem Content="Excel" Command="{Binding ExportReportsCommand}" CommandParameter="{x:Static enums:ReportExportType.XLSX}"/>
+                            <dxb:BarButtonItem Content="Word" Command="{Binding ExportReportsCommand}" CommandParameter="{x:Static enums:ReportExportType.DOCX}" />
+                        </dxb:PopupMenu>
+                    </dx:DropDownButton>
                 </StackPanel>
                 <ListBox Grid.Row="1" ItemsSource="{Binding SelectedROIViewModelList}">
                     <ListBox.ItemTemplate>

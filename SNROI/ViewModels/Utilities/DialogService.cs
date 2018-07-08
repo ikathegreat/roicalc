@@ -329,7 +329,7 @@ namespace SNROI.ViewModels.Utilities
             roiDocumentViewModel.CompaniesList = companiesList;
             roiDocumentViewModel.LoadExistingImages();
             
-            var editReportCommand = new ButtonServiceCommand("Edit Report", roiDocumentViewModel.EditReportCommand, false, false, false);
+            var editReportCommand = new ButtonServiceCommand("Reporting", roiDocumentViewModel.EditReportCommand, false, false, false);
             var okCommand = new ButtonServiceCommand("OK", roiDocumentViewModel.SaveROIDocumentCommand, false, true, true);
             var cancelCommand = new ButtonServiceCommand("Cancel", roiDocumentViewModel.CancelCommand, true, false, true);
 

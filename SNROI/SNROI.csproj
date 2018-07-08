@@ -135,10 +135,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums\ReportExportType.cs" />
     <Compile Include="Enums\TimeUnitsEnums.cs" />
     <Compile Include="Models\ROIDocumentCalculations.cs" />
     <Compile Include="Models\ROIDocumentMeasurements.cs" />
     <Compile Include="Tools\DateTimeTools.cs" />
+    <Compile Include="Enums\ReportAction.cs" />
+    <Compile Include="ViewModels\Utilities\DXReportHelper.cs" />
     <Compile Include="ViewModels\Utilities\UIServices.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
@@ -326,7 +329,54 @@
   <ItemGroup>
     <Resource Include="Resources\file_text16.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\print32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\print16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\documents-add216.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\documents-add232.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\document_text-export16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\document_text-export32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\find16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\find32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\documents-edit16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\documents-edit32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\documents-delete216.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\documents-delete232.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
