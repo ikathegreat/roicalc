@@ -45,6 +45,7 @@
     <Reference Include="DevExpress.RichEdit.v17.1.Core, Version=17.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.RichEdit.v17.1.Export, Version=17.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Sparkline.v17.1.Core, Version=17.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v17.1, Version=17.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Xpf.Controls.v17.1, Version=17.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Core.v17.1" />
     <Reference Include="DevExpress.Data.v17.1" />
@@ -73,6 +74,7 @@
       <HintPath>..\..\..\..\..\..\CamSTD\Develop Express WPF\Components\Bin\Framework\DevExpress.XtraPrinting.v17.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraReports.v17.1, Version=17.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v17.1.Extensions, Version=17.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -94,8 +96,8 @@
     <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="SigmaTEK.Dialogs, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SigmaTEK.Dialogs.1.4.6\lib\net46\SigmaTEK.Dialogs.dll</HintPath>
+    <Reference Include="SigmaTEK.Dialogs, Version=1.4.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SigmaTEK.Dialogs.1.4.7\lib\net46\SigmaTEK.Dialogs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -142,6 +144,7 @@
     <Compile Include="Tools\DateTimeTools.cs" />
     <Compile Include="Enums\ReportAction.cs" />
     <Compile Include="ViewModels\Utilities\DXReportHelper.cs" />
+    <Compile Include="ViewModels\Utilities\DXSkinNameHelper.cs" />
     <Compile Include="ViewModels\Utilities\UIServices.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
@@ -163,9 +166,6 @@
     <Compile Include="Models\ROIDocument.cs" />
     <Compile Include="Views\PrintReportView.xaml.cs">
       <DependentUpon>PrintReportView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ReportDesignerWindow.xaml.cs">
-      <DependentUpon>ReportDesignerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Utilities\Converters.cs" />
     <Compile Include="Views\SplashWindow.xaml.cs">
@@ -190,10 +190,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PrintReportView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ReportDesignerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

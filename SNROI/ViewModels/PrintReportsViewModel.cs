@@ -107,7 +107,7 @@ namespace SNROI.ViewModels
 
         private void OpenNewReportEditor()
         {
-            DialogService.Instance.ShowReportEditorDialog();
+            DXReportHelper.EditReport();
             PopulateReportTemplatesList();
             RaisePropertyChanged(nameof(ReportTemplateList));
         }
@@ -128,7 +128,7 @@ namespace SNROI.ViewModels
             if (File.Exists(repxFilePath))
                 selectedReportRepxFilePath = repxFilePath;
 
-            DialogService.Instance.ShowReportEditorDialog(selectedReportRepxFilePath);
+            DXReportHelper.EditReport(selectedReportRepxFilePath, SelectedROIViewModelList.FirstOrDefault()?.ROIDocument);
         }
         public ICommand DeleteSelectedReportTemplatesCommand => new RelayCommand(DeleteSelectedReportTemplates, CanEditOrDeleteReportTemplate);
 
@@ -251,7 +251,7 @@ namespace SNROI.ViewModels
 
                     if (action == ReportAction.Preview)
                     {
-                        DialogService.Instance.ShowReportPreviewDialog(repxFilePath, roiDocument);
+                        DXReportHelper.PreviewReport(repxFilePath, roiDocument);
                     }
                     else if (action == ReportAction.Print)
                     {

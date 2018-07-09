@@ -12,10 +12,8 @@ namespace SNROI.ViewModels.Utilities
 {
     public static class DXReportHelper
     {
-        public static void ExportReport(string reportRepxFilePath, object dataSource,
-            ReportExportType reportExportType, string targetDirectory, string fileName /*No Extension*/)
+        private static XtraReport CreateXtraReportFromRepxWithDataSource(string reportRepxFilePath, object dataSource)
         {
-
             UIServices.SetBusyState();
 
             var report = XtraReport.FromFile(reportRepxFilePath, true);
@@ -31,6 +29,15 @@ namespace SNROI.ViewModels.Utilities
             }
 
             report.CreateDocument();
+            return report;
+        }
+
+        public static void ExportReport(string reportRepxFilePath, object dataSource,
+            ReportExportType reportExportType, string targetDirectory, string fileName /*No Extension*/)
+        {
+
+            var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
+
             var targetFilePath = string.Empty;
             Directory.CreateDirectory(targetDirectory);
             switch (reportExportType)
@@ -78,27 +85,29 @@ namespace SNROI.ViewModels.Utilities
             }
         }
 
+        public static void EditReport(string reportRepxFilePath = "", object dataSource = null)
+        {
+            var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
+
+            report.ShowDesignerDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
+        }
 
         public static void PrintReport(string reportRepxFilePath, object dataSource)
         {
-            UIServices.SetBusyState();
-
-            var report = XtraReport.FromFile(reportRepxFilePath, true);
-
-            if (dataSource != null)
-            {
-                var objectDataSource = new ObjectDataSource
-                {
-                    Constructor = new ObjectConstructorInfo(),
-                    DataSource = (dataSource)
-                };
-                report.DataSource = objectDataSource;
-            }
-
-            report.CreateDocument();
+            var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
             using (var printTool = new ReportPrintTool(report))
             {
-                printTool.PrintDialog();
+                printTool.PrintDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
+            }
+        }
+
+
+        public static void PreviewReport(string reportRepxFilePath, object dataSource)
+        {
+            var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
+            using (var printTool = new ReportPrintTool(report))
+            {
+                printTool.ShowPreviewDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
             }
         }
     }

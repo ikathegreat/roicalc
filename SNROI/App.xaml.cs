@@ -113,7 +113,7 @@ namespace SNROI
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception occured while writing to XML: " + ex.Message);
+                Debug.WriteLine("Exception occurred while writing to XML: " + ex.Message);
             }
             finally
             {

@@ -140,7 +140,7 @@
                     </GroupBox>
                     <dxg:GridControl x:Name="GridControlMaterials" Grid.Row="1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MaterialsListCollection, Mode=TwoWay}">
                         <dxg:GridControl.View>
-                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom">
+                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="None" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom">
                                 <dxg:TableView.EditFormTemplate>
                                     <DataTemplate>
                                         <GroupBox Header="Edit Material" Margin="10" Padding="10" Width="Auto">

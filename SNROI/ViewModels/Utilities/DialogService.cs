@@ -11,6 +11,10 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using DevExpress.LookAndFeel;
+using DevExpress.LookAndFeel.Design;
+using DevExpress.Skins;
+using DevExpress.Xpf.Core;
 using SNROI.Models;
 
 namespace SNROI.ViewModels.Utilities
@@ -330,7 +334,7 @@ namespace SNROI.ViewModels.Utilities
             roiDocumentViewModel.LoadExistingImages();
             
             var editReportCommand = new ButtonServiceCommand("Reporting", roiDocumentViewModel.EditReportCommand, false, false, false);
-            var okCommand = new ButtonServiceCommand("OK", roiDocumentViewModel.SaveROIDocumentCommand, false, true, true);
+            var okCommand = new ButtonServiceCommand("OK", roiDocumentViewModel.SaveROIDocumentCommand, false, false, true);
             var cancelCommand = new ButtonServiceCommand("Cancel", roiDocumentViewModel.CancelCommand, true, false, true);
 
             var result = dialogService.ShowDialogWindow($"Edit {roiDocumentViewModel.ROIDocument.DocumentName}", new[] { editReportCommand, okCommand, cancelCommand }, null, editROIDocView, roiDocumentViewModel, false);
@@ -358,22 +362,16 @@ namespace SNROI.ViewModels.Utilities
             dialogService.ShowDialogWindow("Image Browser", new[] { okCommand, cancelCommand }, null, imageBrowserWindow, imageBrowserViewModel, false);
         }
 
-        public void ShowReportEditorDialog(string reportRepxFilePath = "")
+        public void ShowReportEditorDialog222(string reportRepxFilePath = "", object dataSource = null)
         {
+
             UIServices.SetBusyState();
 
-            //Todo: restore and save window settings
-            var reportEditorWindow = new ReportDesignerWindow { ReportFilePath = reportRepxFilePath };
-            reportEditorWindow.ShowDialog();
-        }
-
-        public void ShowReportPreviewDialog(string reportRepxFilePath = "", object dataSource = null)
-        {
-            UIServices.SetBusyState();
-
-            var report = XtraReport.FromFile(reportRepxFilePath, true);
-            var window = new DevExpress.Xpf.Printing.DocumentPreviewWindow();
-            window.PreviewControl.DocumentSource = report;
+            var report = new XtraReport();
+            report.LoadLayout(reportRepxFilePath);
+            var fileInfo = new FileInfo(reportRepxFilePath);
+            DevExpress.XtraReports.Configuration.Settings.Default.StorageOptions.RootDirectory =
+                fileInfo.DirectoryName;
 
             if (dataSource != null)
             {
@@ -386,7 +384,9 @@ namespace SNROI.ViewModels.Utilities
             }
 
             report.CreateDocument();
-            window.ShowDialog();
+
+            report.ShowDesignerDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
         }
+        
     }
 }

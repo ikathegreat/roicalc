@@ -231,7 +231,7 @@ namespace SNROI.ViewModels
 
         private static void OpenReportEditorDialog()
         {
-            DialogService.Instance.ShowReportEditorDialog();
+            DXReportHelper.EditReport();
         }
 
         private bool CanCloneROIDocument()
