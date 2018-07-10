@@ -4,14 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SNROI.Enums
+namespace SNROI.Models
 {
-    public enum TimeUnitsEnums
+    public class MachineMaterial : Material
     {
-        Hour,
-        Day,
-        Week,
-        Month,
-        Year
+        public double PercentOfTotalMachineCapcity { get; set; }
     }
 }

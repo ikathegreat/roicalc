@@ -6,12 +6,6 @@ using System.Xml.Serialization;
 
 namespace SNROI.Models
 {
-    public enum Units
-    {
-        Inches,
-        Metric
-    }
-
     [HighlightedClass]
     public class ROIDocument : ObservableObject
     {
@@ -106,7 +100,6 @@ namespace SNROI.Models
         }
 
         private ROIDocumentCalculations roiDocumentCalculations;
-        private ROIDocumentMeasurements roiDocumentMeasurements;
         private ObservableCollection<Material> _materialsListCollection = new ObservableCollection<Material>();
         private ObservableCollection<HourlyPerson> _peopleListCollection = new ObservableCollection<HourlyPerson>();
         private ObservableCollection<Machine> _machinesListCollection = new ObservableCollection<Machine>();
@@ -120,6 +113,38 @@ namespace SNROI.Models
         private string notes;
         private string language;
 
+        private double percentMaterialUsageSavedPerYear= 5.00;
+
+        public double PercentMaterialUsageSavedPerYear
+        {
+            get { return percentMaterialUsageSavedPerYear; }
+            set { percentMaterialUsageSavedPerYear = value; }
+        }
+
+        private double machineMinutesSavedPerHour = 1.00;
+
+        public double MachineMinutesSavedPerHour
+        {
+            get { return machineMinutesSavedPerHour; }
+            set { machineMinutesSavedPerHour = value; }
+        }
+        private double programmingMinutesSavedPerHour = 1.00;
+
+        public double ProgrammingMinutesSavedPerHour
+        {
+            get { return programmingMinutesSavedPerHour; }
+            set { programmingMinutesSavedPerHour = value; }
+        }
+        private double adminMinutesSavedPerHour = 1.00;
+
+        public double AdminMinutesSavedPerHour
+        {
+            get { return adminMinutesSavedPerHour; }
+            set { adminMinutesSavedPerHour = value; }
+        }
+
+
+
         [XmlIgnore]
         public ROIDocumentCalculations ROIDocumentCalculations
         {
@@ -130,22 +155,6 @@ namespace SNROI.Models
                 RaisePropertyChanged(nameof(ROIDocumentCalculations));
             }
         }
-
-
-        public ROIDocumentMeasurements ROIDocumentMeasurements
-        {
-            get
-            {
-                return roiDocumentMeasurements ?? (roiDocumentMeasurements = new ROIDocumentMeasurements());
-            }
-            set
-            {
-                roiDocumentMeasurements = value;
-                RaisePropertyChanged(nameof(ROIDocumentCalculations));
-                RaisePropertyChanged(nameof(ROIDocumentMeasurements));
-            }
-        }
-
 
 
         /// <summary>

@@ -138,9 +138,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Enums\ReportExportType.cs" />
-    <Compile Include="Enums\TimeUnitsEnums.cs" />
+    <Compile Include="Enums\EmployeeKind.cs" />
+    <Compile Include="Models\MachineKind.cs" />
+    <Compile Include="Models\MachineMaterial.cs" />
     <Compile Include="Models\ROIDocumentCalculations.cs" />
-    <Compile Include="Models\ROIDocumentMeasurements.cs" />
+    <Compile Include="Models\Units.cs" />
     <Compile Include="Tools\DateTimeTools.cs" />
     <Compile Include="Enums\ReportAction.cs" />
     <Compile Include="ViewModels\Utilities\DXReportHelper.cs" />

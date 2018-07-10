@@ -7,6 +7,5 @@ namespace SNROI.Models
         public string Name { get; set; }
         public double CostPerWeightUnit { get; set; }
         public double TotalMonthlyPurchasedWeight { get; set; }
-        public double TotalMonthlyPurchasedCost { get; set; }
     }
 }

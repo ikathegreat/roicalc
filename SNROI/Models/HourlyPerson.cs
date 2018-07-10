@@ -1,21 +1,20 @@
 ﻿using GalaSoft.MvvmLight;
+using SNROI.Enums;
 
 namespace SNROI.Models
 {
-    public enum EmployeeKind
-    {
-        Programmer,
-        Operator,
-        Sales,
-        Quoting,
-        Manager,
-        Shipping,
-        Other
-    }
     public class HourlyPerson : ObservableObject
     {
         public string Name { get; set; }
-        public EmployeeKind EmployeeKind { get; set; }
-        public double HourlyWage { get; set; }
+
+        /// <summary>
+        /// Type of employee, role, position
+        /// </summary>
+        public EmployeeKind EmployeeKind { get; set; } = EmployeeKind.Programmer;
+
+        /// <summary>
+        /// Monetary cost per hour to employ this person
+        /// </summary>
+        public double HourlyWage { get; set; } = 1.00;
     }
 }

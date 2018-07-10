@@ -1,23 +1,28 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight;
 
 namespace SNROI.Models
 {
-    public enum MachineKind
-    {
-        Laser,
-        Plasma,
-        Waterjet,
-        Punch,
-        Combo,
-        Router,
-        Knife,
-        Other
-    }
     public class Machine : ObservableObject
     {
 
         public string Name { get; set; }
-        public MachineKind MachineKind { get; set; }
-        public string CostPerHourToRun { get; set; }
+
+        /// <summary>
+        /// Type of machine 
+        /// </summary>
+        public MachineKind MachineKind { get; set; } = MachineKind.Plasma;
+
+        /// <summary>
+        /// Monetary cost per hour to run the machine
+        /// </summary>
+        public double CostPerHourToRun { get; set; } = 1;
+
+        /// <summary>
+        /// Percent of uptime per month
+        /// </summary>
+        public double MonthlyUtilizationPercentage { get; set; } = 50;
+
+        public ObservableCollection<MachineMaterial> MachineMaterials { get; set; } = new ObservableCollection<MachineMaterial>();
     }
 }

@@ -132,10 +132,8 @@
                     <GroupBox Header="Measurements" Margin="0,0,0,5">
 
                         <StackPanel Orientation="Horizontal">
-                            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" MinValue="0" Value="1" MaxValue="1000" Mask="f" EditValue="{Binding ROIDocument.ROIDocumentMeasurements.MaterialMinutesSavedPerUnit}" IsTextEditable="True" MaskUseAsDisplayFormat="True"/>
-                            <Label Margin="5" Content="% material usage saved per"/>
-                            <ComboBox Margin="5" MinWidth="150" 
-                                  ItemsSource="{Binding Source={vu:EnumBindingSource {x:Type Enums:TimeUnitsEnums}}}" SelectedItem="{Binding ROIDocument.ROIDocumentMeasurements.MaterialTimeUnits}"/>
+                            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" MinValue="0" Value="1" MaxValue="99.99" Mask="f" EditValue="{Binding ROIDocument.PercentMaterialUsageSavedPerYear}" IsTextEditable="True" MaskUseAsDisplayFormat="True"/>
+                            <Label Margin="5" Content="% material usage saved per year"/>
                         </StackPanel>
                     </GroupBox>
                     <dxg:GridControl x:Name="GridControlMaterials" Grid.Row="1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MaterialsListCollection, Mode=TwoWay}">
@@ -162,8 +160,6 @@
                                                 <dxg:EditFormEditor FieldName="CostPerWeightUnit" Grid.Row="1" Grid.Column="1" Margin="2" />
                                                 <TextBlock Text="Total Monthly Purchased Weight " Grid.Row="2" Grid.Column="0" />
                                                 <dxg:EditFormEditor FieldName="TotalMonthlyPurchasedWeight" Grid.Row="2" Grid.Column="1" Margin="2" />
-                                                <TextBlock Text="Total Monthly Purchased Cost " Grid.Row="3" Grid.Column="0" />
-                                                <dxg:EditFormEditor FieldName="TotalMonthlyPurchasedCost" Grid.Row="3" Grid.Column="1" Margin="2" />
                                             </Grid>
                                         </GroupBox>
                                     </DataTemplate>
@@ -183,10 +179,8 @@
 
                         <StackPanel Orientation="Horizontal">
                             <Label Margin="0,5,5,5" Content="Machine"/>
-                            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" MinValue="0" Value="1" MaxValue="1000" Mask="f" EditValue="{Binding ROIDocument.ROIDocumentMeasurements.MachineMinutesSavedPerUnit}" IsTextEditable="True" MaskUseAsDisplayFormat="True"/>
-                            <Label Margin="5" Content="minutes saved per"/>
-                            <ComboBox Margin="5" MinWidth="150" 
-                                  ItemsSource="{Binding Source={vu:EnumBindingSource {x:Type Enums:TimeUnitsEnums}}}" SelectedItem="{Binding ROIDocument.ROIDocumentMeasurements.MachineTimeUnits}"/>
+                            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" MinValue="0" Value="1" MaxValue="59.99" Mask="f" EditValue="{Binding ROIDocument.MachineMinutesSavedPerHour}" IsTextEditable="True" MaskUseAsDisplayFormat="True"/>
+                            <Label Margin="5" Content="minutes saved per hour"/>
                         </StackPanel>
                     </GroupBox>
                     <dxg:GridControl x:Name="GridControlMachines" Grid.Row="1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.MachinesListCollection, Mode=TwoWay}">
@@ -228,18 +222,27 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <GroupBox Header="Measurements" Margin="0,0,0,5">
-
-                        <StackPanel Orientation="Horizontal">
-                            <Label Margin="0,5,5,5" Content="Programming"/>
-                            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" MinValue="0" Value="1" MaxValue="1000" Mask="f" EditValue="{Binding ROIDocument.ROIDocumentMeasurements.ProgrammingMinutesSavedPerUnit}" IsTextEditable="True" MaskUseAsDisplayFormat="True"/>
-                            <Label Margin="5" Content="minutes saved per"/>
-                            <ComboBox Margin="5" MinWidth="150" 
-                                  ItemsSource="{Binding Source={vu:EnumBindingSource {x:Type Enums:TimeUnitsEnums}}}" SelectedItem="{Binding ROIDocument.ROIDocumentMeasurements.ProgrammingTimeUnits}"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Margin="0,5,5,5" Content="Programming" MinWidth="120"/>
+                            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" MinValue="0" Value="1" MaxValue="59.99" Mask="f" EditValue="{Binding ROIDocument.ProgrammingMinutesSavedPerHour}" IsTextEditable="True" MaskUseAsDisplayFormat="True" Grid.Column="1"/>
+                            <Label Margin="5" Content="minutes saved per hour" Grid.Column="2"/>
+                            <Label Margin="0,5,5,5" Content="Admin" Grid.Row="1"/>
+                            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" MinValue="0" Value="1" MaxValue="59.99" Mask="f" EditValue="{Binding ROIDocument.AdminMinutesSavedPerHour}" IsTextEditable="True" MaskUseAsDisplayFormat="True" Grid.Row="1" Grid.Column="1"/>
+                            <Label Margin="5" Content="minutes saved per hour" Grid.Row="1" Grid.Column="2"/>
+                        </Grid>
                     </GroupBox>
                     <dxg:GridControl x:Name="GridControlPeople" Grid.Row="1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="0" SelectionMode="Row" ItemsSource="{Binding ROIDocument.PeopleListCollection, Mode=TwoWay}">
                         <dxg:GridControl.View>
-                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="Dialog" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom" EditFormPostMode="Immediate">
+                            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" EditFormShowMode="None" ShowBandsPanel="False" ShowBandsInCustomizationForm="False" NewItemRowPosition="Bottom" EditFormPostMode="Immediate">
                                 <dxg:TableView.EditFormTemplate>
                                     <DataTemplate>
                                         <GroupBox Header="Edit Person" Margin="10" Padding="10">
@@ -274,19 +277,42 @@
                 <dxe:TextEdit Text="{Binding ROIDocument.Notes}" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" VerticalContentAlignment="Top" />
             </TabItem>
         </TabControl>
-        <dxprg:PropertyGridControl Margin="5,0,0,0" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" ShowSearchBox="True" SortMode="NoSort" ReadOnly="True" UseCollectionEditor="False" AllowListItemInitializer="False" AllowInstanceInitializer="False" ShowToolPanel="False" ScrollViewer.VerticalScrollBarVisibility="Auto" ShowMenuButtonInRows="False" ExpandButtonsVisibility="Hidden" ShowDescriptionIn="Panel" ExpandCategoriesWhenSelectedObjectChanged="True" ShowProperties="WithPropertyDefinitions" SelectedObject="{Binding ROIDocument.ROIDocumentCalculations}">
-            <dxprg:PropertyDefinition Path="NumberOfMaterials"/>
+        <dxprg:PropertyGridControl Margin="5,0,0,0" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" ShowSearchBox="True" SortMode="NoSort" ReadOnly="False" UseCollectionEditor="False" AllowListItemInitializer="False" AllowInstanceInitializer="False" ShowToolPanel="False" ScrollViewer.VerticalScrollBarVisibility="Auto" ShowMenuButtonInRows="False" ExpandButtonsVisibility="Hidden" ShowDescriptionIn="Panel" ExpandCategoriesWhenSelectedObjectChanged="True" ShowProperties="WithPropertyDefinitions" SelectedObject="{Binding ROIDocument.ROIDocumentCalculations}">
+            <!--<dxprg:PropertyDefinition Path="NumberOfMaterials"/>
             <dxprg:PropertyDefinition Path="NumberOfMachines"/>
-            <dxprg:PropertyDefinition Path="NumberOfEmployees"/>
+            <dxprg:PropertyDefinition Path="NumberOfProgrammers"/>
+            <dxprg:PropertyDefinition Path="NumberOfAdmins"/>
+            <dxprg:PropertyDefinition Path="NumberOfEmployees"/>-->
+
+            <dxprg:PropertyDefinition Path="DailyMaterialCost"/>
+            <dxprg:PropertyDefinition Path="DailyMachineCost"/>
             <dxprg:PropertyDefinition Path="DailyEmployeeCost"/>
-            <dxprg:PropertyDefinition Path="MonthlyEmployeeCost"/>
-            <dxprg:PropertyDefinition Path="AnnualEmployeeCost"/>
-            <dxprg:PropertyDefinition Path="DailyEmployeeSavings"/>
-            <dxprg:PropertyDefinition Path="MonthlyEmployeeSavings"/>
-            <dxprg:PropertyDefinition Path="AnnualEmployeeSavings"/>
+            <dxprg:PropertyDefinition Path="DailyTotalCost"/>
+
+            <dxprg:PropertyDefinition Path="DailyTotalMaterialSavings"/>
+            <dxprg:PropertyDefinition Path="DailyTotalMachineSavings"/>
+            <dxprg:PropertyDefinition Path="DailyTotalEmployeeSavings"/>
             <dxprg:PropertyDefinition Path="DailyTotalSavings"/>
+
+            <dxprg:PropertyDefinition Path="MonthlyMaterialCost"/>
+            <dxprg:PropertyDefinition Path="MonthlyMachineCost"/>
+            <dxprg:PropertyDefinition Path="MonthlyEmployeeCost"/>
+            <dxprg:PropertyDefinition Path="MonthlyTotalCost"/>
+
+            <dxprg:PropertyDefinition Path="MonthlyMaterialSavings"/>
+            <dxprg:PropertyDefinition Path="MonthlyMachineSavings"/>
+            <dxprg:PropertyDefinition Path="MonthlyEmployeeSavings"/>
             <dxprg:PropertyDefinition Path="MonthlyTotalSavings"/>
-            <dxprg:PropertyDefinition Path="TotalAnnualSavings"/>
+
+            <dxprg:PropertyDefinition Path="AnnualMaterialCost"/>
+            <dxprg:PropertyDefinition Path="AnnualMachineCost"/>
+            <dxprg:PropertyDefinition Path="AnnualEmployeeCost"/>
+            <dxprg:PropertyDefinition Path="AnnualTotalCost"/>
+
+            <dxprg:PropertyDefinition Path="AnnualMaterialSavings"/>
+            <dxprg:PropertyDefinition Path="AnnualMachineSavings"/>
+            <dxprg:PropertyDefinition Path="AnnualEmployeeSavings"/>
+            <dxprg:PropertyDefinition Path="AnnualTotalSavings"/>
         </dxprg:PropertyGridControl>
     </Grid>
 </UserControl>

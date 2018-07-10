@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using SNROI.Enums;
 
 namespace SNROI.Models
 {
@@ -38,6 +39,12 @@ namespace SNROI.Models
         [Category("Machines"), DisplayName("Number of machines"), Description("Number of machines available")]
         public int NumberOfMachines => RoiDocument.MachinesListCollection.Count;
 
+        [Category("Employees"), DisplayName("Number of programmers"), Description("Number of employees in manufacturing and fabrication operations")]
+        public int NumberOfProgrammers => RoiDocument.PeopleListCollection.Count(x => x.EmployeeKind == EmployeeKind.Programmer);
+
+        [Category("Employees"), DisplayName("Number of admins"), Description("Number of employees in manufacturing and fabrication operations")]
+        public int NumberOfAdmins => RoiDocument.PeopleListCollection.Count(x => x.EmployeeKind == EmployeeKind.Admin);
+
         [Category("Employees"), DisplayName("Number of employees"), Description("Number of employees in manufacturing and fabrication operations")]
         public int NumberOfEmployees => RoiDocument.PeopleListCollection.Count;
 
@@ -45,7 +52,24 @@ namespace SNROI.Models
         #endregion
 
         #region Daily
-        [Category("Daily"), DisplayName("Daily employee cost"), Description("Total cost of all employees per day"), DisplayFormat(DataFormatString = "0.00")]
+        [Category("Daily Cost"), DisplayName("Daily material cost"), Description("Total cost of materials per day"), DisplayFormat(DataFormatString = "0.00")]
+        public double DailyMaterialCost => MonthlyMaterialCost / WorkDaysInAMonth;
+
+        [Category("Daily Cost"), DisplayName("Daily machine cost"), Description("Total cost of machines per day"), DisplayFormat(DataFormatString = "0.00")]
+        public double DailyMachineCost
+        {
+            get
+            {
+                var machines = RoiDocument.MachinesListCollection;
+
+                return machines.Sum(y => y.CostPerHourToRun * WorkHoursInADay); //Todo: Apply utilization %?
+
+            }
+        }
+        
+
+        [Category("Daily Cost"), DisplayName("Daily employee cost"), Description("Total cost of all employees per day"),
+         DisplayFormat(DataFormatString = "0.00")]
         public double DailyEmployeeCost
         {
             get
@@ -55,76 +79,108 @@ namespace SNROI.Models
             }
         }
 
-        [Category("Daily"), DisplayName("Daily programmer savings"), Description("Total savings of all progammers per day"), DisplayFormat(DataFormatString = "0.00")]
-        public double DailyEmployeeSavings
+        [Category("Daily Cost"), DisplayName("Daily total cost"), Description("Total cost per day"), DisplayFormat(DataFormatString = "0.00")]
+        public double DailyTotalCost => DailyMaterialCost + DailyMachineCost + DailyEmployeeCost;
+
+        [Category("Daily Savings"), DisplayName("Daily total material savings"),
+         Description("Total savings of all materials per day"), DisplayFormat(DataFormatString = "0.00")]
+        public double DailyTotalMaterialSavings
         {
             get
             {
                 var people = RoiDocument.PeopleListCollection;
-                var measurements = RoiDocument.ROIDocumentMeasurements;
-                double hourlySavings = 0;
 
-                //Todo: Optimize the heck of this
-                if (measurements.ProgrammingTimeUnits == Enums.TimeUnitsEnums.Hour)
-                {
-                    hourlySavings = measurements.ProgrammingMinutesSavedPerUnit;
-                }
-                else if (measurements.ProgrammingTimeUnits == Enums.TimeUnitsEnums.Day)
-                {
-                    hourlySavings = (double)measurements.ProgrammingMinutesSavedPerUnit / WorkHoursInADay;
-                }
-                else if (measurements.ProgrammingTimeUnits == Enums.TimeUnitsEnums.Week)
-                {
-                    hourlySavings = (double)measurements.ProgrammingMinutesSavedPerUnit / WorkDaysInAWeek / WorkHoursInADay;
-                }
-                else if (measurements.ProgrammingTimeUnits == Enums.TimeUnitsEnums.Month)
-                {
-                    hourlySavings = (double)measurements.ProgrammingMinutesSavedPerUnit / WorkDaysInAMonth / WorkDaysInAWeek / WorkHoursInADay;
-                }
-                else if (measurements.ProgrammingTimeUnits == Enums.TimeUnitsEnums.Year)
-                {
-                    hourlySavings = (double)measurements.ProgrammingMinutesSavedPerUnit / WorkDaysInAYear / WorkDaysInAMonth / WorkDaysInAWeek / WorkHoursInADay;
-                }
-                return people.Count(x => x.EmployeeKind == EmployeeKind.Programmer) * hourlySavings;
+                //return people.Sum(y => y.HourlyWage / RoiDocument.PercentMaterialUsageSavedPerYear * WorkHoursInADay);
+                return 0;
             }
         }
 
-        [Category("Daily"), DisplayName("Daily total savings"), Description("Total cost of all employees per day"), DisplayFormat(DataFormatString = "0.00")]
-        public double DailyTotalSavings
+        [Category("Daily Savings"), DisplayName("Daily total machine savings"),
+         Description("Total savings of all machines per day"), DisplayFormat(DataFormatString = "0.00")]
+        public double DailyTotalMachineSavings
+        {
+            //Todo: what
+            get { return DailyMachineCost * 1; }
+        }
+
+        [Category("Daily Savings"), DisplayName("Daily total employee savings"),
+         Description("Total savings of all employees per day"), DisplayFormat(DataFormatString = "0.00")]
+        public double DailyTotalEmployeeSavings
         {
             get
             {
-                //Todo: Add other savings here
-                return DailyEmployeeSavings;
+                var people = RoiDocument.PeopleListCollection;
+
+                return people.Sum(y => y.HourlyWage / RoiDocument.AdminMinutesSavedPerHour * WorkHoursInADay);
             }
         }
+
+        [Category("Daily Savings"), DisplayName("Daily total savings"), Description("Total savings per day"), DisplayFormat(DataFormatString = "0.00")]
+        public double DailyTotalSavings => DailyTotalMaterialSavings + DailyTotalMachineSavings + DailyTotalEmployeeSavings;
 
         #endregion
 
         #region Monthly
 
-        [Category("Monthly"), DisplayName("Monthly employee cost"), Description("Total cost of all employees per month"), DisplayFormat(DataFormatString = "0.00")]
+        [Category("Monthly Cost"), DisplayName("Monthly material cost"), Description("Total cost of materials per month"), DisplayFormat(DataFormatString = "0.00")]
+        public double MonthlyMaterialCost
+        {
+            get
+            {
+                var materials = RoiDocument.MaterialsListCollection;
+                return materials.Sum(x => x.CostPerWeightUnit * x.TotalMonthlyPurchasedWeight);
+            }
+        }
+
+        [Category("Monthly Cost"), DisplayName("Monthly machine cost"), Description("Total cost of all machines per month"), DisplayFormat(DataFormatString = "0.00")]
+        public double MonthlyMachineCost => DailyMachineCost * WorkDaysInAMonth;
+
+        [Category("Monthly Cost"), DisplayName("Monthly employee cost"), Description("Total cost of all employees per month"), DisplayFormat(DataFormatString = "0.00")]
         public double MonthlyEmployeeCost => DailyEmployeeCost * WorkDaysInAMonth;
 
-        [Category("Monthly"), DisplayName("Monthly programmer savings"), Description("Total savings of all programmers per month"), DisplayFormat(DataFormatString = "0.00")]
-        public double MonthlyEmployeeSavings => DailyEmployeeSavings * WorkDaysInAMonth;
+        [Category("Monthly Cost"), DisplayName("Monthly cost"), Description("Total cost per month"), DisplayFormat(DataFormatString = "0.00")]
+        public double MonthlyTotalCost => DailyTotalCost * WorkDaysInAMonth;
 
-        [Category("Monthly"), DisplayName("Monthly total savings"), Description(""), DisplayFormat(DataFormatString = "0.00")]
-        public double MonthlyTotalSavings => DailyEmployeeSavings * WorkDaysInAMonth;
+
+        [Category("Monthly Savings"), DisplayName("Monthly material savings"), Description("Total savings of all material per month"), DisplayFormat(DataFormatString = "0.00")]
+        public double MonthlyMaterialSavings => DailyTotalMaterialSavings * WorkDaysInAMonth;
+
+        [Category("Monthly Savings"), DisplayName("Monthly machine savings"), Description("Total savings of all machines per month"), DisplayFormat(DataFormatString = "0.00")]
+        public double MonthlyMachineSavings => DailyTotalMachineSavings * WorkDaysInAMonth;
+
+        [Category("Monthly Savings"), DisplayName("Monthly employee savings"), Description("Total savings of all employees per month"), DisplayFormat(DataFormatString = "0.00")]
+        public double MonthlyEmployeeSavings => DailyTotalEmployeeSavings * WorkDaysInAMonth;
+
+        [Category("Monthly Savings"), DisplayName("Monthly total savings"), Description(""), DisplayFormat(DataFormatString = "0.00")]
+        public double MonthlyTotalSavings => DailyTotalSavings * WorkDaysInAMonth;
 
         #endregion
 
         #region Annual
+        [Category("Annual Cost"), DisplayName("Annual material cost"), Description("Total cost of all material per year"), DisplayFormat(DataFormatString = "0.00")]
+        public double AnnualMaterialCost => DailyMaterialCost * WorkDaysInAYear;
 
-        [Category("Annual"), DisplayName("Annual employee cost"), Description("Total cost of all employees per year"), DisplayFormat(DataFormatString = "0.00")]
+        [Category("Annual Cost"), DisplayName("Annual machine cost"), Description("Total cost of all machines per year"), DisplayFormat(DataFormatString = "0.00")]
+        public double AnnualMachineCost => DailyMachineCost * WorkDaysInAYear;
+
+        [Category("Annual Cost"), DisplayName("Annual employee cost"), Description("Total cost of all employees per year"), DisplayFormat(DataFormatString = "0.00")]
         public double AnnualEmployeeCost => DailyEmployeeCost * WorkDaysInAYear;
 
+        [Category("Annual Cost"), DisplayName("Annual cost"), Description("Total cost per year"), DisplayFormat(DataFormatString = "0.00")]
+        public double AnnualTotalCost => DailyTotalCost * WorkDaysInAYear;
 
-        [Category("Annual"), DisplayName("Annual programmer savings"), Description("Total savings of all programmers per year"), DisplayFormat(DataFormatString = "0.00")]
-        public double AnnualEmployeeSavings => DailyEmployeeSavings * WorkDaysInAYear;
 
-        [Category("Annual"), DisplayName("Annual total savings"), Description(""), DisplayFormat(DataFormatString = "0.00")]
-        public double TotalAnnualSavings => DailyEmployeeSavings * WorkDaysInAYear;
+        [Category("Annual Savings"), DisplayName("Annual material savings"), Description("Total savings of all material per year"), DisplayFormat(DataFormatString = "0.00")]
+        public double AnnualMaterialSavings => DailyMaterialCost * WorkDaysInAYear;
+
+        [Category("Annual Savings"), DisplayName("Annual machine savings"), Description("Total savings of all machine per year"), DisplayFormat(DataFormatString = "0.00")]
+        public double AnnualMachineSavings => DailyMachineCost * WorkDaysInAYear;
+
+        [Category("Annual Savings"), DisplayName("Annual employee savings"), Description("Total savings of all employees per year"), DisplayFormat(DataFormatString = "0.00")]
+        public double AnnualEmployeeSavings => DailyTotalEmployeeSavings * WorkDaysInAYear;
+
+        [Category("Annual Savings"), DisplayName("Annual total savings"), Description(""), DisplayFormat(DataFormatString = "0.00")]
+        public double AnnualTotalSavings => DailyTotalSavings * WorkDaysInAYear;
 
 
         #endregion
