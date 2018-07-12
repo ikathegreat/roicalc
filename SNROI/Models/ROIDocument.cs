@@ -18,6 +18,8 @@ namespace SNROI.Models
             Notes = string.Empty;
         }
 
+        public ROIDocumentTimeSpans ROIDocumentTimeSpans => new ROIDocumentTimeSpans();
+
         public string DocumentName
         {
             get => documentName;

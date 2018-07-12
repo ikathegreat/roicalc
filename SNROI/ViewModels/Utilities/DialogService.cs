@@ -310,7 +310,7 @@ namespace SNROI.ViewModels.Utilities
             var printReportsViewModel = new PrintReportsViewModel { DataDirectory = defaultDataDirectory, SelectedROIViewModelList = selectedViewModelsList };
             var closeCommand = new ButtonServiceCommand("Close", printReportsViewModel.SaveSelectedReportTemplatesCommand, false, true, true);
 
-            dialogService.ShowDialogWindow("Print ROI Report", new[] { closeCommand }, null, printReportWindow, printReportsViewModel, false);
+            dialogService.ShowDialogWindow("Reporting", new[] { closeCommand }, null, printReportWindow, printReportsViewModel, false);
         }
 
         public bool ShowOpenROIDocumentDialog(string defaultDataDirectory, List<string> companiesList, string documentPath = "")
@@ -332,7 +332,7 @@ namespace SNROI.ViewModels.Utilities
 
             roiDocumentViewModel.CompaniesList = companiesList;
             roiDocumentViewModel.LoadExistingImages();
-            
+
             var editReportCommand = new ButtonServiceCommand("Reporting", roiDocumentViewModel.EditReportCommand, false, false, false);
             var okCommand = new ButtonServiceCommand("OK", roiDocumentViewModel.SaveROIDocumentCommand, false, false, true);
             var cancelCommand = new ButtonServiceCommand("Cancel", roiDocumentViewModel.CancelCommand, true, false, true);
@@ -346,7 +346,6 @@ namespace SNROI.ViewModels.Utilities
             else
                 return false;
         }
-
 
         public void ShowImageBrowserWindow(string imageDirectory)
         {
@@ -362,31 +361,20 @@ namespace SNROI.ViewModels.Utilities
             dialogService.ShowDialogWindow("Image Browser", new[] { okCommand, cancelCommand }, null, imageBrowserWindow, imageBrowserViewModel, false);
         }
 
-        public void ShowReportEditorDialog222(string reportRepxFilePath = "", object dataSource = null)
+        public void ShowMachineSetupWindow(Machine machine = null)
         {
-
             UIServices.SetBusyState();
 
-            var report = new XtraReport();
-            report.LoadLayout(reportRepxFilePath);
-            var fileInfo = new FileInfo(reportRepxFilePath);
-            DevExpress.XtraReports.Configuration.Settings.Default.StorageOptions.RootDirectory =
-                fileInfo.DirectoryName;
+            var machineSetupWindow = new MachineSetupView();
+            var machineSetupViewModel = new MachineSetupViewModel { Machine = machine };
 
-            if (dataSource != null)
-            {
-                var objectDataSource = new ObjectDataSource
-                {
-                    Constructor = new ObjectConstructorInfo(),
-                    DataSource = (dataSource)
-                };
-                report.DataSource = objectDataSource;
-            }
+            var okCommand = new ButtonServiceCommand("OK", machineSetupViewModel.OKCommand, false, true, true);
+            var cancelCommand = new ButtonServiceCommand("Cancel", null, true, false, true);
 
-            report.CreateDocument();
-
-            report.ShowDesignerDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
+            var windowTitle = machine == null ? "New Machine" : $"Edit {machine.Name}";
+            //throw null;
+            dialogService.ShowDialogWindow($"{windowTitle}", new[] { okCommand, cancelCommand }, null, machineSetupWindow, machineSetupViewModel, false);
         }
-        
+
     }
 }

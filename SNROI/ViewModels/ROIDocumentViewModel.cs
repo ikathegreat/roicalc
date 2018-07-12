@@ -253,6 +253,13 @@ namespace SNROI.ViewModels
             RaisePropertyChanged(nameof(ImageList));
         }
 
+        public ICommand OpenMachineEditWindowCommand => new RelayCommand(OpenMachineEditWindow);
+
+        private static void OpenMachineEditWindow()
+        {
+            DialogService.Instance.ShowMachineSetupWindow();
+        }
+
         public ReportType ReportType => ReportType.Standard;
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
+using SNROI.Enums;
 
 namespace SNROI.Models
 {
     public class Machine : ObservableObject
     {
 
-        public string Name { get; set; }
+        public string Name { get; set; } = "Machine";
 
         /// <summary>
         /// Type of machine 

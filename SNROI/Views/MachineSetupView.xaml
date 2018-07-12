@@ -1,0 +1,43 @@
+﻿<UserControl xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SNROI.Views"
+             xmlns:ViewModels="clr-namespace:SNROI.ViewModels"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:utilities="clr-namespace:SNROI.Views.Utilities"
+             xmlns:Enums="clr-namespace:SNROI.Enums"
+             x:Class="SNROI.Views.MachineSetupView"
+             mc:Ignorable="d" 
+             Height="300" Width="400"
+             d:DataContext="{d:DesignInstance Type=ViewModels:MachineSetupViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="160"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Name" Margin="5"/>
+        <TextBox Margin="5" Grid.Column="1" Text="{Binding Machine.Name}"/>
+        <Label Content="Type" Margin="5" Grid.Row="1"/>
+        <ComboBox Grid.Row="1" Margin="5" Grid.Column="1" ItemsSource="{Binding Source={utilities:EnumBindingSource {x:Type Enums:MachineKind}}}"                                                                      />
+        <Label Content="Utilization %" Margin="5" Grid.Row="2"/>
+        <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" Grid.Row="2" Grid.Column="1" MinValue="0" Value="1" MaxValue="99.99" Mask="f" EditValue="{Binding Machine.MonthlyUtilizationPercentage}" IsTextEditable="True" MaskUseAsDisplayFormat="True" Increment="5"/>
+        <Label Content="Cost Per Hour to Run" Margin="5" Grid.Row="3"/>
+        <dxe:TextEdit Margin="5" Mask="N0" MaskType="Numeric" EditValue="{Binding Machine.CostPerHourToRun}" AllowNullInput="False" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Right" />
+        <dxg:GridControl Margin="5" Grid.Row="4" Grid.ColumnSpan="2" MinHeight="200" AllowMRUFilterList="False" AllowColumnMRUFilterList="False" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" IsFilterEnabled="False" ItemsSource="{Binding Machine.MachineMaterials, Mode=TwoWay}" SelectionMode="Row" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <dxg:GridControl.View>
+                <dxg:TableView AllowEditing="False" AllowMoveColumnToDropArea="False" AllowBandMultiRow="False" AllowColumnFiltering="False" AllowGrouping="False" AllowColumnMoving="False" AllowBandMoving="False" AllowFilterEditor="False" AllowResizing="False" AllowSorting="False" AllowBandResizing="False" FadeSelectionOnLostFocus="True" NavigationStyle="Row" ShowBandsInCustomizationForm="False" ShowSearchPanelMode="Never" ShowBandsPanel="False" ShowGroupPanel="False" SearchPanelAllowFilter="False" ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalScrollbarVisibility="Auto"/>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

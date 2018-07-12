@@ -16,11 +16,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="SigmaNEST ROI Calculator" FontSize="25" Margin="15" Foreground="#FF858585" VerticalAlignment="Center">
-                <TextBlock.Effect>
-                    <DropShadowEffect Color="WhiteSmoke" />
-                </TextBlock.Effect>
-            </TextBlock>
+            <TextBlock Text="SigmaNEST ROI Calculator" FontSize="25" Margin="15" Foreground="#FF858585" VerticalAlignment="Center"/>
             <Image Grid.Column="1" Margin="15" Width="150" Source="/SNROI;component/Resources/SigmaTEK_graysplash.png" />
         </Grid>
         <Grid Grid.Row="1" Margin="10">

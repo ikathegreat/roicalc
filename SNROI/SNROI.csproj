@@ -139,12 +139,14 @@
     </ApplicationDefinition>
     <Compile Include="Enums\ReportExportType.cs" />
     <Compile Include="Enums\EmployeeKind.cs" />
-    <Compile Include="Models\MachineKind.cs" />
+    <Compile Include="Enums\MachineKind.cs" />
     <Compile Include="Models\MachineMaterial.cs" />
     <Compile Include="Models\ROIDocumentCalculations.cs" />
+    <Compile Include="Models\ROIDocumentTimeSpans.cs" />
     <Compile Include="Models\Units.cs" />
     <Compile Include="Tools\DateTimeTools.cs" />
     <Compile Include="Enums\ReportAction.cs" />
+    <Compile Include="ViewModels\MachineSetupViewModel.cs" />
     <Compile Include="ViewModels\Utilities\DXReportHelper.cs" />
     <Compile Include="ViewModels\Utilities\DXSkinNameHelper.cs" />
     <Compile Include="ViewModels\Utilities\UIServices.cs" />
@@ -166,6 +168,9 @@
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\Material.cs" />
     <Compile Include="Models\ROIDocument.cs" />
+    <Compile Include="Views\MachineSetupView.xaml.cs">
+      <DependentUpon>MachineSetupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PrintReportView.xaml.cs">
       <DependentUpon>PrintReportView.xaml</DependentUpon>
     </Compile>
@@ -188,6 +193,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImageBrowserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MachineSetupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

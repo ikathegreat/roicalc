@@ -1,4 +1,4 @@
-﻿namespace SNROI.Models
+﻿namespace SNROI.Enums
 {
     public enum MachineKind
     {
