@@ -11,7 +11,11 @@ namespace SNROI.Tools
         /// <returns></returns>
         public static string GetNextAvailableFilename(string filename)
         {
-            if (!File.Exists(filename)) return filename;
+            if (!Directory.Exists(Path.GetDirectoryName(filename)))
+                return null;
+
+            if (!File.Exists(filename))
+                return filename;
 
             string alternateFilename;
             var fileNameIndex = 1;
