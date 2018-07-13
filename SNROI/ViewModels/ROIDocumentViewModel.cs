@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using DevExpress.DataAccess.ObjectBinding;
@@ -253,11 +254,18 @@ namespace SNROI.ViewModels
             RaisePropertyChanged(nameof(ImageList));
         }
 
-        public ICommand OpenMachineEditWindowCommand => new RelayCommand(OpenMachineEditWindow);
+        public ICommand OpenMachineEditWindowCommand => new RelayCommand<object>(OpenMachineEditWindow);
 
-        private static void OpenMachineEditWindow()
+        private void OpenMachineEditWindow(object o)
         {
-            DialogService.Instance.ShowMachineSetupWindow();
+            if (!(o is Machine machine))
+                return;
+            DialogService.Instance.ShowMachineSetupWindow(ref machine);
+
+            var indexOfMachine = ROIDocument.MachinesListCollection.IndexOf(((Machine) o));
+            ROIDocument.MachinesListCollection[indexOfMachine] = machine;
+
+            RaisePropertyChanged(nameof(ROIDocument.MachinesListCollection));
         }
 
         public ReportType ReportType => ReportType.Standard;

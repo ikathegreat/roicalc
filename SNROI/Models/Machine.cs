@@ -1,10 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using SNROI.Enums;
 
 namespace SNROI.Models
 {
-    public class Machine : ObservableObject
+    public class Machine : ObservableObject, ICloneable
     {
 
         public string Name { get; set; } = "Machine";
@@ -25,5 +26,17 @@ namespace SNROI.Models
         public double MonthlyUtilizationPercentage { get; set; } = 50;
 
         public ObservableCollection<MachineMaterial> MachineMaterials { get; set; } = new ObservableCollection<MachineMaterial>();
+
+        public object Clone()
+        {
+            var machine = new Machine
+            {
+                Name = this.Name,
+                MachineKind = this.MachineKind,
+                CostPerHourToRun = this.CostPerHourToRun,
+                MonthlyUtilizationPercentage = this.MonthlyUtilizationPercentage
+            };
+            return machine;
+        }
     }
 }

@@ -96,8 +96,8 @@
     <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="SigmaTEK.Dialogs, Version=1.4.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SigmaTEK.Dialogs.1.4.7\lib\net46\SigmaTEK.Dialogs.dll</HintPath>
+    <Reference Include="SigmaTEK.Dialogs, Version=1.4.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SigmaTEK.Dialogs.1.4.8\lib\net46\SigmaTEK.Dialogs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -146,6 +146,7 @@
     <Compile Include="Models\Units.cs" />
     <Compile Include="Tools\DateTimeTools.cs" />
     <Compile Include="Enums\ReportAction.cs" />
+    <Compile Include="ViewModels\MachineMaterialItemViewModel.cs" />
     <Compile Include="ViewModels\MachineSetupViewModel.cs" />
     <Compile Include="ViewModels\Utilities\DXReportHelper.cs" />
     <Compile Include="ViewModels\Utilities\DXSkinNameHelper.cs" />
@@ -168,6 +169,9 @@
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\Material.cs" />
     <Compile Include="Models\ROIDocument.cs" />
+    <Compile Include="Views\MachineMaterialItem.xaml.cs">
+      <DependentUpon>MachineMaterialItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MachineSetupView.xaml.cs">
       <DependentUpon>MachineSetupView.xaml</DependentUpon>
     </Compile>
@@ -193,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImageBrowserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MachineMaterialItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

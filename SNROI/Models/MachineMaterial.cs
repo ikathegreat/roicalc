@@ -8,6 +8,16 @@ namespace SNROI.Models
 {
     public class MachineMaterial : Material
     {
-        public double PercentOfTotalMachineCapcity { get; set; }
+        private double percentOfTotalMachineCapacity = 100;
+
+        public double PercentOfTotalMachineCapacity
+        {
+            get => percentOfTotalMachineCapacity;
+            set
+            {
+                percentOfTotalMachineCapacity = value;
+                RaisePropertyChanged(nameof(PercentOfTotalMachineCapacity));
+            }
+        }
     }
 }

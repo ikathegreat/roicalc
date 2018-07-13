@@ -361,19 +361,26 @@ namespace SNROI.ViewModels.Utilities
             dialogService.ShowDialogWindow("Image Browser", new[] { okCommand, cancelCommand }, null, imageBrowserWindow, imageBrowserViewModel, false);
         }
 
-        public void ShowMachineSetupWindow(Machine machine = null)
+        public void ShowMachineSetupWindow(ref Machine machine)
         {
             UIServices.SetBusyState();
 
+            var machineForEdit = machine?.Clone() as Machine;
+
             var machineSetupWindow = new MachineSetupView();
-            var machineSetupViewModel = new MachineSetupViewModel { Machine = machine };
+            var machineSetupViewModel = new MachineSetupViewModel { Machine = machineForEdit };
 
             var okCommand = new ButtonServiceCommand("OK", machineSetupViewModel.OKCommand, false, true, true);
             var cancelCommand = new ButtonServiceCommand("Cancel", null, true, false, true);
 
-            var windowTitle = machine == null ? "New Machine" : $"Edit {machine.Name}";
-            //throw null;
-            dialogService.ShowDialogWindow($"{windowTitle}", new[] { okCommand, cancelCommand }, null, machineSetupWindow, machineSetupViewModel, false);
+            var windowTitle = machineForEdit == null ? "New Machine" : $"Edit {machineForEdit.Name}";
+
+            
+            var result = dialogService.ShowDialogWindow($"{windowTitle}", new[] { okCommand, cancelCommand }, null, machineSetupWindow, machineSetupViewModel, false);
+            if (result == okCommand)
+            {
+                machine = machineForEdit;
+            }
         }
 
     }
