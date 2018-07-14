@@ -13,6 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using DevExpress.Xpf.Bars;
 
 namespace SNROI.Views
 {
@@ -47,6 +48,16 @@ namespace SNROI.Views
             if (File.Exists(gridXmlPath))
                 grid.RestoreLayoutFromXml(gridXmlPath);
 
+        }
+
+        private void BarButtonItemAddNewMaterial_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            TableViewMaterials.AddNewRow();
+        }
+
+        private void BarButtonItemAddNewPerson_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            TableViewPeople.AddNewRow();
         }
     }
 }

@@ -365,7 +365,7 @@ namespace SNROI.ViewModels.Utilities
         {
             UIServices.SetBusyState();
 
-            var machineForEdit = machine?.Clone() as Machine;
+            var machineForEdit = machine == null ? new Machine() : machine.Clone() as Machine;
 
             var machineSetupWindow = new MachineSetupView();
             var machineSetupViewModel = new MachineSetupViewModel { Machine = machineForEdit };

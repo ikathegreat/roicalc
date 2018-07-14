@@ -26,9 +26,33 @@ namespace SNROI.ViewModels
                 MachineMaterialItemListCollection.Clear();
                 foreach (var machineMachineMaterial in machine.MachineMaterials)
                 {
-                    MachineMaterialItemListCollection.Add(new MachineMaterialItemViewModel() { MachineMaterial = machineMachineMaterial });
+                    var machineMaterialItemViewModel = new MachineMaterialItemViewModel() { MachineMaterial = machineMachineMaterial };
+                    machineMaterialItemViewModel.MachineMaterialChanged += MachineMaterialItemViewModel_MachineMaterialChanged;
+                    machineMaterialItemViewModel.RemoveMachineMaterial += MachineMaterialItemViewModel_RemoveMachineMaterial;
+                    MachineMaterialItemListCollection.Add(machineMaterialItemViewModel);
                 }
             }
+        }
+
+        private void MachineMaterialItemViewModel_RemoveMachineMaterial(MachineMaterial machineMaterial)
+        {
+            MachineMaterialItemListCollection.Remove(MachineMaterialItemListCollection.Single(s => s.MachineMaterial == machineMaterial));
+            //Machine.MachineMaterials.Remove(machineMaterial);
+        }
+
+        private void MachineMaterialItemViewModel_MachineMaterialChanged(MachineMaterial machineMaterial)
+        {
+            //get new remainder
+            var newRemainder = 100 - machineMaterial.PercentOfTotalMachineCapacity;
+
+            foreach (var machineMaterialItemViewModel in MachineMaterialItemListCollection)
+            {
+                //Update new % based on ratio
+                machineMaterialItemViewModel.MachineMaterial.PercentOfTotalMachineCapacity
+                    = machineMaterialItemViewModel.MachineMaterial.PercentOfTotalMachineCapacity / 100 *
+                      newRemainder;
+            }
+
         }
 
         private RelayCommand okCommand;
@@ -41,7 +65,11 @@ namespace SNROI.ViewModels
                        ?? (okCommand = new RelayCommand(
                            () =>
                            {
-                               //Doo Stuff
+                               Machine.MachineMaterials.Clear();
+                               foreach (var machineMaterialItemViewModel in MachineMaterialItemListCollection)
+                               {
+                                   Machine.MachineMaterials.Add(machineMaterialItemViewModel.MachineMaterial);
+                               }
                            }));
             }
         }
@@ -57,13 +85,22 @@ namespace SNROI.ViewModels
                            {
                                //get new remainder
                                var newRemainder = 100 - ((double)100 / (MachineMaterialItemListCollection.Count + 1));
-
-                               foreach (var machineMaterialItemViewModel in MachineMaterialItemListCollection)
+                               var isCurrentPercentSumEqualTo100 =
+                                   Math.Abs(MachineMaterialItemListCollection.Sum(x =>
+                                                x.MachineMaterial.PercentOfTotalMachineCapacity) - 100) < 1;
+                               if (isCurrentPercentSumEqualTo100)
                                {
-                                   //Update new % based on ratio
-                                   machineMaterialItemViewModel.MachineMaterial.PercentOfTotalMachineCapacity
-                                       = machineMaterialItemViewModel.MachineMaterial.PercentOfTotalMachineCapacity / 100 *
-                                         newRemainder;
+                                   foreach (var machineMaterialItemViewModel in MachineMaterialItemListCollection)
+                                   {
+                                       //Update new % based on ratio
+                                       machineMaterialItemViewModel.MachineMaterial.PercentOfTotalMachineCapacity
+                                           = machineMaterialItemViewModel.MachineMaterial.PercentOfTotalMachineCapacity / 100 *
+                                             newRemainder;
+                                   }
+                               }
+                               else
+                               {
+
                                }
                                MachineMaterialItemListCollection.Add(new MachineMaterialItemViewModel()
                                {
@@ -71,7 +108,8 @@ namespace SNROI.ViewModels
                                    {
                                        Name = $"Test {MachineMaterialItemListCollection.Count + 1}",
                                        CostPerWeightUnit = 4.0,
-                                       PercentOfTotalMachineCapacity = (double)100 / (MachineMaterialItemListCollection.Count + 1),
+                                       PercentOfTotalMachineCapacity = isCurrentPercentSumEqualTo100 ? (double)100 / (MachineMaterialItemListCollection.Count + 1)
+                                           : 100 - MachineMaterialItemListCollection.Sum(x => x.MachineMaterial.PercentOfTotalMachineCapacity),
                                        TotalMonthlyPurchasedWeight = 3
                                    }
                                });

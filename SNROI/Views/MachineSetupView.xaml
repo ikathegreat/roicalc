@@ -37,11 +37,11 @@
             <Label Content="Name" Margin="5"/>
             <TextBox Margin="5" Grid.Column="1" Text="{Binding Machine.Name}"/>
             <Label Content="Type" Margin="5" Grid.Row="1"/>
-            <ComboBox Grid.Row="1" Margin="5" Grid.Column="1" ItemsSource="{Binding Source={utilities:EnumBindingSource {x:Type Enums:MachineKind}}}"                                                                      />
+            <ComboBox Grid.Row="1" Margin="5" Grid.Column="1" ItemsSource="{Binding Source={utilities:EnumBindingSource {x:Type Enums:MachineKind}}}" SelectedItem="{Binding Machine.MachineKind}"                                                                      />
             <Label Content="Utilization %" Margin="5" Grid.Row="2"/>
-            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" Grid.Row="2" Grid.Column="1" MinValue="0" Value="1" MaxValue="99.99" Mask="f" EditValue="{Binding Machine.MonthlyUtilizationPercentage}" IsTextEditable="True" MaskUseAsDisplayFormat="True" Increment="5"/>
+            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" Grid.Row="2" Grid.Column="1" MinValue="0" Value="1" MaxValue="100" Mask="f" EditValue="{Binding Machine.MonthlyUtilizationPercentage}" IsTextEditable="True" MaskUseAsDisplayFormat="True" Increment="5"/>
             <Label Content="Cost Per Hour to Run" Margin="5" Grid.Row="3"/>
-            <dxe:TextEdit Margin="5" Mask="N0" MaskType="Numeric" EditValue="{Binding Machine.CostPerHourToRun}" AllowNullInput="False" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Right" />
+            <dxe:SpinEdit EditValueType="{x:Type System:Double}" Margin="5" MinWidth="75" Grid.Row="3" Grid.Column="1" MinValue="0" Value="1" MaxValue="100" Mask="f" EditValue="{Binding Machine.CostPerHourToRun}" IsTextEditable="True" MaskUseAsDisplayFormat="True" Increment="5"/>
         </Grid>
         <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="#FFA1A1A1">
             <Grid Background="White">

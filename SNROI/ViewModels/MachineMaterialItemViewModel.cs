@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.CommandWpf;
 using SNROI.Models;
 
 namespace SNROI.ViewModels
@@ -28,6 +29,25 @@ namespace SNROI.ViewModels
         public void FireMachineMaterialChanged(MachineMaterial aMachineMaterial)
         {
             MachineMaterialChanged?.Invoke(aMachineMaterial);
+        }
+
+        private RelayCommand removeMaterialCommand;
+
+        public RelayCommand RemoveMaterialCommand
+        {
+            get
+            {
+                return removeMaterialCommand
+                       ?? (removeMaterialCommand = new RelayCommand(() => { FireRemoveMachineMaterial(MachineMaterial); }));
+            }
+        }
+        public delegate void RemoveMachineMaterialDelegate(MachineMaterial machineMaterial);
+
+        public event RemoveMachineMaterialDelegate RemoveMachineMaterial;
+
+        public void FireRemoveMachineMaterial(MachineMaterial aMachineMaterial)
+        {
+            RemoveMachineMaterial?.Invoke(aMachineMaterial);
         }
     }
 }

@@ -11,16 +11,20 @@
              d:DataContext="{d:DesignInstance Type=vm:MachineMaterialItemViewModel, IsDesignTimeCreatable=True}">
     <!--<Border Margin="2" BorderBrush="#8F8F8F" BorderThickness="1">-->
     <Grid Margin="2">
-        <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+        <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Command="{Binding RemoveMaterialCommand}">
             <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" MinWidth="150"/>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto" MinWidth="50"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="{Binding MachineMaterial.Name}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                <Slider Maximum="100" Grid.Column="1" TickPlacement="BottomRight" TickFrequency="10" Margin="5" Value="{Binding MachineMaterial.PercentOfTotalMachineCapacity}" SmallChange="10" LargeChange="20"/>
-                <TextBlock Grid.Column="2" Text="{Binding MachineMaterial.PercentOfTotalMachineCapacity, StringFormat={}{0}%, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" Foreground="#FF6C6C6C"/>
+                <Label Content="{Binding MachineMaterial.Name}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,9,0,9" Grid.RowSpan="2"/>
+                <Slider Maximum="100" Grid.Column="1" TickPlacement="BottomRight" TickFrequency="10" Margin="5" Value="{Binding MachineMaterial.PercentOfTotalMachineCapacity}" SmallChange="10" LargeChange="20" Grid.RowSpan="2"/>
+                <TextBlock Grid.Column="2" Text="{Binding MachineMaterial.PercentOfTotalMachineCapacity, StringFormat={}{0:#}%, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,12,0,2.347" Foreground="#FF6C6C6C"/>
             </Grid>
         </Button>
     </Grid>

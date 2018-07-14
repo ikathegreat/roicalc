@@ -34,7 +34,8 @@ namespace SNROI.Models
                 Name = this.Name,
                 MachineKind = this.MachineKind,
                 CostPerHourToRun = this.CostPerHourToRun,
-                MonthlyUtilizationPercentage = this.MonthlyUtilizationPercentage
+                MonthlyUtilizationPercentage = this.MonthlyUtilizationPercentage,
+                MachineMaterials = this.MachineMaterials
             };
             return machine;
         }

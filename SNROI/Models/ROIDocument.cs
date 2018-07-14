@@ -171,6 +171,7 @@ namespace SNROI.Models
                 RaisePropertyChanged(nameof(Language));
             }
         }
+        
 
         public ObservableCollection<Material> MaterialsListCollection
         {
