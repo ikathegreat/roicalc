@@ -151,6 +151,7 @@
     <Compile Include="ViewModels\Utilities\DXReportHelper.cs" />
     <Compile Include="ViewModels\Utilities\DXSkinNameHelper.cs" />
     <Compile Include="ViewModels\Utilities\UIServices.cs" />
+    <Compile Include="ViewModels\Utilities\WeakObservableCollectionPropertyChangedListener.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>

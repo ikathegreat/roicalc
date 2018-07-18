@@ -63,17 +63,13 @@ namespace SNROI.ViewModels
         {
             get
             {
-                if (roiDocument == null)
-                {
-
-                    var roiDoc = roiDocument ?? (roiDocument = string.IsNullOrEmpty(DocumentPath)
-                          ? new ROIDocument()
-                          : LoadROIDocumentFile(DocumentPath));
-                    //roiDoc.IsDirty = false;
-                    return roiDoc;
-                }
-
-                return roiDocument;
+                if (roiDocument != null)
+                    return roiDocument;
+                var roiDoc = roiDocument ?? (roiDocument = string.IsNullOrEmpty(DocumentPath)
+                                 ? new ROIDocument()
+                                 : LoadROIDocumentFile(DocumentPath));
+                //roiDoc.IsDirty = false;
+                return roiDoc;
             }
 
             set
@@ -204,6 +200,20 @@ namespace SNROI.ViewModels
             }
         }
 
+
+        public ICommand AddNewMaterialItemCommand => new RelayCommand(AddNewMaterialItem);
+
+        private void AddNewMaterialItem()
+        {
+            roiDocument.MaterialsListCollection.Add(new Material() { Name = $"Material {roiDocument.MaterialsListCollection.Count + 1}" });
+        }
+        public ICommand AddNewHourlyPersonCommand => new RelayCommand(AddNewHourlyPerson);
+
+        private void AddNewHourlyPerson()
+        {
+            roiDocument.PeopleListCollection.Add(new HourlyPerson() { Name = $"Programmer {roiDocument.PeopleListCollection.Count + 1}" });
+        }
+
         public ICommand CancelCommand => new RelayCommand(CancelDocumentEdit);
 
         private void CancelDocumentEdit()
@@ -259,52 +269,47 @@ namespace SNROI.ViewModels
             RaisePropertyChanged(nameof(ImageList));
         }
 
-        public ICommand OpenMachineEditWindowCommand => new RelayCommand<object>(OpenMachineEditWindow);
+        public ICommand EditMachineWindowCommand => new RelayCommand<object>(EditMachineWindow);
 
-        private void OpenMachineEditWindow(object o)
+        private void EditMachineWindow(object o)
         {
-            var machine = (o as Machine);
-            NewOrEditMachine(machine);
+            if (!(o is Machine machine))
+                return;
 
-            //  RaisePropertyChanged(nameof(ROIDocument.MachinesListCollection));
-        }
-
-        private void NewOrEditMachine(Machine machine)
-        {
-            var originalmachine = machine;
-            DialogService.Instance.ShowMachineSetupWindow(ref machine);
+            var originalmachine = machine.Clone() as Machine;
+            if (!DialogService.Instance.ShowMachineSetupWindow(machine))
+                return;
 
             var indexOfMachine = ROIDocument.MachinesListCollection.IndexOf(originalmachine);
             if (indexOfMachine > -1)
             {
                 ROIDocument.MachinesListCollection[indexOfMachine] = machine;
             }
-            else
-            {
-                if (machine != null)
-                    ROIDocument.MachinesListCollection.Add(machine);
-            }
+            ROIDocument.RaisePropertyChanged();
         }
+        public ICommand AddNewMachineWindowCommand => new RelayCommand(NewMachineWindow);
 
-        public ICommand DeleteSelectedMachineCommand => new RelayCommand(DeleteSelectedMachine);
-
-        private void DeleteSelectedMachine()
+        private void NewMachineWindow()
         {
-            if (SelectedMachine != null)
+            var machine = new Machine() { Name = $"Plasma {roiDocument.MachinesListCollection.Count + 1}" };
+
+            if (DialogService.Instance.ShowMachineSetupWindow(machine))
             {
-                ROIDocument.MachinesListCollection.Remove(SelectedMachine);
-
+                ROIDocument.MachinesListCollection.Add(machine);
             }
-        }
-        public ICommand EditSelectedMachineCommand => new RelayCommand(EditSelectedMachine);
 
-        private void EditSelectedMachine()
+        }
+
+        public ICommand DeleteSelectedMachineCommand => new RelayCommand<object>(DeleteSelectedMachine);
+
+        private void DeleteSelectedMachine(object o)
         {
-            if (SelectedMachine != null)
+            if (o is Machine machine)
             {
-                NewOrEditMachine(SelectedMachine);
+                ROIDocument.MachinesListCollection.Remove(machine);
             }
         }
+
         public ICommand DeleteSelectedMaterialCommand => new RelayCommand(DeleteSelectedMaterial);
 
         private void DeleteSelectedMaterial()

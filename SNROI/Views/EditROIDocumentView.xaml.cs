@@ -50,14 +50,10 @@ namespace SNROI.Views
 
         }
 
-        private void BarButtonItemAddNewMaterial_OnItemClick(object sender, ItemClickEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TableViewMaterials.AddNewRow();
-        }
+            Expander.IsExpanded = !Expander.IsExpanded;
 
-        private void BarButtonItemAddNewPerson_OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            TableViewPeople.AddNewRow();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SNROI.Models
 {
-    public class MachineMaterial : Material, IComparable 
+    public class MachineMaterial : Material, IComparable
     {
         private double percentOfTotalMachineCapacity = 100;
 

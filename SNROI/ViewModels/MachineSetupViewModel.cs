@@ -102,7 +102,8 @@ namespace SNROI.ViewModels
                                {
 
                                }
-                               MachineMaterialItemListCollection.Add(new MachineMaterialItemViewModel()
+
+                               var newMachineMaterialItemViewModel = new MachineMaterialItemViewModel()
                                {
                                    MachineMaterial = new MachineMaterial()
                                    {
@@ -112,7 +113,10 @@ namespace SNROI.ViewModels
                                            : 100 - MachineMaterialItemListCollection.Sum(x => x.MachineMaterial.PercentOfTotalMachineCapacity),
                                        TotalMonthlyPurchasedWeight = 3
                                    }
-                               });
+                               };
+                               newMachineMaterialItemViewModel.RemoveMachineMaterial +=
+                                   MachineMaterialItemViewModel_RemoveMachineMaterial;
+                               MachineMaterialItemListCollection.Add(newMachineMaterialItemViewModel);
                            }));
             }
         }
