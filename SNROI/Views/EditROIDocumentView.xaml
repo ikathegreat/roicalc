@@ -30,9 +30,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="Auto" MinWidth="0" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.5*" MinWidth="0" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -42,7 +41,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="0.7*" />
-                
+
             </Grid.ColumnDefinitions>
             <GroupBox Header="General" Margin="0,0,5,5">
                 <Grid>
@@ -109,7 +108,7 @@
                     </Grid>
                 </Grid>
             </GroupBox>
-            <GroupBox Header="Language and Units" Margin="5,0,5,5" Grid.Row="0" Grid.Column="1">
+            <GroupBox Header="Language and Units" Margin="5,0,5,5" Grid.Row="0" Grid.Column="1" Visibility="Collapsed">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -350,51 +349,44 @@
                 </TabItem>
             </TabControl>
         </Grid>
+        <dxprg:PropertyGridControl Grid.Column="2" Margin="5,0,0,0" ShowSearchBox="True" SortMode="NoSort" ReadOnly="False" UseCollectionEditor="False" AllowListItemInitializer="False" AllowInstanceInitializer="False" ShowToolPanel="False" ScrollViewer.VerticalScrollBarVisibility="Auto" ShowMenuButtonInRows="False" ExpandButtonsVisibility="Hidden" ShowDescriptionIn="Panel" ExpandCategoriesWhenSelectedObjectChanged="True" ShowProperties="WithPropertyDefinitions" SelectedObject="{Binding ROIDocument.ROIDocumentCalculations}">
 
-        <Button Grid.Column="1" Content="..." Click="Button_Click" />
-
-        <dx:DXExpander x:Name="Expander" Grid.Column="2" FlowDirection="LeftToRight"
-                       VerticalExpand="None" HorizontalExpand="FromLeftToRight"
-                       IsExpanded="False">
-            <dxprg:PropertyGridControl Margin="5,0,0,0" ShowSearchBox="True" SortMode="NoSort" ReadOnly="False" UseCollectionEditor="False" AllowListItemInitializer="False" AllowInstanceInitializer="False" ShowToolPanel="False" ScrollViewer.VerticalScrollBarVisibility="Auto" ShowMenuButtonInRows="False" ExpandButtonsVisibility="Hidden" ShowDescriptionIn="Panel" ExpandCategoriesWhenSelectedObjectChanged="True" ShowProperties="WithPropertyDefinitions" SelectedObject="{Binding ROIDocument.ROIDocumentCalculations}">
-
-                <dxprg:PropertyDefinition Path="NumberOfMaterials" />
-                <dxprg:PropertyDefinition Path="NumberOfMachines"/>
-                <dxprg:PropertyDefinition Path="NumberOfProgrammers"/>
-                <dxprg:PropertyDefinition Path="NumberOfAdmins"/>
-                <dxprg:PropertyDefinition Path="NumberOfEmployees"/>
+            <dxprg:PropertyDefinition Path="NumberOfMaterials" />
+            <dxprg:PropertyDefinition Path="NumberOfMachines"/>
+            <dxprg:PropertyDefinition Path="NumberOfProgrammers"/>
+            <dxprg:PropertyDefinition Path="NumberOfAdmins"/>
+            <dxprg:PropertyDefinition Path="NumberOfEmployees"/>
 
 
-                <dxprg:PropertyDefinition Path="DailyMaterialCost"/>
-                <dxprg:PropertyDefinition Path="DailyMachineCost"/>
-                <dxprg:PropertyDefinition Path="DailyEmployeeCost"/>
-                <dxprg:PropertyDefinition Path="DailyTotalCost"/>
+            <dxprg:PropertyDefinition Path="DailyMaterialCost"/>
+            <dxprg:PropertyDefinition Path="DailyMachineCost"/>
+            <dxprg:PropertyDefinition Path="DailyEmployeeCost"/>
+            <dxprg:PropertyDefinition Path="DailyTotalCost"/>
 
-                <dxprg:PropertyDefinition Path="DailyTotalMaterialSavings"/>
-                <dxprg:PropertyDefinition Path="DailyTotalMachineSavings"/>
-                <dxprg:PropertyDefinition Path="DailyTotalEmployeeSavings"/>
-                <dxprg:PropertyDefinition Path="DailyTotalSavings"/>
+            <dxprg:PropertyDefinition Path="DailyTotalMaterialSavings"/>
+            <dxprg:PropertyDefinition Path="DailyTotalMachineSavings"/>
+            <dxprg:PropertyDefinition Path="DailyTotalEmployeeSavings"/>
+            <dxprg:PropertyDefinition Path="DailyTotalSavings"/>
 
-                <dxprg:PropertyDefinition Path="MonthlyMaterialCost"/>
-                <dxprg:PropertyDefinition Path="MonthlyMachineCost"/>
-                <dxprg:PropertyDefinition Path="MonthlyEmployeeCost"/>
-                <dxprg:PropertyDefinition Path="MonthlyTotalCost"/>
+            <dxprg:PropertyDefinition Path="MonthlyMaterialCost"/>
+            <dxprg:PropertyDefinition Path="MonthlyMachineCost"/>
+            <dxprg:PropertyDefinition Path="MonthlyEmployeeCost"/>
+            <dxprg:PropertyDefinition Path="MonthlyTotalCost"/>
 
-                <dxprg:PropertyDefinition Path="MonthlyMaterialSavings"/>
-                <dxprg:PropertyDefinition Path="MonthlyMachineSavings"/>
-                <dxprg:PropertyDefinition Path="MonthlyEmployeeSavings"/>
-                <dxprg:PropertyDefinition Path="MonthlyTotalSavings"/>
+            <dxprg:PropertyDefinition Path="MonthlyMaterialSavings"/>
+            <dxprg:PropertyDefinition Path="MonthlyMachineSavings"/>
+            <dxprg:PropertyDefinition Path="MonthlyEmployeeSavings"/>
+            <dxprg:PropertyDefinition Path="MonthlyTotalSavings"/>
 
-                <dxprg:PropertyDefinition Path="AnnualMaterialCost"/>
-                <dxprg:PropertyDefinition Path="AnnualMachineCost"/>
-                <dxprg:PropertyDefinition Path="AnnualEmployeeCost"/>
-                <dxprg:PropertyDefinition Path="AnnualTotalCost"/>
+            <dxprg:PropertyDefinition Path="AnnualMaterialCost"/>
+            <dxprg:PropertyDefinition Path="AnnualMachineCost"/>
+            <dxprg:PropertyDefinition Path="AnnualEmployeeCost"/>
+            <dxprg:PropertyDefinition Path="AnnualTotalCost"/>
 
-                <dxprg:PropertyDefinition Path="AnnualMaterialSavings"/>
-                <dxprg:PropertyDefinition Path="AnnualMachineSavings"/>
-                <dxprg:PropertyDefinition Path="AnnualEmployeeSavings"/>
-                <dxprg:PropertyDefinition Path="AnnualTotalSavings"/>
-            </dxprg:PropertyGridControl>
-        </dx:DXExpander>
+            <dxprg:PropertyDefinition Path="AnnualMaterialSavings"/>
+            <dxprg:PropertyDefinition Path="AnnualMachineSavings"/>
+            <dxprg:PropertyDefinition Path="AnnualEmployeeSavings"/>
+            <dxprg:PropertyDefinition Path="AnnualTotalSavings"/>
+        </dxprg:PropertyGridControl>
     </Grid>
 </UserControl>

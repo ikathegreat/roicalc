@@ -96,8 +96,8 @@
     <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="SigmaTEK.Dialogs, Version=1.4.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SigmaTEK.Dialogs.1.4.8\lib\net46\SigmaTEK.Dialogs.dll</HintPath>
+    <Reference Include="SigmaTEK.Dialogs, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SigmaTEK.Dialogs.1.5.2\lib\net46\SigmaTEK.Dialogs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -392,6 +392,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\delete32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\help32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\help16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -49,11 +49,5 @@ namespace SNROI.Views
                 grid.RestoreLayoutFromXml(gridXmlPath);
 
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Expander.IsExpanded = !Expander.IsExpanded;
-
-        }
     }
 }

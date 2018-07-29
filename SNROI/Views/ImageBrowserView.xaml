@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Height="35">
             <Button Margin="0,0,0,5" Height="25" Width="90" Command="{Binding AddImageCommand}">
@@ -27,6 +28,7 @@
                 </StackPanel>
             </Button>
         </StackPanel>
+        <Label Grid.Row="2" Content="Preferred image size is 250px x 48px" Margin="0,3,0,0" Foreground="#E36E6E6E"/>
         <dxg:GridControl Grid.Row="1" ItemsSource="{Binding DisplayImageList, Mode=TwoWay}" IsFilterEnabled="False" AllowMRUFilterList="False" AllowColumnMRUFilterList="False" SelectionMode="Row" SelectedItems="{Binding SelectedImageNamesList}" EnableSmartColumnsGeneration="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <dxg:GridControl.View>
                 <dxg:TableView AllowFilterEditor="False" AllowColumnFiltering="False" AllowColumnMoving="False" AllowGrouping="False" ShowGroupPanel="False" BestFitMode="AllRows" AutoWidth="True" NavigationStyle="Row" ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalScrollbarVisibility="Auto" />

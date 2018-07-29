@@ -27,7 +27,13 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal">
+                <Button Grid.Row="0" Width="Auto" HorizontalAlignment="Right" Command="{Binding OpenDXReportDesignerHelpCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/SNROI;component/Resources/help16.png" Stretch="Uniform"/>
+                        <TextBlock Text="Help" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                    </StackPanel>
+                </Button>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
                     <Button Command="{Binding OpenNewReportEditorCommand}" >
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/SNROI;component/Resources/documents-add216.png" Stretch="Uniform"/>

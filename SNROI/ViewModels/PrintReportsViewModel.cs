@@ -112,6 +112,13 @@ namespace SNROI.ViewModels
             RaisePropertyChanged(nameof(ReportTemplateList));
         }
 
+        public ICommand OpenDXReportDesignerHelpCommand => new RelayCommand(OpenDXReportDesignerHelp);
+
+        private static void OpenDXReportDesignerHelp()
+        {
+            Process.Start(Constants.DXReportEditorWebHelpUrl);
+        }
+
         private bool CanEditOrDeleteReportTemplate()
         {
             return !string.IsNullOrEmpty(SelectedReportForEdit?.Item);
