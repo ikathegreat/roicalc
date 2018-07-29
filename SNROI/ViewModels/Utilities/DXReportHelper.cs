@@ -32,6 +32,14 @@ namespace SNROI.ViewModels.Utilities
             return report;
         }
 
+        /// <summary>
+        /// Export a .repx report with a datasource to an exported file type
+        /// </summary>
+        /// <param name="reportRepxFilePath"></param>
+        /// <param name="dataSource"></param>
+        /// <param name="reportExportType"></param>
+        /// <param name="targetDirectory"></param>
+        /// <param name="fileName"></param>
         public static void ExportReport(string reportRepxFilePath, object dataSource,
             ReportExportType reportExportType, string targetDirectory, string fileName /*No Extension*/)
         {
@@ -85,13 +93,24 @@ namespace SNROI.ViewModels.Utilities
             }
         }
 
+        /// <summary>
+        /// Open the DX Report Designer dialog from a .repx file and bound datasource
+        /// </summary>
+        /// <param name="reportRepxFilePath"></param>
+        /// <param name="dataSource"></param>
         public static void EditReport(string reportRepxFilePath = "", object dataSource = null)
         {
             var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
-
+            report.DisplayName = Path.GetFileNameWithoutExtension(reportRepxFilePath);
+            DevExpress.XtraReports.Configuration.Settings.Default.StorageOptions.RootDirectory = Path.GetDirectoryName(reportRepxFilePath);
             report.ShowDesignerDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
         }
 
+        /// <summary>
+        /// Open DX print dialog to print a .repx file with bound datasource
+        /// </summary>
+        /// <param name="reportRepxFilePath"></param>
+        /// <param name="dataSource"></param>
         public static void PrintReport(string reportRepxFilePath, object dataSource)
         {
             var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
@@ -101,7 +120,11 @@ namespace SNROI.ViewModels.Utilities
             }
         }
 
-
+        /// <summary>
+        /// Open DX preview dialog to preview a .repx file with bound datasource
+        /// </summary>
+        /// <param name="reportRepxFilePath"></param>
+        /// <param name="dataSource"></param>
         public static void PreviewReport(string reportRepxFilePath, object dataSource)
         {
             var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
