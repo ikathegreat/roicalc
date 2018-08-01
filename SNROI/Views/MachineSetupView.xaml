@@ -14,6 +14,14 @@
              mc:Ignorable="d" 
              Height="350" Width="450"
              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type ViewModels:MachineSetupViewModel}}">
+    <UserControl.Resources>
+        <DataTemplate x:Key="MachineMaterialDropdownTemplate">
+            <ContentControl>
+                <dxb:BarButtonItem
+                    Content="{Binding Material.Name}" Command="{Binding AddNewMaterialCommand}"/>
+            </ContentControl>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -49,19 +57,26 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <dxr:RibbonControl RibbonStyle="OfficeSlim" ShowApplicationButton="False" ToolbarShowMode="Hide" MinimizationButtonVisibility="Collapsed" AllowMinimizeRibbon="False" AllowCustomization="False" RibbonHeaderVisibility="Collapsed" AllowKeyTips="False">
-                    <dxr:RibbonDefaultPageCategory >
-                        <dxr:RibbonPage >
-                            <dxr:RibbonPageGroup>
-                                <dxb:BarSubItem Content="Add Material">
-                                    <dxb:BarButtonItem Content="Add Test Material" Command="{Binding AddTestMaterialCommand}" />
-                                    <!--The dropdown items should be dynamically determined based on what materials haven't been added to this machine yet-->
+                <dxb:BarManager>
+                    <dxb:BarManager.Items>
+                        <dxb:BarSubItem Name="MachineBarSubItem" Content="Add Material" IsEnabled="{Binding IsAddNewMaterialEnabled}" ItemLinksSource="{Binding MachineSetupAddMaterialViewModelList}" ItemTemplate="{StaticResource MachineMaterialDropdownTemplate}"/>
+                    </dxb:BarManager.Items>
 
-                                </dxb:BarSubItem>
-                            </dxr:RibbonPageGroup>
-                        </dxr:RibbonPage>
-                    </dxr:RibbonDefaultPageCategory>
-                </dxr:RibbonControl>
+                    <dxr:RibbonControl RibbonStyle="OfficeSlim" ShowApplicationButton="False" ToolbarShowMode="Hide" MinimizationButtonVisibility="Collapsed" AllowMinimizeRibbon="False" AllowCustomization="False" RibbonHeaderVisibility="Collapsed" AllowKeyTips="False">
+                        <dxr:RibbonDefaultPageCategory >
+                            <dxr:RibbonPage >
+                                <dxr:RibbonPageGroup>
+                                        <dxb:BarSubItemLink BarItemName="MachineBarSubItem"/>
+                                    <!--<dxb:BarSubItem Content="Add Material" ItemLinksSource="{Binding MachineSetupAddMaterialViewModelList}">-->
+                                        <!--<dxb:BarButtonItem Content="Add Test Material" Command="{Binding AddTestMaterialCommand}" />-->
+                                        <!--The dropdown items should be dynamically determined based on what materials haven't been added to this machine yet-->
+
+                                    <!--</dxb:BarSubItem>-->
+                                </dxr:RibbonPageGroup>
+                            </dxr:RibbonPage>
+                        </dxr:RibbonDefaultPageCategory>
+                    </dxr:RibbonControl>
+                </dxb:BarManager>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
                     <StackPanel Orientation="Vertical" Margin="5" CanVerticallyScroll="True">
                         <ItemsControl ItemsSource="{Binding MachineMaterialItemListCollection}">

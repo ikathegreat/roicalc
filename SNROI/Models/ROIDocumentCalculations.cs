@@ -110,8 +110,23 @@ namespace SNROI.Models
             get
             {
                 var people = RoiDocument.PeopleListCollection;
+                var total = 0.00;
+                foreach (var employeeKind in (EmployeeKind[])Enum.GetValues(typeof(EmployeeKind)))
+                {
+                    if (employeeKind == EmployeeKind.Admin)
+                    {
+                        total = total + people.Sum(y =>
+                                    (y.HourlyWage / 60 * RoiDocument.AdminMinutesSavedPerHour) * WorkHoursInADay);
+                    }
+                    else if (employeeKind == EmployeeKind.Programmer)
+                    {
+                        total = total + people.Sum(y =>
+                                    (y.HourlyWage / 60 * RoiDocument.ProgrammingMinutesSavedPerHour) * WorkHoursInADay);
 
-                return people.Sum(y => y.HourlyWage / RoiDocument.AdminMinutesSavedPerHour * WorkHoursInADay);
+                    } 
+                }
+
+                return total;
             }
         }
 

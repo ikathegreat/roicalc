@@ -147,6 +147,7 @@
     <Compile Include="Tools\DateTimeTools.cs" />
     <Compile Include="Enums\ReportAction.cs" />
     <Compile Include="ViewModels\MachineMaterialItemViewModel.cs" />
+    <Compile Include="ViewModels\MachineSetupAddMaterialViewModel.cs" />
     <Compile Include="ViewModels\MachineSetupViewModel.cs" />
     <Compile Include="ViewModels\Utilities\DXReportHelper.cs" />
     <Compile Include="ViewModels\Utilities\DXSkinNameHelper.cs" />

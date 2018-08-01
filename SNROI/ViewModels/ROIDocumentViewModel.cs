@@ -277,7 +277,7 @@ namespace SNROI.ViewModels
                 return;
 
             var originalmachine = machine.Clone() as Machine;
-            if (!DialogService.Instance.ShowMachineSetupWindow(machine))
+            if (!DialogService.Instance.ShowMachineSetupWindow(machine, ROIDocument.MaterialsListCollection))
                 return;
 
             var indexOfMachine = ROIDocument.MachinesListCollection.IndexOf(originalmachine);
@@ -293,7 +293,7 @@ namespace SNROI.ViewModels
         {
             var machine = new Machine() { Name = $"Plasma {roiDocument.MachinesListCollection.Count + 1}" };
 
-            if (DialogService.Instance.ShowMachineSetupWindow(machine))
+            if (DialogService.Instance.ShowMachineSetupWindow(machine, ROIDocument.MaterialsListCollection))
             {
                 ROIDocument.MachinesListCollection.Add(machine);
             }

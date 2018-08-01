@@ -3,23 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SNROI.Models;
 
 namespace SNROI.ViewModels
 {
-    public class MachineMaterialItemViewModel
+    public class MachineMaterialItemViewModel : ViewModelBase
     {
-        private MachineMaterial machineMaterial = new MachineMaterial();
+        public MachineMaterial MachineMaterial { get; set; } = new MachineMaterial();
 
-        public MachineMaterial MachineMaterial
+        public double PercentOfTotalMachineCapacity
         {
-            get => machineMaterial;
+            get => MachineMaterial.PercentOfTotalMachineCapacity;
+
             set
             {
-                machineMaterial = value;
-                FireMachineMaterialChanged(machineMaterial);
+                MachineMaterial.PercentOfTotalMachineCapacity = value;
+                FireMachineMaterialChanged(MachineMaterial);
             }
+        }
+        
+
+
+
+        public void UpdatePercentOfTotalMachineCapacity(double value)
+        {
+            MachineMaterial.PercentOfTotalMachineCapacity = value;
         }
 
         public delegate void MachineMaterialChangedDelegate(MachineMaterial machineMaterial);
@@ -32,6 +42,7 @@ namespace SNROI.ViewModels
         }
 
         private RelayCommand removeMaterialCommand;
+        private double percentOfTotalMachineCapacity;
 
         public RelayCommand RemoveMaterialCommand
         {

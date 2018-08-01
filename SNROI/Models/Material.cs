@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using GalaSoft.MvvmLight;
 
 namespace SNROI.Models
 {
@@ -7,5 +8,6 @@ namespace SNROI.Models
         public string Name { get; set; } = "Material";
         public double CostPerWeightUnit { get; set; } = 0.00;
         public double TotalMonthlyPurchasedWeight { get; set; } = 1;
+        
     }
 }

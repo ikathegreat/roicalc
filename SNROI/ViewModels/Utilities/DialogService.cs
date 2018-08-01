@@ -361,12 +361,12 @@ namespace SNROI.ViewModels.Utilities
             dialogService.ShowDialogWindow("Image Browser", new[] { okCommand, cancelCommand }, null, imageBrowserWindow, imageBrowserViewModel, false);
         }
 
-        public bool ShowMachineSetupWindow(Machine machine)
+        public bool ShowMachineSetupWindow(Machine machine, ObservableCollection<Material> materialList)
         {
             UIServices.SetBusyState();
 
             var machineSetupWindow = new MachineSetupView();
-            var machineSetupViewModel = new MachineSetupViewModel { Machine = machine };
+            var machineSetupViewModel = new MachineSetupViewModel(materialList) { Machine = machine };
 
             var okCommand = new ButtonServiceCommand("OK", machineSetupViewModel.OKCommand, false, true, true);
             var cancelCommand = new ButtonServiceCommand("Cancel", null, true, false, true);

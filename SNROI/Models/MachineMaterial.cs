@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
 
 namespace SNROI.Models
 {
@@ -16,7 +17,6 @@ namespace SNROI.Models
             set
             {
                 percentOfTotalMachineCapacity = value;
-                RaisePropertyChanged(nameof(PercentOfTotalMachineCapacity));
             }
         }
 
