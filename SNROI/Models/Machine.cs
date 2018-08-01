@@ -8,24 +8,40 @@ namespace SNROI.Models
     public class Machine : ObservableObject, ICloneable
     {
 
-        public string Name { get; set; } = "Machine";
+        private string name = "Machine";
+        public string Name
+        {
+            get { return name; }
+            set { Set(ref name, value); }
+        }
 
-        /// <summary>
-        /// Type of machine 
-        /// </summary>
-        public MachineKind MachineKind { get; set; } = MachineKind.Plasma;
+        private MachineKind machineKind = MachineKind.Plasma;
+        public MachineKind MachineKind
+        {
+            get { return machineKind; }
+            set { Set(ref machineKind, value); }
+        }
 
-        /// <summary>
-        /// Monetary cost per hour to run the machine
-        /// </summary>
-        public double CostPerHourToRun { get; set; } = 1;
+        private double costPerHourToRun = 1;
+        public double CostPerHourToRun
+        {
+            get { return costPerHourToRun; }
+            set { Set(ref costPerHourToRun, value); }
+        }
 
-        /// <summary>
-        /// Percent of uptime per month
-        /// </summary>
-        public double MonthlyUtilizationPercentage { get; set; } = 50;
+        private double monthlyUtilizationPercentage = 50;
+        public double MonthlyUtilizationPercentage
+        {
+            get { return monthlyUtilizationPercentage; }
+            set { Set(ref monthlyUtilizationPercentage, value); }
+        }
 
-        public ObservableCollection<MachineMaterial> MachineMaterials { get; set; } = new ObservableCollection<MachineMaterial>();
+        private ObservableCollection<MachineMaterial> machineMaterials = new ObservableCollection<MachineMaterial>();
+        public ObservableCollection<MachineMaterial> MachineMaterials
+        {
+            get { return machineMaterials; }
+            set { Set(ref machineMaterials, value); }
+        }
 
         public object Clone()
         {

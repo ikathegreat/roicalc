@@ -1,5 +1,7 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
-using Microsoft.WindowsAPICodePack.Shell;
+﻿using DevExpress.DataAccess.ObjectBinding;
+using DevExpress.XtraReports.Wizards;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using SNROI.Models;
 using SNROI.ViewModels.Utilities;
 using System;
@@ -10,138 +12,39 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml.Serialization;
-using DevExpress.DataAccess.ObjectBinding;
-using DevExpress.XtraReports.Wizards;
-using GalaSoft.MvvmLight;
-using SNROI.Enums;
 
 namespace SNROI.ViewModels
 {
     [HighlightedClass]
     public class ROIDocumentViewModel : ViewModelBase
     {
-        public ROIDocumentViewModel()
+        #region Private Fields
+
+        private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+
+        #endregion Private Fields
+
+        #region Observable Properties
+
+        private List<string> companiesList;
+        public List<string> CompaniesList
         {
+            get { return companiesList; }
+            set { Set(ref companiesList, value); }
         }
 
-        public void LoadExistingImages()
+        private string dataDirectory;
+        public string DataDirectory
         {
-            var imageDirectory = Path.Combine(DataDirectory, Constants.ImagesDirectoryName);
-            if (string.IsNullOrEmpty(imageDirectory))
-                return;
-            if (!Directory.Exists(imageDirectory))
-                return;
-
-            var existingFiles = Directory.GetFiles(imageDirectory);
-            foreach (var existingFile in existingFiles)
-            {
-                if (!ImageList.Contains(existingFile))
-                    ImageList.Add(existingFile);
-            }
-            //Todo: Bug with removing an image and not removing it from the list
+            get { return dataDirectory; }
+            set { Set(ref dataDirectory, value); }
         }
 
-        private ObservableCollection<string> imageList;
-        public ObservableCollection<string> ImageList
+        private string documentPath;
+        public string DocumentPath
         {
-            get => imageList ?? (imageList = new ObservableCollection<string>());
-            set => imageList = value;
-        }
-        private ObservableCollection<string> languagesList;
-        public ObservableCollection<string> LanguagesList =>
-            languagesList ?? (languagesList = new ObservableCollection<string> { "United States", "Korea", "Japan", "Germany" });
-
-
-        public string DocumentPath { get; set; }
-        public string DataDirectory { get; set; }
-        public bool IsNewReport { get; set; }
-        public List<string> CompaniesList { get; set; }
-
-        private ROIDocument roiDocument;
-
-        public ROIDocument ROIDocument
-        {
-            get
-            {
-                if (roiDocument != null)
-                    return roiDocument;
-                var roiDoc = roiDocument ?? (roiDocument = string.IsNullOrEmpty(DocumentPath)
-                                 ? new ROIDocument()
-                                 : LoadROIDocumentFile(DocumentPath));
-                //roiDoc.IsDirty = false;
-                return roiDoc;
-            }
-
-            set
-            {
-                roiDocument = value;
-                RaisePropertyChanged(nameof(ROIDocument));
-
-            }
-        }
-
-        public Machine SelectedMachine { get; set; }
-        public Material SelectedMaterial { get; set; }
-
-        public HourlyPerson SelectedHourlyPerson { get; set; }
-
-        public ICommand SaveROIDocumentCommand => new RelayCommand(() => { SaveROIDocument(); }, CanSaveROIDocument);
-
-        private bool CanSaveROIDocument()
-        {
-            var result = !string.IsNullOrEmpty(ROIDocument.DocumentName)
-                         && !(ROIDocument.DocumentName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0);
-            return result;
-
-        }
-
-        public bool SaveROIDocument()
-        {
-            DialogService.Instance.ShowProgressDialog();
-            //New report
-            if (string.IsNullOrEmpty(DocumentPath))
-                if (!string.IsNullOrEmpty(DataDirectory))
-                    DocumentPath = Path.Combine(DataDirectory, ROIDocument.DocumentName + ".xml");
-
-            if (File.Exists(DocumentPath) && IsNewReport)
-            {
-                DialogService.Instance.HideProgressDialog();
-
-                if (!DialogService.Instance.ShowMessageQuestion($"{ROIDocument.DocumentName} already exists. Overwrite?", "File Exists"))
-                {
-                    DialogService.Instance.CloseProgressDialog();
-                    return false;
-                }
-
-                DialogService.Instance.UnhideProgressDialog();
-            }
-
-            var directoryName = Path.GetDirectoryName(DocumentPath);
-            if (!Directory.Exists(directoryName))
-                Directory.CreateDirectory(DocumentPath);
-
-            ROIDocument.DateModified = DateTime.Now;
-
-            TextWriter writer = new StreamWriter(DocumentPath);
-            var xmlSerializer = new XmlSerializer(typeof(ROIDocument));
-
-            try
-            {
-                xmlSerializer.Serialize(writer, ROIDocument);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Exception occurred while writing to XML: {ex.Message}");
-                DialogService.Instance.CloseProgressDialog();
-                return false;
-            }
-            finally
-            {
-                writer.Close();
-            }
-
-            DialogService.Instance.CloseProgressDialog();
-            return true;
+            get { return documentPath; }
+            set { Set(ref documentPath, value); }
         }
 
         public string FileSize
@@ -162,73 +65,288 @@ namespace SNROI.ViewModels
                 }
                 return BytesToFormattedString(fileSizeLength);
             }
-
-        }
-        private static string BytesToFormattedString(long value)
-        {
-            if (value < 0) { return "-" + BytesToFormattedString(-value); }
-            if (value == 0) { return "0.0 bytes"; }
-
-            var mag = (int)Math.Log(value, 1024);
-            var adjustedSize = (decimal)value / (1L << (mag * 10));
-
-            return $"{adjustedSize:n0} {SizeSuffixes[mag]}";
         }
 
-        private static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-
-
-
-
-        public ICommand EditReportCommand => new RelayCommand(EditReport);
-
-        private void EditReport()
+        private ObservableCollection<string> imageList = new ObservableCollection<string>();
+        public ObservableCollection<string> ImageList
         {
-            if (SaveROIDocument())
+            get { return imageList; }
+            set
             {
-                var roiDocumentViewModel = new ROIDocumentViewModel
-                {
-                    DocumentPath = DocumentPath,
-                    DataDirectory = DataDirectory
-                };
-                var tempFSROIDocList = new ObservableCollection<ROIDocumentViewModel> { roiDocumentViewModel };
-                DialogService.Instance.ShowReportsDialog(DataDirectory, tempFSROIDocList);
-            }
-            else
-            {
-                DialogService.Instance.ShowMessageError("Failed to save document for preview");
+                if (imageList == value)
+                    return;
+
+                imageList = value;
+                RaisePropertyChanged();
             }
         }
 
-
-        public ICommand AddNewMaterialItemCommand => new RelayCommand(AddNewMaterialItem);
-
-        private void AddNewMaterialItem()
+        private bool isNewReport;
+        public bool IsNewReport
         {
-            roiDocument.MaterialsListCollection.Add(new Material() { Name = $"Material {roiDocument.MaterialsListCollection.Count + 1}" });
-        }
-        public ICommand AddNewHourlyPersonCommand => new RelayCommand(AddNewHourlyPerson);
-
-        private void AddNewHourlyPerson()
-        {
-            roiDocument.PeopleListCollection.Add(new HourlyPerson() { Name = $"Programmer {roiDocument.PeopleListCollection.Count + 1}" });
+            get { return isNewReport; }
+            set { Set(ref isNewReport, value); }
         }
 
-        public ICommand CancelCommand => new RelayCommand(CancelDocumentEdit);
-
-        private void CancelDocumentEdit()
+        private ObservableCollection<string> languagesList = new ObservableCollection<string> { "United States", "Korea", "Japan", "Germany" };
+        public ObservableCollection<string> LanguagesList
         {
-            //if (ROIDocument.IsDirty)
-            //{
-            //    if (DialogService.Instance.ShowMessageQuestion($"Save changes to {ROIDocument.DocumentName}?",
-            //        "Save Changes"))
-            //    {
-            //        SaveROIDocument();
+            get { return languagesList; }
+            set
+            {
+                if (languagesList == value)
+                    return;
 
-            //    }
-            //}
+                languagesList = value;
+                RaisePropertyChanged();
+            }
         }
 
+        private ReportType reportType = ReportType.Standard;
+        public ReportType ReportType
+        {
+            get { return reportType; }
+            set { Set(ref reportType, value); }
+        }
+
+        private ROIDocument roiDocument;
+        public ROIDocument ROIDocument
+        {
+            get
+            {
+                if (roiDocument != null)
+                    return roiDocument;
+
+                var roiDoc = roiDocument ?? (roiDocument = string.IsNullOrEmpty(DocumentPath)
+                                 ? new ROIDocument()
+                                 : LoadROIDocumentFile(DocumentPath));
+
+                return roiDoc;
+            }
+            set
+            {
+                if (roiDocument == value)
+                    return;
+
+                roiDocument = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private HourlyPerson selectedHourlyPerson;
+        public HourlyPerson SelectedHourlyPerson
+        {
+            get { return selectedHourlyPerson; }
+            set { Set(ref selectedHourlyPerson, value); }
+        }
+
+        private Machine selectedMachine;
+        public Machine SelectedMachine
+        {
+            get { return selectedMachine; }
+            set { Set(ref selectedMachine, value); }
+        }
+
+        private Material selectedMaterial;
+        public Material SelectedMaterial
+        {
+            get { return selectedMaterial; }
+            set { Set(ref selectedMaterial, value); }
+        }
+
+        #endregion Observable Properties
+
+        #region Commands
+
+        private RelayCommand addNewHourlyPersonCommand;
+        public RelayCommand AddNewHourlyPersonCommand
+        {
+            get
+            {
+                return addNewHourlyPersonCommand
+                    ?? (addNewHourlyPersonCommand = new RelayCommand(
+                    () =>
+                    {
+                        roiDocument.PeopleListCollection.Add(new HourlyPerson() { Name = $"Programmer {roiDocument.PeopleListCollection.Count + 1}" });
+                    }));
+            }
+        }
+
+        private RelayCommand addNewMachineWindowCommand;
+        public RelayCommand AddNewMachineWindowCommand
+        {
+            get
+            {
+                return addNewMachineWindowCommand
+                    ?? (addNewMachineWindowCommand = new RelayCommand(
+                    () =>
+                    {
+                        var machine = new Machine() { Name = $"Plasma {roiDocument.MachinesListCollection.Count + 1}" };
+
+                        if (DialogService.Instance.ShowMachineSetupWindow(machine))
+                            ROIDocument.MachinesListCollection.Add(machine);
+                    }));
+            }
+        }
+
+        private RelayCommand addNewMaterialItemCommand;
+        public RelayCommand AddNewMaterialItemCommand
+        {
+            get
+            {
+                return addNewMaterialItemCommand
+                    ?? (addNewMaterialItemCommand = new RelayCommand(
+                    () =>
+                    {
+                        roiDocument.MaterialsListCollection.Add(new Material() { Name = $"Material {roiDocument.MaterialsListCollection.Count + 1}" });
+                    }));
+            }
+        }
+
+        private RelayCommand cancelCommand;
+        public RelayCommand CancelCommand
+        {
+            get
+            {
+                return cancelCommand
+                    ?? (cancelCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (DialogService.Instance.ShowMessageQuestion($"Save changes to {ROIDocument.DocumentName}?", "Save Changes"))
+                            SaveROIDocument();
+                        else
+                            ResetROIDocument();
+                    }));
+            }
+        }
+
+        private RelayCommand deleteSelectedMachineCommand;
+        public RelayCommand DeleteSelectedMachineCommand
+        {
+            get
+            {
+                return deleteSelectedMachineCommand
+                    ?? (deleteSelectedMachineCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (SelectedMachine == null)
+                            return;
+
+                        ROIDocument.MachinesListCollection.Remove(SelectedMachine);
+                    }));
+            }
+        }
+
+        private RelayCommand deleteSelectedMaterialCommand;
+        public RelayCommand DeleteSelectedMaterialCommand
+        {
+            get
+            {
+                return deleteSelectedMaterialCommand
+                    ?? (deleteSelectedMaterialCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (SelectedMaterial == null)
+                            return;
+
+                        ROIDocument.MaterialsListCollection.Remove(SelectedMaterial);
+                    }));
+            }
+        }
+
+        private RelayCommand deleteSelectedPersonCommand;
+        public RelayCommand DeleteSelectedPersonCommand
+        {
+            get
+            {
+                return deleteSelectedPersonCommand
+                    ?? (deleteSelectedPersonCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (SelectedHourlyPerson != null)
+                        {
+                            ROIDocument.PeopleListCollection.Remove(SelectedHourlyPerson);
+                        }
+                    }));
+            }
+        }
+
+        private RelayCommand editMachineWindowCommand;
+        public RelayCommand EditMachineWindowCommand
+        {
+            get
+            {
+                return editMachineWindowCommand
+                    ?? (editMachineWindowCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (SelectedMachine == null)
+                            return;
+
+                        var machineCopy = SelectedMachine.Clone() as Machine;
+
+                        if (DialogService.Instance.ShowMachineSetupWindow(machineCopy))
+                        {
+                            var machineList = ROIDocument.MachinesListCollection.ToList();
+                            var index = machineList.IndexOf(SelectedMachine);
+                            if (index > -1)
+                                machineList[index] = machineCopy;
+
+                            ROIDocument.MachinesListCollection = new ObservableCollection<Machine>(machineList);
+                        }
+                    }));
+            }
+        }
+
+        private RelayCommand editReportCommand;
+        public RelayCommand EditReportCommand
+        {
+            get
+            {
+                return editReportCommand ??
+                      (editReportCommand = new RelayCommand(() =>
+                      {
+                          if (DialogService.Instance.ShowMessageQuestion($"Save changes to {ROIDocument.DocumentName}?", "Save Changes"))
+                              SaveROIDocument();
+                          else
+                              ResetROIDocument();
+
+                          var roiDocumentViewModel = new ROIDocumentViewModel { DocumentPath = DocumentPath, DataDirectory = DataDirectory };
+                          var tempFSROIDocList = new ObservableCollection<ROIDocumentViewModel> { roiDocumentViewModel };
+
+                          DialogService.Instance.ShowReportsDialog(DataDirectory, tempFSROIDocList);
+                      }));
+            }
+        }
+
+        private RelayCommand openImagesWindowCommand;
+        public RelayCommand OpenImagesWindowCommand
+        {
+            get
+            {
+                return openImagesWindowCommand
+                    ?? (openImagesWindowCommand = new RelayCommand(
+                    () =>
+                    {
+                        DialogService.Instance.ShowImageBrowserWindow(Path.Combine(DataDirectory, Constants.ImagesDirectoryName));
+                        LoadExistingImages();
+                    }));
+            }
+        }
+
+        private RelayCommand saveROIDocumentCommand;
+        public RelayCommand SaveROIDocumentCommand
+        {
+            get
+            {
+                return saveROIDocumentCommand
+                    ?? (saveROIDocumentCommand = new RelayCommand(SaveROIDocument, CanSaveROIDocument));
+            }
+        }
+
+        #endregion Commands
+
+        #region Public Methods
 
         public static ROIDocument LoadROIDocumentFile(string documentPath)
         {
@@ -259,78 +377,93 @@ namespace SNROI.ViewModels
             return roiDocument;
         }
 
-
-        public ICommand OpenImagesWindowCommand => new RelayCommand(OpenImagesWindow);
-
-        private void OpenImagesWindow()
+        public void LoadExistingImages()
         {
-            DialogService.Instance.ShowImageBrowserWindow(Path.Combine(DataDirectory, Constants.ImagesDirectoryName));
-            LoadExistingImages();
-            RaisePropertyChanged(nameof(ImageList));
-        }
+            var imageDirectory = Path.Combine(DataDirectory, Constants.ImagesDirectoryName);
 
-        public ICommand EditMachineWindowCommand => new RelayCommand<object>(EditMachineWindow);
-
-        private void EditMachineWindow(object o)
-        {
-            if (!(o is Machine machine))
+            if (string.IsNullOrEmpty(imageDirectory))
                 return;
 
-            var originalmachine = machine.Clone() as Machine;
-            if (!DialogService.Instance.ShowMachineSetupWindow(machine, ROIDocument.MaterialsListCollection))
+            if (!Directory.Exists(imageDirectory))
                 return;
 
-            var indexOfMachine = ROIDocument.MachinesListCollection.IndexOf(originalmachine);
-            if (indexOfMachine > -1)
-            {
-                ROIDocument.MachinesListCollection[indexOfMachine] = machine;
-            }
-            ROIDocument.RaisePropertyChanged();
-        }
-        public ICommand AddNewMachineWindowCommand => new RelayCommand(NewMachineWindow);
+            var existingFiles = Directory.GetFiles(imageDirectory);
 
-        private void NewMachineWindow()
+            ImageList = new ObservableCollection<string>(existingFiles);
+        }
+
+        public void SaveROIDocument()
         {
-            var machine = new Machine() { Name = $"Plasma {roiDocument.MachinesListCollection.Count + 1}" };
+            DialogService.Instance.ShowProgressDialog();
 
-            if (DialogService.Instance.ShowMachineSetupWindow(machine, ROIDocument.MaterialsListCollection))
+            if (string.IsNullOrEmpty(DocumentPath) && !string.IsNullOrEmpty(DataDirectory))
+                DocumentPath = Path.Combine(DataDirectory, ROIDocument.DocumentName + ".xml");
+
+            if (File.Exists(DocumentPath) && IsNewReport)
             {
-                ROIDocument.MachinesListCollection.Add(machine);
+                DialogService.Instance.HideProgressDialog();
+
+                if (!DialogService.Instance.ShowMessageQuestion($"{ROIDocument.DocumentName} already exists. Overwrite?", "File Exists"))
+                {
+                    DialogService.Instance.CloseProgressDialog();
+                }
+
+                DialogService.Instance.UnhideProgressDialog();
             }
 
+            var directoryName = Path.GetDirectoryName(DocumentPath);
+            if (!Directory.Exists(directoryName))
+                Directory.CreateDirectory(DocumentPath);
+
+            ROIDocument.DateModified = DateTime.Now;
+
+            TextWriter writer = new StreamWriter(DocumentPath);
+            var xmlSerializer = new XmlSerializer(typeof(ROIDocument));
+
+            try
+            {
+                xmlSerializer.Serialize(writer, ROIDocument);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Exception occurred while writing to XML: {ex.Message}");
+                DialogService.Instance.CloseProgressDialog();
+            }
+            finally
+            {
+                writer.Close();
+            }
+
+            DialogService.Instance.CloseProgressDialog();
         }
 
-        public ICommand DeleteSelectedMachineCommand => new RelayCommand<object>(DeleteSelectedMachine);
+        #endregion Public Methods
 
-        private void DeleteSelectedMachine(object o)
+        #region Private Methods
+
+        private static string BytesToFormattedString(long value)
         {
-            if (o is Machine machine)
-            {
-                ROIDocument.MachinesListCollection.Remove(machine);
-            }
+            if (value < 0) { return "-" + BytesToFormattedString(-value); }
+            if (value == 0) { return "0.0 bytes"; }
+
+            var mag = (int)Math.Log(value, 1024);
+            var adjustedSize = (decimal)value / (1L << (mag * 10));
+
+            return $"{adjustedSize:n0} {SizeSuffixes[mag]}";
         }
 
-        public ICommand DeleteSelectedMaterialCommand => new RelayCommand(DeleteSelectedMaterial);
-
-        private void DeleteSelectedMaterial()
+        private bool CanSaveROIDocument()
         {
-            if (SelectedMaterial != null)
-            {
-                ROIDocument.MaterialsListCollection.Remove(SelectedMaterial);
-
-            }
+            var result = !string.IsNullOrEmpty(ROIDocument.DocumentName)
+                         && !(ROIDocument.DocumentName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0);
+            return result;
         }
-        public ICommand DeleteSelectedPersonCommand => new RelayCommand(DeleteSelectedPerson);
 
-        private void DeleteSelectedPerson()
+        private void ResetROIDocument()
         {
-            if (SelectedHourlyPerson != null)
-            {
-                ROIDocument.PeopleListCollection.Remove(SelectedHourlyPerson);
-
-            }
+            ROIDocument = LoadROIDocumentFile(DocumentPath);
         }
 
-        public ReportType ReportType => ReportType.Standard;
+        #endregion Private Methods
     }
 }
