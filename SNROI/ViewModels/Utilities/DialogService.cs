@@ -67,17 +67,7 @@ namespace SNROI.ViewModels.Utilities
         {
             return dialogService.InputDialog(title, message, instructions, defaultInput);
         }
-
-        /// <summary>
-        /// Displays the license manager dialog and returns the selected sim ID.
-        /// </summary>
-        /// <param name="title">(Optional) The dialog title.</param>
-        /// <param name="defaultHaspId">(Optional) The default hasp ID to display, is also the default return value if the dialog is suppressed.</param>
-        /// <returns></returns>
-        public string LicenseManagerDialog(string title = "License Manager", string defaultHaspId = "")
-        {
-            return dialogService.LicenseManagerDialog(title, defaultHaspId);
-        }
+        
 
         /// <summary>
         /// Displays the open file dialog and returns the selected file path.
@@ -375,6 +365,20 @@ namespace SNROI.ViewModels.Utilities
             return okCommand == dialogService.ShowDialogWindow($"{windowTitle}", new[] { okCommand, cancelCommand }, 
                        null, machineSetupWindow, machineSetupViewModel, false);
 
+        }
+
+        public void ShowReportEditorWindow(XtraReport report)
+        {
+            var reportEditorWindow = new ReportEditorWindow();
+            reportEditorWindow.XtraReportSource = report;
+            reportEditorWindow.ShowDialog();
+        }
+
+        public void ShowReportPreviewWindow(XtraReport report)
+        {
+            var reportPreviewWindow = new ReportPreviewWindow();
+            reportPreviewWindow.XtraReportSource = report;
+            reportPreviewWindow.ShowDialog();
         }
 
     }

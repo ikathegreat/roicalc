@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DevExpress.DataAccess.ObjectBinding;
+using DevExpress.Xpf.Printing;
 using DevExpress.XtraReports.UI;
 using SNROI.Enums;
 
@@ -94,7 +95,7 @@ namespace SNROI.ViewModels.Utilities
         }
 
         /// <summary>
-        /// Open the DX Report Designer dialog from a .repx file and bound datasource
+        /// Open WPF DX Report Designer dialog from a .repx file and bound datasource
         /// </summary>
         /// <param name="reportRepxFilePath"></param>
         /// <param name="dataSource"></param>
@@ -102,36 +103,34 @@ namespace SNROI.ViewModels.Utilities
         {
             var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
             report.DisplayName = Path.GetFileNameWithoutExtension(reportRepxFilePath);
-            DevExpress.XtraReports.Configuration.Settings.Default.StorageOptions.RootDirectory = Path.GetDirectoryName(reportRepxFilePath);
-            report.ShowDesignerDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
+            //DevExpress.XtraReports.Configuration.Settings.Default.StorageOptions.RootDirectory = Path.GetDirectoryName(reportRepxFilePath);
+            //report.ShowDesignerDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
+
+            DialogService.Instance.ShowReportEditorWindow(report);
+
         }
 
         /// <summary>
-        /// Open DX print dialog to print a .repx file with bound datasource
+        /// Open WPF DX print dialog to print a .repx file with bound datasource
         /// </summary>
         /// <param name="reportRepxFilePath"></param>
         /// <param name="dataSource"></param>
         public static void PrintReport(string reportRepxFilePath, object dataSource)
         {
             var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
-            using (var printTool = new ReportPrintTool(report))
-            {
-                printTool.PrintDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
-            }
+            PrintHelper.Print(report);
         }
 
         /// <summary>
-        /// Open DX preview dialog to preview a .repx file with bound datasource
+        /// Open WPF DX preview dialog to preview a .repx file with bound datasource
         /// </summary>
         /// <param name="reportRepxFilePath"></param>
         /// <param name="dataSource"></param>
         public static void PreviewReport(string reportRepxFilePath, object dataSource)
         {
             var report = CreateXtraReportFromRepxWithDataSource(reportRepxFilePath, dataSource);
-            using (var printTool = new ReportPrintTool(report))
-            {
-                printTool.ShowPreviewDialog(DXSkinNameHelper.GetUserLookAndFeelFromApplicationTheme());
-            }
+            report.DisplayName = Path.GetFileNameWithoutExtension(reportRepxFilePath);
+            DialogService.Instance.ShowReportPreviewWindow(report);
         }
     }
 }

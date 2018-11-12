@@ -1,4 +1,4 @@
-﻿using DevExpress.Mvvm;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using SNROI.ViewModels.Utilities;
 using System;

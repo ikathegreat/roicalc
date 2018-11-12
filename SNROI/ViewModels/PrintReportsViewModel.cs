@@ -136,6 +136,7 @@ namespace SNROI.ViewModels
                 selectedReportRepxFilePath = repxFilePath;
 
             DXReportHelper.EditReport(selectedReportRepxFilePath, SelectedROIViewModelList.FirstOrDefault()?.ROIDocument);
+           
         }
         public ICommand DeleteSelectedReportTemplatesCommand => new RelayCommand(DeleteSelectedReportTemplates, CanEditOrDeleteReportTemplate);
 
@@ -216,9 +217,11 @@ namespace SNROI.ViewModels
                 if (checkedListItem.IsChecked)
                     checkedReportTemplates.Add(checkedListItem.Item);
             }
-            var selectedReportsTemplatesFilePath = Path.Combine(dataDirectory,
-                Constants.AppSettingsDirectoryName, "SelectedReportsTemplates.txt");
-            File.WriteAllLines(selectedReportsTemplatesFilePath, checkedReportTemplates);
+            var selectedReportsTemplatesDirectory = Path.Combine(dataDirectory,
+                Constants.AppSettingsDirectoryName);
+            Directory.CreateDirectory(selectedReportsTemplatesDirectory);
+            File.WriteAllLines(Path.Combine(selectedReportsTemplatesDirectory, "SelectedReportsTemplates.txt"), 
+                checkedReportTemplates);
         }
 
         private void ExecuteReportActionsOnSelectedReports(ReportAction action,

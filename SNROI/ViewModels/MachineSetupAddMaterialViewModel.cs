@@ -1,9 +1,10 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using SNROI.Models;
 
 namespace SNROI.ViewModels
 {
-    public class MachineSetupAddMaterialViewModel
+    public class MachineSetupAddMaterialViewModel : ViewModelBase
     {
         public Material Material { get; set; }
 
