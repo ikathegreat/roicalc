@@ -2,7 +2,6 @@
 using DevExpress.XtraReports.UI;
 using SigmaTEK.Dialogs;
 using SigmaTEK.Dialogs.Model;
-using SigmaTEK.Dialogs.Mvvm;
 using SNROI.Tools;
 using SNROI.Views;
 using System;
@@ -15,6 +14,7 @@ using DevExpress.LookAndFeel;
 using DevExpress.LookAndFeel.Design;
 using DevExpress.Skins;
 using DevExpress.Xpf.Core;
+using SigmaTEK.Dialogs.MVVM;
 using SNROI.Models;
 
 namespace SNROI.ViewModels.Utilities
@@ -67,7 +67,7 @@ namespace SNROI.ViewModels.Utilities
         {
             return dialogService.InputDialog(title, message, instructions, defaultInput);
         }
-        
+
 
         /// <summary>
         /// Displays the open file dialog and returns the selected file path.
@@ -330,11 +330,14 @@ namespace SNROI.ViewModels.Utilities
             var result = dialogService.ShowDialogWindow($"Edit {roiDocumentViewModel.ROIDocument.DocumentName}", new[] { editReportCommand, okCommand, cancelCommand }, null, editROIDocView, roiDocumentViewModel, false);
             if (result == okCommand)
             {
-                editROIDocView.SaveDocumentGrids(Path.Combine(defaultDataDirectory, Constants.AppSettingsDirectoryName));
+                var gridSaveDirectory = Path.Combine(defaultDataDirectory, Constants.AppSettingsDirectoryName);
+                if (!Directory.Exists(gridSaveDirectory))
+                    Directory.CreateDirectory(gridSaveDirectory);
+                editROIDocView.SaveDocumentGrids(gridSaveDirectory);
                 return true;
             }
-            else
-                return false;
+
+            return false;
         }
 
         public void ShowImageBrowserWindow(string imageDirectory)
@@ -362,7 +365,7 @@ namespace SNROI.ViewModels.Utilities
             var cancelCommand = new ButtonServiceCommand("Cancel", null, true, false, true);
             var windowTitle = $"Edit {machine.Name}";
 
-            return okCommand == dialogService.ShowDialogWindow($"{windowTitle}", new[] { okCommand, cancelCommand }, 
+            return okCommand == dialogService.ShowDialogWindow($"{windowTitle}", new[] { okCommand, cancelCommand },
                        null, machineSetupWindow, machineSetupViewModel, false);
 
         }
